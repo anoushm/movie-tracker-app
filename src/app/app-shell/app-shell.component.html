@@ -1,0 +1,39 @@
+<div id="wrapper"
+     class="toggled">
+    <div id="sidebar-wrapper">
+        <ul class="sidebar-nav">
+            <li>
+                <a href="#">
+                    <picture srcset="/assets/logo.svg"
+                             media="(min-width: 80em)">
+                        <img class="logo-img"
+                             src="/assets/logo.svg"
+                             title="Movies Tracker"
+                             alt="MoviesTracker"
+                             width="150"
+                             height="150" />
+                    </picture>
+                </a>
+            </li>
+            @if(genres(); as genres) {
+            @for(genre of genres; track genre.id) {
+            <li>
+                <a class="navigation--link"
+                   [routerLink]="['/movies', 'genre', genre.id]"
+                   routerLinkActive="active">{{genre.name}}</a>
+            </li>
+            }
+            } @else {
+            <p>Unable to fetch the genres</p>
+            }
+        </ul>
+    </div>
+    <div id="page-content-wrapper">
+        <button class="btn btn-secondary"
+                id="menu-toggle"
+                (click)="toggleMenu($event)">Toggle Menu</button>
+        <div class="container-fluid">
+            <ng-content></ng-content>
+        </div>
+    </div>
+</div>
