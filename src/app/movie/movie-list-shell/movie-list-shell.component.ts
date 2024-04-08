@@ -1,13 +1,16 @@
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, Signal, signal } from '@angular/core';
 import { MovieService } from '../../services/movie.service';
 import { TmdbMovieModel } from '../../shared/models/tmdb-movie.model';
 import { ActivatedRoute } from '@angular/router';
 import { MovieListComponent } from "../movie-list/movie-list.component";
+import { MovieSearchComponent } from "../movie-search/movie-search.component";
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'movie-list-shell',
   standalone: true,
   template: `
+    <movie-search></movie-search>
     @if (movies()) {
       <movie-list [movies]="movies()" />
       <div class="pagination">
@@ -20,18 +23,18 @@ import { MovieListComponent } from "../movie-list/movie-list.component";
     <div>Oops, no movies were found!</div>
     }
   `,
-  imports: [MovieListComponent],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [MovieListComponent, MovieSearchComponent]
 })
-export class MovieListShellComponent {
+export class MovieListShellComponent implements OnInit {
   public currentPage: number = 1;
   public pageSize: number = 20;
-  public movies = signal<TmdbMovieModel[]>([]);
+  public movies: Signal<TmdbMovieModel[]> = toSignal(this.movieService.movies$, { initialValue: [] });
 
-  constructor(private movieService: MovieService, private activatedRoute: ActivatedRoute) {
-    this.activatedRoute.params.subscribe(params => {
-      this.loadMovies(this.currentPage);
-    });
+  constructor(private movieService: MovieService, private activatedRoute: ActivatedRoute) { }
+
+  public ngOnInit(): void {
+    this.loadMovies(this.currentPage);
   }
 
   public onPageChange(page: number): void {
@@ -45,15 +48,9 @@ export class MovieListShellComponent {
   private loadMovies(page: number): void {
     this.activatedRoute.params.subscribe(params => {
       if (params['category']) {
-        this.movieService.getMovieList(params['category'], page)
-          .subscribe(movies => {
-            this.movies.set(movies);
-          });
+        this.movieService.getMoviesByGenre(params['category'], page);
       } else {
         this.movieService.getMoviesByGenre(params['id'], page)
-          .subscribe(movies => {
-            this.movies.set(movies);
-          });
       }
     });
   }

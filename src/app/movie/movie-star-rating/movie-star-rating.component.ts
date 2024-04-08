@@ -1,19 +1,3 @@
-// import { Component } from '@angular/core';
-
-// @Component({
-//   selector: 'app-movie-star-rating',
-//   standalone: true,
-//   imports: [],
-//   template: `
-//     <p>
-//       movie-star-rating works!
-//     </p>
-//   `,
-//   styles: ``
-// })
-// export class MovieStarRatingComponent {
-
-// }
 import { NgClass } from '@angular/common';
 import {
   ChangeDetectionStrategy,
@@ -68,6 +52,10 @@ export class MovieStarRatingComponent {
   public rating = input<number | undefined>(this.localRating);
   public tooltipText = `0 average rating`;
 
+  constructor() {
+    this.setToolTopText(this.rating() ?? 0);
+  }
+
   private set localRating(rating: number | undefined) {
     this.maxRating = rating || 0;
 
@@ -82,7 +70,8 @@ export class MovieStarRatingComponent {
       .concat(new Array(half).fill(0))
       .concat(new Array(empty).fill(-1)));
   }
-  get localRating(): number {
+
+  private get localRating(): number {
     return this.maxRating;
   }
 

@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, map, tap } from 'rxjs';
+import { BehaviorSubject, Observable, combineLatest, map, tap } from 'rxjs';
 import { TmdbMovieGenreModel } from '../shared/models/tmdb-movie-genre.model';
 import { environment } from '../../enviroments/enviroments';
 import { TmdbMovieModel } from '../shared/models/tmdb-movie.model';
@@ -9,6 +9,16 @@ import { TmdbMovieModel } from '../shared/models/tmdb-movie.model';
     providedIn: 'root'
 })
 export class MovieService {
+    private moviesSubject$ = new BehaviorSubject<TmdbMovieModel[]>([]);
+    private searchQuery$ = new BehaviorSubject<string>('');
+    public movies$ = combineLatest([
+        this.moviesSubject$.asObservable(),
+        this.searchQuery$])
+        .pipe(
+            map(([movies, searchQuery]) =>
+                movies.filter(p => p.title.toLowerCase().indexOf(searchQuery.toLowerCase()) !== -1))
+        );
+
     constructor(private httpClient: HttpClient) { }
 
     public getGenres(): Observable<TmdbMovieGenreModel[]> {
@@ -19,17 +29,15 @@ export class MovieService {
             .pipe(map(({ genres }) => genres));
     }
 
-    // public getMoviesByGenre(genreId: number): Observable<any> {
-    //     return this.httpClient
-    //         .get<any>(`${environment.themoviedbBaseUrl}/3/discover/movie?with_genres=${genreId}`);
-    // }
+    public searchMovies(query: string): void {
+        this.searchQuery$.next(query);
+    }
 
-    public getMoviesByGenre(
-        genre: TmdbMovieGenreModel['id'],
+    public getMoviesByGenre(genre: TmdbMovieGenreModel['id'],
         page = 1,
         sortBy = 'popularity.desc'
-    ): Observable<TmdbMovieModel[]> {
-        return this.httpClient
+    ): void {
+        this.httpClient
             .get<{ results: TmdbMovieModel[] }>(
                 `${environment.themoviedbBaseUrl}/3/discover/movie`,
                 {
@@ -43,20 +51,21 @@ export class MovieService {
             .pipe(
                 map(({ results }) => results),
                 tap((results) => { console.log('getMoviesByGenre', results); })
-            );
+            ).subscribe((movies) => { this.moviesSubject$.next(movies); });
     }
 
     public getMovieList(
         category: string,
         page: number = 1,
         sortBy = 'popularity.desc'
-    ): Observable<TmdbMovieModel[]> {
+    ): void {
         const { themoviedbBaseUrl: baseUrl } = environment;
 
-        return this.httpClient
+        this.httpClient
             .get<{ results: TmdbMovieModel[] }>(`${baseUrl}/3/movie/${category}`, {
                 params: { page, sort_by: sortBy },
             })
-            .pipe(map(({ results }) => results));
+            .pipe(map(({ results }) => results))
+            .subscribe((movies) => { this.moviesSubject$.next(movies); });
     }
 }
