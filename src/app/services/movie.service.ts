@@ -11,6 +11,7 @@ import { TmdbMovieModel } from '../shared/models/tmdb-movie.model';
 export class MovieService {
     private moviesSubject$ = new BehaviorSubject<TmdbMovieModel[]>([]);
     private searchQuery$ = new BehaviorSubject<string>('');
+    private favoriteMovies: TmdbMovieModel[] = [];
     public movies$ = combineLatest([
         this.moviesSubject$.asObservable(),
         this.searchQuery$])
@@ -31,6 +32,14 @@ export class MovieService {
 
     public searchMovies(query: string): void {
         this.searchQuery$.next(query);
+    }
+
+    public addToFavoriteMovies(movie: TmdbMovieModel): void {
+        const isFavorite = this.favoriteMovies.find((m) => m.id === movie.id);
+
+        if (!isFavorite) {
+            this.favoriteMovies.push(movie);
+        }
     }
 
     public getMoviesByGenre(genre: TmdbMovieGenreModel['id'],
@@ -61,11 +70,15 @@ export class MovieService {
     ): void {
         const { themoviedbBaseUrl: baseUrl } = environment;
 
-        this.httpClient
-            .get<{ results: TmdbMovieModel[] }>(`${baseUrl}/3/movie/${category}`, {
-                params: { page, sort_by: sortBy },
-            })
-            .pipe(map(({ results }) => results))
-            .subscribe((movies) => { this.moviesSubject$.next(movies); });
+        if (category == 'favorite') {
+            this.moviesSubject$.next(this.favoriteMovies);
+        } else {
+            this.httpClient
+                .get<{ results: TmdbMovieModel[] }>(`${baseUrl}/3/movie/${category}`, {
+                    params: { page, sort_by: sortBy },
+                })
+                .pipe(map(({ results }) => results))
+                .subscribe((movies) => { this.moviesSubject$.next(movies); });
+        }
     }
 }

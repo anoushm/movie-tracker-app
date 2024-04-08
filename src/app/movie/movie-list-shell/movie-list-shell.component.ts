@@ -48,7 +48,7 @@ export class MovieListShellComponent implements OnInit {
   private loadMovies(page: number): void {
     this.activatedRoute.params.subscribe(params => {
       if (params['category']) {
-        this.movieService.getMoviesByGenre(params['category'], page);
+        this.movieService.getMovieList(params['category'], page);
       } else {
         this.movieService.getMoviesByGenre(params['id'], page)
       }

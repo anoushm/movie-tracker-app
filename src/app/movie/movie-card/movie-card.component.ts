@@ -1,7 +1,7 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
 import { TmdbMovieModel } from '../../shared/models/tmdb-movie.model';
 import { MovieImagePipe } from "../../shared/pipes/movie-image.pipe";
-import { DatePipe, UpperCasePipe } from '@angular/common';
+import { DatePipe, NgClass, UpperCasePipe } from '@angular/common';
 import { MovieStarRatingComponent } from "../movie-star-rating/movie-star-rating.component";
 
 @Component({
@@ -10,23 +10,55 @@ import { MovieStarRatingComponent } from "../movie-star-rating/movie-star-rating
   template: `
   @if (movie(); as movie) {
     <div class="card">
-      <!-- <div class="w-full mt-5"> -->
         <img class="w-full mt-5" [src]="movie?.poster_path | movieImage" [alt]="movie?.title" />
-      <!-- </div> -->
-
         <h3 class="card-title">{{ movie?.title | uppercase}}</h3>
         <p>Released: {{ movie?.release_date | date:'yyyy-MM-dd' }}</p>
-
         <div class="card-footer">
           <div class="card-text mt-0 mb-5">Vote Count: {{ movie?.vote_count }}</div>
-          <movie-star-rating [rating]="movie?.vote_average" [showRating]="true"></movie-star-rating>
-        </div> 
+          <div class="rating-favorite">
+          <movie-star-rating></movie-star-rating>
+          <button [ngClass]="{'favorite': isFavorite}" (click)="onFavoriteClick(movie)">❤️</button>
+        </div>
+        </div>
     </div>
   }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [MovieImagePipe, DatePipe, UpperCasePipe, MovieStarRatingComponent]
+  imports: [MovieImagePipe, DatePipe, UpperCasePipe, MovieStarRatingComponent, NgClass],
+  styles: [`
+    .card {
+      @apply bg-gray-100 h-full rounded-lg overflow-hidden shadow-md flex flex-col;
+      
+    &:hover {
+      @apply bg-gray-200;
+      box-shadow: 0 0 10px 5px rgba(255, 0, 0, 0.5);
+      transform: scale(1.05);
+      transition: transform 0.3s ease-in-out;
+      box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.2);
+    }
+    .favorite {
+    color: red;
+    }
+    .rating-favorite {
+      display: flex;
+      align-items: center;
+    }
+    button {
+      color: white;
+      background: transparent;
+      border: none;
+      font-size: 2rem;
+      margin-left: 5px;
+    }
+  }`]
 })
 export class MovieCardComponent {
   public movie = input<TmdbMovieModel | null>(null);
+  public toggleFavorite = output<TmdbMovieModel>();
+  public isFavorite = false;
+
+  public onFavoriteClick(movie: TmdbMovieModel): void {
+    this.isFavorite = !this.isFavorite;
+    this.toggleFavorite.emit(movie);
+  }
 }
