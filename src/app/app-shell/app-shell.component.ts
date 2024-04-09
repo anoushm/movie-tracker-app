@@ -1,9 +1,7 @@
-import { ChangeDetectionStrategy, Component, Signal } from '@angular/core';
-import { MovieService } from '../services/movie.service';
+import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
 import { AsyncPipe } from '@angular/common';
-import { TmdbMovieGenreModel } from '../shared/models/tmdb-movie-genre.model';
 import { RouterLink, RouterLinkActive } from '@angular/router';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { MovieStore } from '../services/movie-store';
 
 @Component({
   selector: 'app-shell',
@@ -13,12 +11,18 @@ import { toSignal } from '@angular/core/rxjs-interop';
     RouterLinkActive,],
   templateUrl: './app-shell.component.html',
   styleUrls: ['./app-shell.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [MovieStore]
 })
-export class AppShellComponent {
-  public genres: Signal<TmdbMovieGenreModel[]> = toSignal(this.movieService.getGenres(), { initialValue: [] });
+export class AppShellComponent implements OnInit {
+  private store = inject(MovieStore);
+  public error = this.store.error;
+  public genres = this.store.genres;
+  public loading = this.store.loading;
 
-  constructor(private movieService: MovieService) { }
+  public async ngOnInit(): Promise<void> {
+    await this.store.loadGenres();
+  }
 
   public toggleMenu(event: Event): void {
     event.preventDefault();

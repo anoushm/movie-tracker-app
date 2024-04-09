@@ -32,9 +32,10 @@ import { MovieStarRatingComponent } from "../movie-star-rating/movie-star-rating
     &:hover {
       @apply bg-gray-200;
       box-shadow: 0 0 10px 5px rgba(255, 0, 0, 0.5);
-      transform: scale(1.05);
+      transform: scale(1.02);
       transition: transform 0.3s ease-in-out;
-      box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.2);
+      // box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 0 30px 10px rgba(218, 165, 32, 0.7);
     }
     .favorite {
     color: red;
@@ -42,6 +43,13 @@ import { MovieStarRatingComponent } from "../movie-star-rating/movie-star-rating
     .rating-favorite {
       display: flex;
       align-items: center;
+    }
+    .card-title {
+      @apply text-xl font-semibold pl-4 pt-4;
+      word-wrap: break-word;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      width: 340px;
     }
     button {
       color: white;

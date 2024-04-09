@@ -14,7 +14,24 @@
                              height="150" />
                     </picture>
                 </a>
+
+                <h3 class="navigation--headline lift-side-nave-separator-text">Categories</h3>
+
+                <a class="navigation--link"
+                   [routerLink]="['/movies', 'popular']"
+                   routerLinkActive="active">Popular</a>
+
+                <a class="navigation--link"
+                   [routerLink]="['/movies', 'top_rated']"
+                   routerLinkActive="active">Top Rated</a>
+
+                <a class="navigation--link"
+                   [routerLink]="['/movies', 'upcoming']"
+                   routerLinkActive="active">Upcoming</a>
+
             </li>
+            <h3 class="navigation--headline lift-side-nave-separator-text">Genres</h3>
+
             @if(genres(); as genres) {
             @for(genre of genres; track genre.id) {
             <li>
@@ -46,4 +63,7 @@
             <ng-content></ng-content>
         </div>
     </div>
+    @if(loading()) {
+    <div class="spinner"></div>
+    }
 </div>

@@ -8,11 +8,17 @@ import { MovieService } from '../../services/movie.service';
   standalone: true,
   imports: [MovieCardComponent],
   template: `
+  @if(movies() && movies().length === 0) {
+    <div class="no-movies">
+      <p>No movies found</p>
+    </div>
+  } @else {
     <div class="card-grid">
       @for (movie of movies(); track movie.id) {
         <movie-card [movie]="movie" (toggleFavorite)="addToFavporitList(movie)"/>
       }
     </div>
+  }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
