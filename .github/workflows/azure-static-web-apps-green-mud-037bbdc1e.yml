@@ -15,27 +15,45 @@ jobs:
     runs-on: ubuntu-latest
     name: Build and Deploy Job
     steps:
-      - uses: actions/checkout@v3
-        with:
-          submodules: true
-          lfs: false
+      # - uses: actions/checkout@v3
+      #   with:
+      #     submodules: true
+      #     lfs: false
+      # - name: Setup Node.js
+      #   uses: actions/setup-node@v2
+      #   with:
+      #     node-version: '18.x' # specify the Node.js version here
+      # - name: Build And Deploy
+      #   id: builddeploy
+      #   uses: Azure/static-web-apps-deploy@v1
+      #   with:
+      #     azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_GREEN_MUD_037BBDC1E }}
+      #     repo_token: ${{ secrets.GITHUB_TOKEN }} # Used for Github integrations (i.e. PR comments)
+      #     action: "upload"
+      #     ###### Repository/Build Configurations - These values can be configured to match your app requirements. ######
+      #     # For more information regarding Static Web App workflow configurations, please visit: https://aka.ms/swaworkflowconfig
+      #     app_location: "/" # App source code path
+      #     api_location: "" # Api source code path - optional
+      #     output_location: "" # Built app content directory - optional
+      #     ###### End of Repository/Build Configurations ######
+      - name: Checkout code
+        uses: actions/checkout@v3
+
       - name: Setup Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '18.x' # specify the Node.js version here
-      - name: Build And Deploy
-        id: builddeploy
-        uses: Azure/static-web-apps-deploy@v1
-        with:
-          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_GREEN_MUD_037BBDC1E }}
-          repo_token: ${{ secrets.GITHUB_TOKEN }} # Used for Github integrations (i.e. PR comments)
-          action: "upload"
-          ###### Repository/Build Configurations - These values can be configured to match your app requirements. ######
-          # For more information regarding Static Web App workflow configurations, please visit: https://aka.ms/swaworkflowconfig
-          app_location: "/" # App source code path
-          api_location: "" # Api source code path - optional
-          output_location: "" # Built app content directory - optional
-          ###### End of Repository/Build Configurations ######
+          node-version: '18.x'
+
+      - name: Set environment variables
+        run: |
+          echo "BUILD_NUMBER=${{ github.run_id }}" >> $GITHUB_ENV
+
+      - name: Install and build
+        run: |
+          cd movie-tracker-app
+          npm install -g @angular/cli
+          npm install
+          ng build --configuration production
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
