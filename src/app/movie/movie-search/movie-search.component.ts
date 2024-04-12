@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MovieService } from '../../services/movie.service';
 import { CommonModule } from '@angular/common';
@@ -43,7 +43,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     }
   `]
 })
-export class MovieSearchComponent {
+export class MovieSearchComponent implements OnInit {
   public searchInput = new FormControl();
 
   constructor(private movieService: MovieService) { }
