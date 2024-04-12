@@ -1,8 +1,8 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { MovieService } from '../../services/movie.service';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
+import { MovieStore } from '../../services/movie-store';
 
 @Component({
   selector: 'movie-search',
@@ -44,11 +44,10 @@ import { ReactiveFormsModule } from '@angular/forms';
   `]
 })
 export class MovieSearchComponent implements OnInit {
+  private store = inject(MovieStore);
   public searchInput = new FormControl();
 
-  constructor(private movieService: MovieService) { }
-
   public ngOnInit(): void {
-    this.searchInput.valueChanges.subscribe(q => { this.movieService.searchMovies(q); });
+    this.searchInput.valueChanges.subscribe(q => { this.store.searchMovies(q); });
   }
 }
