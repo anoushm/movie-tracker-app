@@ -86,6 +86,9 @@ export const MovieStore = signalStore(
                     }
 
                 });
+            },
+            async addToFavoriteMovies(movie: TmdbMovieModel) {
+                await movieService.addToFavoriteMovies(movie);
             }
         }),
     ),

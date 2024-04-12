@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
 import { TmdbMovieModel } from '../../shared/models/tmdb-movie.model';
 import { MovieCardComponent } from '../movie-card/movie-card.component';
-import { MovieService } from '../../services/movie.service';
+import { MovieStore } from '../../services/movie-store';
 
 @Component({
   selector: 'movie-list',
@@ -23,11 +23,11 @@ import { MovieService } from '../../services/movie.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MovieListComponent {
+  private store = inject(MovieStore);
   public movies = input<TmdbMovieModel[]>([]);
-  private movieService: MovieService = inject(MovieService);
 
   public addToFavporitList(movie: TmdbMovieModel): void {
     console.log('Movie added to favorite list:', movie);
-    this.movieService.addToFavoriteMovies(movie);
+    this.store.addToFavoriteMovies(movie);
   }
 }
