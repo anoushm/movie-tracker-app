@@ -44,16 +44,14 @@ jobs:
         with:
           node-version: '18.x'
 
-      - name: Set environment variables
+      - name: Install dependencies
         run: |
-          echo "BUILD_NUMBER=${{ github.run_id }}" >> $GITHUB_ENV
-
-      - name: Install and build
-        run: |
-          cd movie-tracker-app
-          npm install -g @angular/cli
           npm install
-          ng build --configuration production
+          npm install -g @angular/cli
+
+      - name: Compile TypeScript and Build
+        run: npm run build
+                
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
