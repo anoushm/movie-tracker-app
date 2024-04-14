@@ -61,6 +61,9 @@ jobs:
       #     app_location: '/' # App source code path
       #     api_location: '' # Api source code path - optional
       #     output_location: 'dist' # Built app content directory - replace with your actual output directory if different
+      - name: List build artifacts
+        run: ls dist/movie-tracker-app
+
       - name: Deploy to Azure Static Web Apps
         uses: Azure/static-web-apps-deploy@v1
         with:
@@ -69,7 +72,7 @@ jobs:
           action: 'upload'
           app_location: 'dist/movie-tracker-app' # Built app content directory - replace with your actual output directory if different
           api_location: '' # Api source code path - optional
-          output_location: '' # No build step in the action          
+          output_location: '' # No build step in the action         
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
