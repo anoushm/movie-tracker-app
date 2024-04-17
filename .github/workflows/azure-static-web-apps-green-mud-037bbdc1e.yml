@@ -59,10 +59,11 @@ jobs:
       #     api_location: '' # Api source code path - optional
       #     output_location: 'dist' # Built app content directory - replace with your actual output directory if different
       - name: Compile TypeScript and Build
-        run: npm run build
+        run: ng build --prod
+        # run: npm run build
 
       - name: List build artifacts
-        run: ls dist/movie-tracker-app
+        run: ls -R dist/movie-tracker-app
 
       # - name: Deploy to Azure Static Web Apps
       #   uses: Azure/static-web-apps-deploy@v1
