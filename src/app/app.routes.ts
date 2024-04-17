@@ -20,11 +20,12 @@ export const routes: Routes = [
                 m => m.MovieListShellComponent
             ),
     },
-    {
-        path: '**',
-        loadComponent: () =>
-            import('./not-found/not-found.component').then(
-                m => m.NotFoundComponent
-            ),
-    }
+    { path: '**', redirectTo: 'movies/popular' } 
+    // {
+    //     path: '**',
+    //     loadComponent: () =>
+    //         import('./not-found/not-found.component').then(
+    //             m => m.NotFoundComponent
+    //         ),
+    // }
 ];
