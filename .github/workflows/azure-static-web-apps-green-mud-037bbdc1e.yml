@@ -15,27 +15,6 @@ jobs:
     runs-on: ubuntu-latest
     name: Build and Deploy Job
     steps:
-      # - uses: actions/checkout@v3
-      #   with:
-      #     submodules: true
-      #     lfs: false
-      # - name: Setup Node.js
-      #   uses: actions/setup-node@v2
-      #   with:
-      #     node-version: '18.x' # specify the Node.js version here
-      # - name: Build And Deploy
-      #   id: builddeploy
-      #   uses: Azure/static-web-apps-deploy@v1
-      #   with:
-      #     azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_GREEN_MUD_037BBDC1E }}
-      #     repo_token: ${{ secrets.GITHUB_TOKEN }} # Used for Github integrations (i.e. PR comments)
-      #     action: "upload"
-      #     ###### Repository/Build Configurations - These values can be configured to match your app requirements. ######
-      #     # For more information regarding Static Web App workflow configurations, please visit: https://aka.ms/swaworkflowconfig
-      #     app_location: "/" # App source code path
-      #     api_location: "" # Api source code path - optional
-      #     output_location: "" # Built app content directory - optional
-      #     ###### End of Repository/Build Configurations ######
       - name: Checkout code
         uses: actions/checkout@v3
 
@@ -49,31 +28,21 @@ jobs:
           npm install
           npm install -g @angular/cli
         
-      # - name: Deploy to Azure Static Web Apps
-      #   uses: Azure/static-web-apps-deploy@v1
-      #   with:
-      #     azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_GREEN_MUD_037BBDC1E }}
-      #     repo_token: ${{ secrets.GITHUB_TOKEN }} # Used for Github integrations (i.e. PR comments)
-      #     action: 'upload'
-      #     app_location: '/' # App source code path
-      #     api_location: '' # Api source code path - optional
-      #     output_location: 'dist' # Built app content directory - replace with your actual output directory if different
       - name: Compile TypeScript and Build
         run: ng build
-        # run: npm run build
 
-      - name: List build artifacts
-        run: ls -R dist/movie-tracker-app
+      # - name: List build artifacts
+      #   run: ls -R dist/movie-tracker-app
 
       - name: Deploy to Azure Static Web Apps
         uses: Azure/static-web-apps-deploy@v1
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_GREEN_MUD_037BBDC1E }}
-          repo_token: ${{ secrets.GITHUB_TOKEN }} # Used for Github integrations (i.e. PR comments)
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
           action: 'upload'
-          app_location: 'dist/movie-tracker-app/browser' # Built app content directory - replace with your actual output directory if different
-          api_location: '' # Api source code path - optional
-          output_location: '' # No build step in the action
+          app_location: 'dist/movie-tracker-app/browser'
+          api_location: ''
+          output_location: ''
           
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
