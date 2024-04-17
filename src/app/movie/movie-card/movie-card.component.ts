@@ -11,9 +11,9 @@ import { MovieStarRatingComponent } from "../movie-star-rating/movie-star-rating
   @if (movie(); as movie) {
     <div class="card">
         <img class="w-full mt-5" [src]="movie?.poster_path | movieImage" [alt]="movie?.title" />
-        <h3 class="card-title">{{ movie?.title | uppercase}}</h3>
-        <p>Released: {{ movie?.release_date | date:'yyyy-MM-dd' }}</p>
         <div class="card-footer">
+          <h3 class="card-title">{{ movie?.title | uppercase}}</h3>
+          <p>Released: {{ movie?.release_date | date:'yyyy-MM-dd' }}</p>
           <div class="card-text mt-0 mb-5">Vote Count: {{ movie?.vote_count }}</div>
           <div class="rating-favorite">
           <movie-star-rating></movie-star-rating>
@@ -28,7 +28,7 @@ import { MovieStarRatingComponent } from "../movie-star-rating/movie-star-rating
   styles: [`
     .card {
       @apply bg-gray-100 h-full rounded-lg overflow-hidden shadow-md flex flex-col;
-      
+
     &:hover {
       @apply bg-gray-200;
       box-shadow: 0 0 10px 5px rgba(255, 0, 0, 0.5);
@@ -36,6 +36,11 @@ import { MovieStarRatingComponent } from "../movie-star-rating/movie-star-rating
       transition: transform 0.3s ease-in-out;
       // box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.2);
       box-shadow: 0 0 30px 10px rgba(218, 165, 32, 0.7);
+    }
+    .card-footer {
+      @apply flex justify-between items-center;
+      padding: 5px;
+      width: 330px;
     }
     .favorite {
     color: red;

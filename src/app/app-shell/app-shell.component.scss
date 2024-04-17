@@ -4,11 +4,14 @@ body {
   }
   
   #wrapper {
-    padding-left: 0;
+    padding-left: 0px;
     -webkit-transition: all 0.5s ease;
     -moz-transition: all 0.5s ease;
     -o-transition: all 0.5s ease;
     transition: all 0.5s ease;
+    background-color: black;
+    font-family: 'San Francisco', sans-serif;
+      color: whitesmoke;
   }
   
   #wrapper.toggled {
@@ -31,7 +34,8 @@ body {
   }
   
   #wrapper.toggled #sidebar-wrapper {
-    width: 250px;
+    // width: 250px;
+    width: 100%;
   }
   
   #page-content-wrapper {
@@ -142,5 +146,4 @@ body {
       position: relative;
       margin-right: 0;
     }
-    
   }
