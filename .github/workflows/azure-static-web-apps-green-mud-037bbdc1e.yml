@@ -59,7 +59,7 @@ jobs:
       #     api_location: '' # Api source code path - optional
       #     output_location: 'dist' # Built app content directory - replace with your actual output directory if different
       - name: Compile TypeScript and Build
-        run: ng build --prod
+        run: ng build
         # run: npm run build
 
       - name: List build artifacts
