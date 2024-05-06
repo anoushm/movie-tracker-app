@@ -10,6 +10,7 @@ import { MovieStarRatingComponent } from "../movie-star-rating/movie-star-rating
   template: `
   @if (movie(); as movie) {
     <div class="card">
+
         <img class="w-full mt-5" [src]="movie?.poster_path | movieImage" [alt]="movie?.title" />
         <div class="card-footer">
           <h3 class="card-title">{{ movie?.title | uppercase}}</h3>
@@ -31,16 +32,17 @@ import { MovieStarRatingComponent } from "../movie-star-rating/movie-star-rating
 
     &:hover {
       @apply bg-gray-200;
-      box-shadow: 0 0 10px 5px rgba(255, 0, 0, 0.5);
+      // box-shadow: 0 0 10px 5px rgba(255, 0, 0, 0.5);
       transform: scale(1.02);
       transition: transform 0.3s ease-in-out;
       // box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.2);
-      box-shadow: 0 0 30px 10px rgba(218, 165, 32, 0.7);
+      //box-shadow: 0 0 30px 10px rgba(218, 165, 32, 0.7);
+      border-bottom-color:#efa21b;
     }
     .card-footer {
       @apply flex justify-between items-center;
-      padding: 5px;
-      width: 330px;
+      padding: 8px;
+      font-size:14px;
     }
     .favorite {
     color: red;
@@ -54,7 +56,8 @@ import { MovieStarRatingComponent } from "../movie-star-rating/movie-star-rating
       word-wrap: break-word;
       overflow: hidden;
       text-overflow: ellipsis;
-      width: 340px;
+      min-height:45px;
+      font-size:17px;
     }
     button {
       color: white;

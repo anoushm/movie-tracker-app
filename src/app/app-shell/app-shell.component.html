@@ -10,8 +10,8 @@
                              src="/assets/logo.svg"
                              title="Movies Tracker"
                              alt="MoviesTracker"
-                             width="150"
-                             height="150" />
+                             width="100"
+                             height="100" />
                     </picture>
                 </a>
 
@@ -49,15 +49,13 @@
         <button class="btn btn-secondary navigation--link"
                 id="menu-toggle"
                 (click)="toggleMenu($event)">
-            <svg xmlns="http://www.w3.org/2000/svg"
-                 width="24"
-                 height="24"
-                 fill="currentColor"
-                 class="bi bi-list"
-                 viewBox="0 0 16 16">
-                <path fill-rule="evenodd"
-                      d="M2.5 11.5A.5.5 0 0 0 3 12h10a.5.5 0 0 0 0-1H3a.5.5 0 0 0-.5.5zm0-4A.5.5 0 0 0 3 8h10a.5.5 0 0 0 0-1H3a.5.5 0 0 0-.5.5zm0-4A.5.5 0 0 0 3 4h10a.5.5 0 0 0 0-1H3a.5.5 0 0 0-.5.5z" />
-            </svg>
+                <svg class="expand-btn" width="24" height="24" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M115.583 37.911C121.155 31.0529 131.232 30.0104 138.09 35.5827L394.09 243.583C397.829 246.621 400.001 251.182 400.001 256.001C400.001 260.819 397.829 265.38 394.09 268.418L138.09 476.418C131.232 481.991 121.155 480.948 115.583 474.09C110.01 467.232 111.053 457.155 117.911 451.583L358.628 256.001L117.911 60.4183C111.053 54.8461 110.01 44.7692 115.583 37.911Z" fill="black"></path>
+    </svg>
+
+    <svg class="close-btn" width="24" height="24" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M396.417 37.911C390.845 31.0529 380.768 30.0104 373.91 35.5827L117.91 243.583C114.171 246.621 111.999 251.182 111.999 256.001C111.999 260.819 114.171 265.38 117.91 268.418L373.91 476.418C380.768 481.991 390.845 480.948 396.417 474.09C401.99 467.232 400.947 457.155 394.089 451.583L153.372 256.001L394.089 60.4183C400.947 54.8461 401.99 44.7692 396.417 37.911Z" fill="black"></path>
+</svg>
         </button>
         <div class="container-fluid">
             <ng-content></ng-content>

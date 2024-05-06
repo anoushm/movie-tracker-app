@@ -25,11 +25,13 @@ import { MovieStore } from '../../services/movie-store';
       width: 100%;
       padding: 10px;
       box-sizing: border-box;
-      border: 2px solid #FFDB58;
-      background-color: #FFF8DC;
+      border: 3px solid #efa21b;
+      background-color: #fff;
       color: #000;
       font-size: 16px;
       transition: all 0.3s ease;
+      border-radius: 5px;
+      -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.7);
     }
     .search-input:focus {
       border-color: #FFD700;
