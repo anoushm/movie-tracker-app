@@ -26,7 +26,7 @@ justify-content: center;
     overflow: hidden;
     position: relative;
   }
-  
+
   .star {
     position: relative;
     overflow: hidden;
@@ -36,14 +36,20 @@ justify-content: center;
     font-size: 24px;
     color: var(--palette-warning-main);
   }
-  
+
+  @media screen and (max-width: 767px) {
+    .star {
+      font-size: 15px;
+    }
+  }
+
   .star-full {
     color: var(--palette-warning-main);
   }
-  
+
   .star-half {
     color: var(--palette-text-secondary);
-  
+
     &:before {
       position: absolute;
       overflow: hidden;
@@ -56,11 +62,11 @@ justify-content: center;
       color: var(--palette-warning-main);
     }
   }
-  
+
   .star-empty {
     color: var(--palette-text-secondary);
   }
-  
+
 
 :host {
   display: contents;
@@ -106,7 +112,7 @@ justify-content: center;
 
 .tooltip {
     position: absolute;
-  
+
     visibility: hidden;
     width: max-content;
     font-size: var(--text-sm);
@@ -118,7 +124,7 @@ justify-content: center;
     z-index: var(--theme-tooptip-zIndex);
     transition: visibility var(--theme-anim-duration-short) var(--theme-anim-easing-easeOut);
   }
-  
+
   .tooltip::after {
     content: '';
     position: absolute;
@@ -129,7 +135,7 @@ justify-content: center;
     border-style: solid;
     border-color: var(--palette-primary-light) transparent transparent transparent;
   }
-  
+
 input:focus,
 input:active {
   outline: none;
@@ -189,20 +195,19 @@ input::placeholder {
 :host {
     position: relative;
     @include d-flex-vh;
-  
+
     &:hover .tooltip {
       visibility: visible;
     }
   }
-  
+
   .tooltip {
     top: -28px;
   }
-  
+
   .rating-value {
     overflow: hidden;
     color: var(--palette-warning-main);
     font-size: var(--text-sm);
     padding: 5px 0 0 5px;
   }
-  

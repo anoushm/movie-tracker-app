@@ -19,7 +19,7 @@ html, body{
     border-top:1px solid #efa21b;
     border-radius: 10px;
   }
-  
+
   .h-menu {
     @apply bg-gray-800 p-2 pl-10 text-white h-menu-vt;
   }
@@ -162,5 +162,11 @@ html, body{
 @keyframes l1 {
   to {
     clip-path: inset(0 -34% 0 0);
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .card button {
+    font-size: 1rem;
   }
 }
