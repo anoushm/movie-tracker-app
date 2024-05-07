@@ -20,7 +20,11 @@ export const routes: Routes = [
                 m => m.MovieListShellComponent
             ),
     },
-    { path: '**', redirectTo: 'movies/popular' } 
+    { path: '', redirectTo: '', pathMatch: 'full' },
+    { path: '**', redirectTo: '', pathMatch: 'full' }
+  
+    // { path: '', redirectTo: 'movies/popular' },
+    // { path: '**', redirectTo: 'movies/popular' },
     // {
     //     path: '**',
     //     loadComponent: () =>
