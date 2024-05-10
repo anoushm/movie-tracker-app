@@ -3,7 +3,7 @@
     <div id="sidebar-wrapper">
         <ul class="sidebar-nav">
             <li>
-                <a [routerLink]="['/movies', 'favorite']">
+                <a [routerLink]="['/movies', 'popular']">
                     <picture srcset="/assets/logo.svg"
                              media="(min-width: 80em)">
                         <img class="logo-img"
@@ -17,6 +17,10 @@
 
                 <h3 class="navigation--headline lift-side-nave-separator-text">Categories</h3>
 
+                <a class="navigation--link"
+                   [routerLink]="['/movies', 'favorite']"
+                   routerLinkActive="active">My Favorite</a>
+                
                 <a class="navigation--link"
                    [routerLink]="['/movies', 'popular']"
                    routerLinkActive="active">Popular</a>

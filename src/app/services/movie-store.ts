@@ -87,8 +87,8 @@ export const MovieStore = signalStore(
 
                 });
             },
-            async addToFavoriteMovies(movie: TmdbMovieModel) {
-                await movieService.addToFavoriteMovies(movie);
+            async updateFavoriteMovies(movie: TmdbMovieModel) {
+                await movieService.updateFavoriteMovies(movie);
             }
         }),
     ),
