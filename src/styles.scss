@@ -170,3 +170,48 @@ html, body{
     font-size: 1rem;
   }
 }
+
+
+.fav-container{
+  flex-grow: 1;
+  text-align: right;
+}
+
+
+.fav-checkbox {
+    display: none;
+}
+
+
+.fav-checkbox + label {
+    position: relative;
+    display: inline-block;
+    font-size: 25px;
+}
+
+.fav-checkbox + label:before {
+    content: "\1F90D";
+    top: -33px;
+    left: -45px;
+    border: 1px solid transparent;
+    padding: 5px;
+    border-radius: 3px;
+    display: block;
+    position: absolute;
+	  transition:  .5s ease;
+}
+
+.fav-checkbox:checked + label:before {
+    border: 1px solid transparent;
+    background-color: transparent;
+}
+
+.fav-checkbox:checked + label:after {
+    content: '\1F497';
+    font-size: 25px;
+    position: absolute;
+    top: -27px;
+    left: -39px;
+	  color: red;
+	  transition:  .5s ease;
+}

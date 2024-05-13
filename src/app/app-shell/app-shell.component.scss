@@ -122,6 +122,7 @@
     text-align: center;
   }
 
+  .sidebar-nav li a.active:after,
   .sidebar-nav li a:after {
     content: '';
     position: absolute;
@@ -133,12 +134,14 @@
     opacity: 0;
   }
 
+  .sidebar-nav li a.active,
   .sidebar-nav li a:hover {
     text-decoration: none;
     color: #fff;
     background: rgba(255, 255, 255, 0.2);
   }
 
+  .sidebar-nav li a.active:after,
   .sidebar-nav li a:hover:after{
     opacity: 1;
   }
