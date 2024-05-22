@@ -165,12 +165,6 @@ html, body{
   }
 }
 
-@media screen and (max-width: 767px) {
-  .card button {
-    font-size: 1rem;
-  }
-}
-
 
 .fav-container{
   flex-grow: 1;
@@ -191,8 +185,8 @@ html, body{
 
 .fav-checkbox + label:before {
     content: "\1F90D";
-    top: -33px;
-    left: -45px;
+    top: -27px;
+    left: -35px;
     border: 1px solid transparent;
     padding: 5px;
     border-radius: 3px;
@@ -201,17 +195,39 @@ html, body{
 	  transition:  .5s ease;
 }
 
+.favorite-movies-route .fav-checkbox + label:before,
 .fav-checkbox:checked + label:before {
     border: 1px solid transparent;
     background-color: transparent;
 }
 
+.favorite-movies-route .fav-checkbox + label:after,
 .fav-checkbox:checked + label:after {
     content: '\1F497';
     font-size: 25px;
     position: absolute;
-    top: -27px;
-    left: -39px;
+    top: -20px;
+    left: -29px;
 	  color: red;
 	  transition:  .5s ease;
+}
+
+@media screen and (max-width: 767px) {
+  .card button {
+    font-size: 1rem;
+  }
+  .favorite-movies-route .fav-checkbox + label:after,
+  .fav-checkbox:checked + label:after,
+  .fav-checkbox + label {
+    font-size: 20px;
+  }
+  .fav-checkbox + label:before{
+    top: -27px;
+    left: -30px;
+  }
+  .favorite-movies-route .fav-checkbox + label:after,
+  .fav-checkbox:checked + label:after{
+    top: -20px;
+    left: -24px;
+  }
 }
