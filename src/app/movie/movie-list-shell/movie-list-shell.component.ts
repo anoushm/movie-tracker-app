@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { MovieListComponent } from "../movie-list/movie-list.component";
 import { MovieSearchComponent } from "../movie-search/movie-search.component";
 import { MovieStore } from '../../services/movie-store';
+import { MoviePaginationComponent } from '../movie-pagination/movie-pagination.component';
 
 @Component({
   selector: 'movie-list-shell',
@@ -12,18 +13,13 @@ import { MovieStore } from '../../services/movie-store';
     <movie-search></movie-search>
     @if (movies()) {
       <movie-list [movies]="movies()" />
-      <div class="pagination">
-        <button class="prev-next-buttons" [disabled]="currentPage === 1"
-                (click)="onPageChange(currentPage - 1)">Previous</button>
-        <span class="page-number">Page {{currentPage}}</span>
-        <button class="prev-next-buttons" (click)="onPageChange(currentPage + 1)">Next</button>
-      </div>
+      <movie-pagination [currentPage]="currentPage" (changePage)="onPageChange($event)"/>
     } @else {
     <div>Oops, no movies were found!</div>
     }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [MovieListComponent, MovieSearchComponent],
+  imports: [MovieListComponent, MovieSearchComponent, MoviePaginationComponent],
   providers: [MovieStore],
   styles: [`
     .prev-next-buttons {

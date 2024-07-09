@@ -1,0 +1,99 @@
+#chatbotwrapper {
+    font-family: 'San Francisco', sans-serif;
+    color: whitesmoke;
+    display: flex;
+}
+
+#chatbotwrapper.toggled #sidebar-chatbotwrapper {
+    width: 250px;
+    background-color: #1A1A1A;
+    color: #fff;
+    transition: width 0.5s;
+    position: fixed;
+    height: 100%;
+    overflow-y: auto;
+    visibility: visible;
+    opacity: 1;
+}
+
+#chatbotwrapper #sidebar-chatbotwrapper {
+    width: 0;
+    opacity: 0;
+    visibility: hidden;
+}
+
+#chatbotwrapper.toggled #page-content-chatbotwrapper {
+    flex: 1;
+    padding: 20px;
+    margin-left: 270px;
+    position: relative;
+    transition: margin 0.5s;
+}
+
+@media screen and (min-width: 1150px) {
+    #chatbotwrapper.toggled #sidebar-chatbotwrapper {
+        width: 350px;
+    }
+
+    #chatbotwrapper.toggled #page-content-chatbotwrapper {
+        margin-left: 370px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    #chatbotwrapper.toggled #page-content-chatbotwrapper {
+        margin-right: -270px;
+    }
+}
+
+#chatbotwrapper #page-content-chatbotwrapper {
+    flex: 1;
+    padding: 20px 50px;
+    margin-left: 0;
+    position: relative;
+}
+
+#chatbotwrapper #sidebar-chatbotwrapper::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.7);
+    border-radius: 10px;
+    background-color: #fff;
+}
+
+#chatbotwrapper #sidebar-chatbotwrapper::-webkit-scrollbar {
+    width: 6px;
+    background-color: #fff;
+}
+
+#chatbotwrapper #sidebar-chatbotwrapper::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.7);
+    background-color: #efa21b;
+}
+
+#chatbotwrapper.toggled #menu-toggle {
+    left: -22px;
+}
+
+#chatbotwrapper #menu-toggle {
+    background: #efa21b;
+    position: absolute;
+    left: 0;
+    top: 75px;
+    border-radius: 0 5px 5px 0;
+    width: 25px;
+    text-align: center;
+    padding: 5px 8px 5px 0;
+    box-sizing: border-box;
+    height: 35px;
+}
+
+#chatbotwrapper.toggled .expand-btn {
+    opacity: 0;
+    visibility: hidden;
+    width: 0;
+    position: absolute;
+}
+
+#chatbotwrapper .close-btn {
+    opacity: 1;
+}

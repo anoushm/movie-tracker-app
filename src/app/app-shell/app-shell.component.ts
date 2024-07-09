@@ -28,7 +28,6 @@ export class AppShellComponent implements OnInit {
       console.error('Error loading genres:', err);
     }
 
-    // Subscribe to router events to detect route changes
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe((event) => {
@@ -37,7 +36,6 @@ export class AppShellComponent implements OnInit {
     });
   }
 
-  // Method to update body class based on the current route
   private updateBodyClass(url: string): void {
     const body = document.body;
     const className = 'favorite-movies-route';
