@@ -4,8 +4,8 @@
     display: flex;
 }
 
-#chatbotwrapper.toggled #sidebar-chatbotwrapper {
-    width: 250px;
+#chatbotwrapper.toggled #chatbar-chatbotwrapper {
+    width: 280px;
     background-color: #1A1A1A;
     color: #fff;
     transition: width 0.5s;
@@ -16,33 +16,34 @@
     opacity: 1;
 }
 
-#chatbotwrapper #sidebar-chatbotwrapper {
+#chatbotwrapper #chatbar-chatbotwrapper {
     width: 0;
     opacity: 0;
     visibility: hidden;
+    padding-bottom: 10px;
 }
 
 #chatbotwrapper.toggled #page-content-chatbotwrapper {
     flex: 1;
     padding: 20px;
-    margin-left: 270px;
+    margin-left: 300px;
     position: relative;
     transition: margin 0.5s;
 }
 
 @media screen and (min-width: 1150px) {
-    #chatbotwrapper.toggled #sidebar-chatbotwrapper {
-        width: 350px;
+    #chatbotwrapper.toggled #chatbar-chatbotwrapper {
+        width: 380px;
     }
 
     #chatbotwrapper.toggled #page-content-chatbotwrapper {
-        margin-left: 370px;
+        margin-left: 400px;
     }
 }
 
 @media screen and (max-width: 768px) {
     #chatbotwrapper.toggled #page-content-chatbotwrapper {
-        margin-right: -270px;
+        margin-right: -300px;
     }
 }
 
@@ -53,18 +54,18 @@
     position: relative;
 }
 
-#chatbotwrapper #sidebar-chatbotwrapper::-webkit-scrollbar-track {
+#chatbotwrapper #chatbar-chatbotwrapper::-webkit-scrollbar-track {
     -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.7);
     border-radius: 10px;
     background-color: #fff;
 }
 
-#chatbotwrapper #sidebar-chatbotwrapper::-webkit-scrollbar {
+#chatbotwrapper #chatbar-chatbotwrapper::-webkit-scrollbar {
     width: 6px;
     background-color: #fff;
 }
 
-#chatbotwrapper #sidebar-chatbotwrapper::-webkit-scrollbar-thumb {
+#chatbotwrapper #chatbar-chatbotwrapper::-webkit-scrollbar-thumb {
     border-radius: 10px;
     -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.7);
     background-color: #efa21b;
