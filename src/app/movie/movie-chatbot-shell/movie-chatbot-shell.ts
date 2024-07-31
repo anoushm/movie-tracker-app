@@ -16,7 +16,7 @@ import { MoviePaginationComponent } from '../movie-pagination/movie-pagination.c
                 <textarea id="chatbot-input" placeholder="Type your message here..."
                           style="width: calc(100% - 20px); margin-bottom: 10px; height: 100px;"
                           (keyup.enter)="sendChatMessage()" (keydown.enter)="$event.preventDefault()"></textarea>
-                <button id="chatbot-send-btn" style="width: 100%;" (click)="sendMessage()">Send</button>
+                <button id="chatbot-send-btn" style="width: 100%;" (click)="sendChatMessage()">Send</button>
             </div>
         </div>
         <div id="page-content-chatbotwrapper">
