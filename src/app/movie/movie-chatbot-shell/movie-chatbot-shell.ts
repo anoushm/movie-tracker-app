@@ -4,6 +4,7 @@ import { TmdbMovieModel } from '../../shared/models/tmdb-movie.model';
 import { MovieStore } from '../../services/movie-store';
 import { ActivatedRoute } from '@angular/router';
 import { MoviePaginationComponent } from '../movie-pagination/movie-pagination.component';
+import { MovieChatbotContentComponent } from "../movie-chatbot-content/movie-chatbot-content.component";
 
 @Component({
     selector: 'movie-chatbot-shell',
@@ -12,12 +13,13 @@ import { MoviePaginationComponent } from '../movie-pagination/movie-pagination.c
     <div id="chatbotwrapper"
         class="toggled">
         <div id="chatbar-chatbotwrapper">
-            <div class="chatbot-ui" style="padding: 10px; position: absolute; bottom: 0; width: 100%;">
+            <movie-chatbot-content></movie-chatbot-content>
+            <!-- <div class="chatbot-ui" style="padding: 10px; position: absolute; bottom: 0; width: 100%;">
                 <textarea id="chatbot-input" placeholder="Type your message here..."
                           style="width: calc(100% - 20px); margin-bottom: 10px; height: 100px;"
                           (keyup.enter)="sendChatMessage()" (keydown.enter)="$event.preventDefault()"></textarea>
                 <button id="chatbot-send-btn" style="width: 100%;" (click)="sendChatMessage()">Send</button>
-            </div>
+            </div> -->
         </div>
         <div id="page-content-chatbotwrapper">
             <div class="container-fluid">
@@ -38,7 +40,7 @@ import { MoviePaginationComponent } from '../movie-pagination/movie-pagination.c
     </div>
   `,
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [MovieListComponent, MoviePaginationComponent],
+    imports: [MovieListComponent, MoviePaginationComponent, MovieChatbotContentComponent],
     styleUrls: ['./movie-chatbot-shell.component.scss'],
 })
 export class MovieChatbotShellComponent implements OnInit {
