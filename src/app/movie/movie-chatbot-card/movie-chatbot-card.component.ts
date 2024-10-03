@@ -1,9 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit, Signal, inject } from '@angular/core';
-import { MovieListComponent } from '../movie-list/movie-list.component';
-import { TmdbMovieModel } from '../../shared/models/tmdb-movie.model';
-import { MovieStore } from '../../services/movie-store';
-import { ActivatedRoute } from '@angular/router';
-import { MoviePaginationComponent } from '../movie-pagination/movie-pagination.component';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
     selector: 'movie-chatbot-card',

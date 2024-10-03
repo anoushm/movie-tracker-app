@@ -57,9 +57,9 @@ export class MovieChatbotShellComponent implements OnInit {
         this.loadMovies(this.currentPage);
     }
 
-    public sendChatMessage(): void {
-        console.log('Chat message sent');
-    }
+    // public sendChatMessage(): void {
+    //     console.log('Chat message sent');
+    // }
 
     public onPageChange(page: number): void {
         this.currentPage = page;

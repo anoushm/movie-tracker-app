@@ -26,9 +26,9 @@ export class MovieChatbotContentComponent {
         console.log('Chat message sent:', message);
         this.store.sendChatMessage(message);
 
-        const chatReponse = this.store.chatResponse;
-        console.log('Chat response:', chatReponse() ?? 'Emmpty');
+        // const chatReponse = this.store.chatResponse;
+        // console.log('Chat response:', chatReponse() ?? 'Emmpty');
 
-        this.chatbotInput.nativeElement.value = chatReponse() ?? 'Emmpty';
+        // this.chatbotInput.nativeElement.value = 'JSON.stringify(chatReponse()?.messages)' ?? 'Emmpty';
     }
 }

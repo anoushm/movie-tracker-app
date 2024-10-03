@@ -13,7 +13,7 @@ export class ChatService {
         return this.http.get<{ chatId: string }>(`${ environment.chatBaseUrl }/start`);
     }
 
-    public sendChatMessage(chatId: string, message: string): Observable<{ chatResponse: string }> {
-        return this.http.post<{ chatResponse: string }>(`${environment.chatBaseUrl }/dvNohnk/ask`, { chatId, message });
+    public sendChatMessage(chatId: string, message: string): Observable<{ chatResponse: ChatResponse }> {
+        return this.http.post<{ chatResponse: ChatResponse }>(`${environment.chatBaseUrl }/${chatId}/ask`, { chatId, input: message });
     }
 }
