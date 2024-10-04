@@ -10,6 +10,7 @@ import { MovieService } from './movie.service';
 import { TmdbMovieGenreModel } from '../shared/models/tmdb-movie-genre.model';
 import { TmdbMovieModel } from '../shared/models/tmdb-movie.model';
 import { ChatService } from './chat.service';
+import { ChatResponseModel } from '../shared/models/chat-response.model';
 
 const initialMovieState = {
     movies: [] as TmdbMovieModel[],
@@ -17,7 +18,7 @@ const initialMovieState = {
     loading: false,
     error: null,
     chatId: null as string | null,
-    chatResponse: null as ChatResponse | null,
+    chatResponse: null as ChatResponseModel | null,
     filter: {
         search: '' as string,
     }
@@ -109,7 +110,7 @@ export const MovieStore = signalStore(
                 const chatId = store.chatId;
 
                 await chatService.sendChatMessage(chatId() ?? '', chatMessage).subscribe({
-                    next: (response: { chatResponse: ChatResponse }) => {
+                    next: (response: { chatResponse: ChatResponseModel }) => {
                         console.log('Chat response:', response.chatResponse);
                         patchState(store, { chatResponse: response.chatResponse, movies: [], loading: false });
                     },

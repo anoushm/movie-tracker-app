@@ -1,4 +1,4 @@
-interface ChatResponse {
+export interface ChatResponseModel {
     messages: {
         role: 'user' | 'assistant';
         text: string;
