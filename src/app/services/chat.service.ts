@@ -14,7 +14,7 @@ export class ChatService {
         return this.http.get<{ chatId: string }>(`${ environment.chatBaseUrl }/start`);
     }
 
-    public sendChatMessage(chatId: string, message: string): Observable<{ chatResponse: ChatResponseModel }> {
-        return this.http.post<{ chatResponse: ChatResponseModel }>(`${environment.chatBaseUrl }/${chatId}/ask`, { chatId, input: message });
+    public sendChatMessage(chatId: string, message: string): Observable<{ messages: ChatResponseModel[] }> {
+        return this.http.post<{ messages: ChatResponseModel[] }>(`${environment.chatBaseUrl }/${chatId}/ask`, { chatId, input: message });
     }
 }

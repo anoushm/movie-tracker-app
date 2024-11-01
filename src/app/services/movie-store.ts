@@ -18,7 +18,7 @@ const initialMovieState = {
     loading: false,
     error: null,
     chatId: null as string | null,
-    chatResponse: null as ChatResponseModel | null,
+    chatResponse: null as ChatResponseModel[] | null,
     filter: {
         search: '' as string,
     }
@@ -108,11 +108,11 @@ export const MovieStore = signalStore(
             async sendChatMessage(chatMessage: string) {
                 patchState(store, { loading: true });
                 const chatId = store.chatId;
-
+    
                 await chatService.sendChatMessage(chatId() ?? '', chatMessage).subscribe({
-                    next: (response: { chatResponse: ChatResponseModel }) => {
-                        console.log('Chat response:', response.chatResponse);
-                        patchState(store, { chatResponse: response.chatResponse, movies: [], loading: false });
+                    next: (response: { messages: ChatResponseModel[] }) => {
+                        console.log('Chat response:', response.messages);
+                        patchState(store, { chatResponse: response.messages, movies: [], loading: false });
                     },
                     error: (error) => {
                         patchState(store, { error, loading: false });

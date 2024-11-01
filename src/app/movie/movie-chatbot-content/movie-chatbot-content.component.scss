@@ -1,0 +1,63 @@
+.chatbot-container {
+    height: 100%;
+    position: relative;
+}
+
+.message {
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    max-width: 80%;
+}
+
+.message.user {
+    background-color: #30D158;
+    margin-left: auto;
+}
+
+.message.assistant {
+    background-color: #efa21b;
+    ;
+    margin-right: auto;
+    color: black;
+}
+
+.message.system {
+    background-color: #fff3e0;
+    margin-right: auto;
+}
+
+.movie-list {
+    margin-top: 0.5rem;
+    padding: 0.5rem;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 0.25rem;
+}
+
+.movie-list ul {
+    margin: 0;
+    padding-left: 1.5rem;
+}
+
+.input-field {
+    resize: none;
+    border: 1px solid #ccc;
+    border-radius: 0.25rem;
+    padding: 0.5rem;
+}
+
+.send-button {
+    padding: 0.5rem;
+    border-radius: 0.25rem;
+    border: none;
+    background-color: #efa21b;
+    ;
+    color: white;
+    cursor: pointer;
+}
+
+.send-button:disabled {
+    background-color: #ccc;
+    ;
+    cursor: not-allowed;
+}
