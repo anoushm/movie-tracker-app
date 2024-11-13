@@ -1,8 +1,7 @@
+import { TmdbMovieModel } from "./tmdb-movie.model";
+
 export interface ChatResponseModel {
   role: string;
   text: string;
-  movieList: {
-    movieId: string;
-    movieName: string;
-  }[];
+  movieList: TmdbMovieModel[] | null;
 }

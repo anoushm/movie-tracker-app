@@ -4,7 +4,7 @@ import { TmdbMovieModel } from '../../shared/models/tmdb-movie.model';
 import { MovieStore } from '../../services/movie-store';
 import { ActivatedRoute } from '@angular/router';
 import { MoviePaginationComponent } from '../movie-pagination/movie-pagination.component';
-import { MovieChatbotContentComponent } from "../movie-chatbot-content/movie-chatbot-content.component";
+import { MovieChatbotContentComponent } from '../movie-chatbot-content/movie-chatbot-content.component';
 
 @Component({
     selector: 'movie-chatbot-shell',
@@ -14,12 +14,6 @@ import { MovieChatbotContentComponent } from "../movie-chatbot-content/movie-cha
         class="toggled">
         <div id="chatbar-chatbotwrapper">
             <movie-chatbot-content></movie-chatbot-content>
-            <!-- <div class="chatbot-ui" style="padding: 10px; position: absolute; bottom: 0; width: 100%;">
-                <textarea id="chatbot-input" placeholder="Type your message here..."
-                          style="width: calc(100% - 20px); margin-bottom: 10px; height: 100px;"
-                          (keyup.enter)="sendChatMessage()" (keydown.enter)="$event.preventDefault()"></textarea>
-                <button id="chatbot-send-btn" style="width: 100%;" (click)="sendChatMessage()">Send</button>
-            </div> -->
         </div>
         <div id="page-content-chatbotwrapper">
             <div class="container-fluid">

@@ -111,8 +111,9 @@ export const MovieStore = signalStore(
     
                 await chatService.sendChatMessage(chatId() ?? '', chatMessage).subscribe({
                     next: (response: { messages: ChatResponseModel[] }) => {
-                        console.log('Chat response:', response.messages);
-                        patchState(store, { chatResponse: response.messages, movies: [], loading: false });
+                        const movies = response.messages.slice().reverse().find((m) => m.role === 'assistant')?.movieList ?? [];
+
+                        patchState(store, { chatResponse: response.messages, movies, loading: false });
                     },
                     error: (error) => {
                         patchState(store, { error, loading: false });

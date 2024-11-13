@@ -15,25 +15,12 @@ import { CommonModule } from '@angular/common';
 
         <div class="chatbot-messages" 
              style="position: absolute; top: 100px; bottom: 200px; overflow-y: auto; padding: 10px;">
-
             @for (message of messages(); track message.text) {
                 <div class="message" [class.user]="message.role === 'user'" [class.assistant]="message.role === 'assistant'">
                     <div class="message-content">{{ message.text }}</div>
-                    
-                    @if(message.movieList != null && message.movieList.length > 0 ) {
-                        <div class="movie-list">
-                            <h4>Related Movies:</h4>
-                            <ul>
-                                @for (movie of message.movieList; track movie.movieId) {
-                                    <li>{{ movie.movieName }}</li>
-                                }
-                            </ul>
-                        </div>
-                    }
                 </div>
             }
         </div>
-
         <div class="chatbot-input-area" style="padding: 10px; position: absolute; bottom: 0; width: 100%;">
             <textarea #chatbotInput
                       class="input-field"
@@ -45,7 +32,7 @@ import { CommonModule } from '@angular/common';
                     style="width: 100%;"
                     [disabled]="loading()"
                     (click)="sendChatMessage(chatbotInput.value)">
-                {{ loading() ? 'Sending...' : 'Send' }}
+                {{ loading() ? 'Thinking...' : 'Send' }}
             </button>
         </div>
     </div>
