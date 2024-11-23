@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
+
 .chatbot-container {
     height: 100%;
     position: relative;
@@ -11,7 +13,7 @@
 }
 
 .message.user {
-    background-color: #30D158;
+    background-color: #6d6860;
     margin-left: auto;
 }
 
@@ -41,23 +43,46 @@
 
 .input-field {
     resize: none;
-    border: 1px solid #ccc;
-    border-radius: 0.25rem;
+    border: none;
     padding: 0.5rem;
+    background: none;
 }
 
 .send-button {
     padding: 0.5rem;
-    border-radius: 0.25rem;
+    border-radius: 50%;
     border: none;
     background-color: #efa21b;
-    ;
     color: white;
     cursor: pointer;
 }
 
 .send-button:disabled {
-    background-color: #ccc;
-    ;
     cursor: not-allowed;
+}
+
+.message-content{
+    font-family: "Lato", sans-serif;
+}
+
+.chat-icon {
+  float: left;
+  width: 25px;
+  height: 25px;
+  background-color: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.send-button svg{
+  
+}
+
+textarea:focus {
+    border-color: inherit;
+    box-shadow: none;
+    outline: none;
 }
