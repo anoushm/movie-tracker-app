@@ -2,6 +2,7 @@
     font-family: 'San Francisco', sans-serif;
     color: whitesmoke;
     display: flex;
+    position: relative;
   }
 
   #wrapper.toggled #sidebar-wrapper {
@@ -73,12 +74,12 @@
 }
 
 #wrapper.toggled #menu-toggle{
-  left: -22px;
+  left: 200px;
 }
 
 #wrapper #menu-toggle{
   background: #efa21b;
-  position: absolute;
+  position: fixed;
   left: 0;
   top: 75px;
   border-radius: 0 5px 5px 0;
@@ -87,6 +88,13 @@
   padding: 5px 8px 5px 0;
   box-sizing: border-box;
   height: 35px;
+  z-index: 99;
+}
+
+@media screen and (min-width: 1150px) {
+  #wrapper.toggled #menu-toggle{
+    left: 300px;
+  }
 }
 
 #wrapper.toggled .expand-btn{

@@ -55,4 +55,10 @@ export class AppShellComponent implements OnInit {
       wrapper.classList.toggle('toggled');
     }
   }
+
+  public onChatbotSearchClick(event: MouseEvent): void {
+  if (window.innerWidth <= 768) {
+    this.toggleMenu(event); 
+  }
+  }
 }

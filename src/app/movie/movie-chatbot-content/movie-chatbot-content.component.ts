@@ -8,12 +8,12 @@ import { CommonModule } from '@angular/common';
     imports: [CommonModule],
     template: `
     <div class="chatbot-container">
-        <div class="chatbot-header" style="padding: 10px; position: absolute; top: 0; width: 100%;">
+        <div class="chatbot-header">
             <h1>Chatbot</h1>
             <p>Ask me anything about movies!</p>
         </div>
 
-        <div class="chatbot-messages" style="position: absolute; top: 120px; bottom: 200px; overflow-y: auto; padding: 10px;">
+        <div class="chatbot-messages" style="overflow-y: auto; padding: 15px;">
             @for (message of messages(); track message.text) {
                 <div class="message" [class.user]="message.role === 'user'" [class.assistant]="message.role === 'assistant'">
                     <div *ngIf="message.role === 'user'" class="chat-icon">
@@ -45,11 +45,11 @@ import { CommonModule } from '@angular/common';
             }
         </div>
 
-        <div class="chatbot-input-area" style="padding: 10px; position: absolute; bottom: 20px; left: 5%; right: 5%; padding-bottom: 50px; background: rgb(244, 244, 244); border: 1px solid #ccc; border-radius: 0.25rem;">
+        <div class="chatbot-input-area" style="padding:10px 10px 70px;position:relative; background: rgb(244, 244, 244); border: 1px solid #ccc; border-radius: 0.25rem;">
             <textarea #chatbotInput class="input-field" placeholder="Type your chat message here..." style="width: calc(100% - 20px); margin-bottom: 10px; height: 50px;" (keyup.enter)="sendChatMessage(chatbotInput.value)" (keydown.enter)="$event.preventDefault()"></textarea>
-            <button class="send-button" style="position: absolute; width: 50px; display: flex; align-items: center; justify-content: center; gap: 10px; padding: 10px;height: 50px; right: 10px;bottom: 10px;" [disabled]="loading()" (click)="sendChatMessage(chatbotInput.value)">
+            <button class="send-button" style="position: absolute; width: 60px; display: flex; align-items: center; justify-content: center; gap: 10px; padding: 12px;height: 60px; right: 10px;bottom: 10px;" [disabled]="loading()" (click)="sendChatMessage(chatbotInput.value)">
                 <ng-container *ngIf="loading(); else defaultText">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="50" height="50">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
                         <g transform="translate(0, 0) scale(1)">
                             <path d="M50 30 C30 30, 20 40, 20 60 C20 80, 30 90, 50 90 C70 90, 80 80, 80 60 C80 40, 70 30, 50 30Z" fill="#efa21b" stroke="#000" stroke-width="4" />
                             <path d="M30 20 Q40 10, 50 20 Q60 30, 70 20" fill="none" stroke="#000" stroke-width="3" />
