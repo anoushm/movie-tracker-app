@@ -7,13 +7,6 @@ export const routes: Routes = [
         pathMatch: 'full'
     },
     {
-        path: 'movies/chatbot',
-        loadComponent: () =>
-            import('./movie/movie-chatbot-shell/movie-chatbot-shell').then(
-                m => m.MovieChatbotShellComponent
-            ),
-    },
-    {
         path: 'movies/:category',
         loadComponent: () =>
             import('./movie/movie-list-shell/movie-list-shell.component').then(
@@ -27,11 +20,7 @@ export const routes: Routes = [
                 m => m.MovieListShellComponent
             ),
     },
-    { path: '', redirectTo: 'movies/popular', pathMatch: 'full' },
-    { path: '**', redirectTo: 'movies/popular', pathMatch: 'full' }
-  
-    // { path: '', redirectTo: 'movies/popular' },
-    // { path: '**', redirectTo: 'movies/popular' },
+    { path: '**', redirectTo: 'movies/popular' } 
     // {
     //     path: '**',
     //     loadComponent: () =>

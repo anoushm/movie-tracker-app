@@ -58,6 +58,7 @@ export class MovieStarRatingComponent {
 
   private set localRating(rating: number | undefined) {
     this.maxRating = rating || 0;
+
     this.setToolTopText(this.localRating);
 
     const scaledRating = this.maxRating / (this.range / this.numStars);

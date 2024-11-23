@@ -13,5 +13,4 @@ export interface TmdbMovieModel {
     vote_count: number;
     video: boolean;
     vote_average: number;
-    favorite: boolean;
 }
