@@ -45,9 +45,9 @@ import { CommonModule } from '@angular/common';
             }
         </div>
 
-        <div class="chatbot-input-area" style="padding:10px 10px 70px;position:relative; background: rgb(244, 244, 244); border: 1px solid #ccc; border-radius: 0.25rem;">
+        <div class="chatbot-input-area" style="padding:10px 10px 100px;position:relative; background: rgb(244, 244, 244); border: 1px solid #ccc; border-radius: 0.25rem;">
             <textarea #chatbotInput class="input-field" placeholder="Type your chat message here..." style="width: calc(100% - 20px); margin-bottom: 10px; height: 50px;" (keyup.enter)="sendChatMessage(chatbotInput.value)" (keydown.enter)="$event.preventDefault()"></textarea>
-            <button class="send-button" style="position: absolute; width: 60px; display: flex; align-items: center; justify-content: center; gap: 10px; padding: 12px;height: 60px; right: 10px;bottom: 10px;" [disabled]="loading()" (click)="sendChatMessage(chatbotInput.value)">
+            <button class="send-button" style="position: absolute; width: 80px; display: flex; align-items: center; justify-content: center; gap: 10px; padding: 12px;height: 80px; right: 10px;bottom: 10px;" [disabled]="loading()" (click)="sendChatMessage(chatbotInput.value)">
                 <ng-container *ngIf="loading(); else defaultText">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
                         <g transform="translate(0, 0) scale(1)">
