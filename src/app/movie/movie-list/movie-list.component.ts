@@ -15,7 +15,7 @@ import { MovieStore } from '../../services/movie-store';
   } @else {
     <div class="card-grid">
       @for (movie of movies(); track movie.id) {
-        <movie-card [movie]="movie" (toggleFavorite)="addToFavporitList(movie)"/>
+        <movie-card [movie]="movie" (toggleFavorite)="updateFavporitList(movie)"/>
       }
     </div>
   }
@@ -26,8 +26,8 @@ export class MovieListComponent {
   private store = inject(MovieStore);
   public movies = input<TmdbMovieModel[]>([]);
 
-  public addToFavporitList(movie: TmdbMovieModel): void {
+  public updateFavporitList(movie: TmdbMovieModel): void {
     console.log('Movie added to favorite list:', movie);
-    this.store.addToFavoriteMovies(movie);
+    this.store.updateFavoriteMovies(movie);
   }
 }

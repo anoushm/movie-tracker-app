@@ -17,8 +17,11 @@ import { MovieStarRatingComponent } from "../movie-star-rating/movie-star-rating
           <p>Released: {{ movie?.release_date | date:'yyyy-MM-dd' }}</p>
           <div class="card-text mt-0 mb-5">Vote Count: {{ movie?.vote_count }}</div>
           <div class="rating-favorite">
-          <movie-star-rating></movie-star-rating>
-          <button [ngClass]="{'favorite': isFavorite}" (click)="onFavoriteClick(movie)">❤️</button>
+            <movie-star-rating></movie-star-rating>
+            <div class="fav-container">
+              <input type="checkbox" id="fav-checkbox-{{movie?.id}}" class="fav-checkbox" [checked]="movie?.favorite || false" (change)="onFavoriteClick(movie)">
+              <label for="fav-checkbox-{{movie?.id}}"></label>
+            </div>
         </div>
         </div>
     </div>
@@ -72,6 +75,7 @@ export class MovieCardComponent {
   public movie = input<TmdbMovieModel | null>(null);
   public toggleFavorite = output<TmdbMovieModel>();
   public isFavorite = false;
+
 
   public onFavoriteClick(movie: TmdbMovieModel): void {
     this.isFavorite = !this.isFavorite;

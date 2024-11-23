@@ -34,11 +34,13 @@ export class MovieService {
         this.searchQuery$.next(query);
     }
 
-    public addToFavoriteMovies(movie: TmdbMovieModel): void {
+    public updateFavoriteMovies(movie: TmdbMovieModel): void {
         const isFavorite = this.favoriteMovies.find((m) => m.id === movie.id);
 
         if (!isFavorite) {
             this.favoriteMovies.push(movie);
+        } else {
+            this.favoriteMovies = this.favoriteMovies.filter((m) => m.id !== movie.id);
         }
     }
 
@@ -58,7 +60,7 @@ export class MovieService {
                 }
             )
             .pipe(
-                map(({ results }) => results),
+                map(({ results }) => this.updateFavotie(results)),
                 tap((results) => { console.log('getMoviesByGenre', results); })
             ).subscribe((movies) => { this.moviesSubject$.next(movies); });
     }
@@ -77,8 +79,15 @@ export class MovieService {
                 .get<{ results: TmdbMovieModel[] }>(`${baseUrl}/3/movie/${category}`, {
                     params: { page, sort_by: sortBy },
                 })
-                .pipe(map(({ results }) => results))
+                .pipe(map(({ results }) => this.updateFavotie(results)))
                 .subscribe((movies) => { this.moviesSubject$.next(movies); });
         }
+    }
+
+    private updateFavotie(movies: TmdbMovieModel[]): TmdbMovieModel[] {
+        return movies.map((movie) => ({
+            ...movie,
+            favorite: this.favoriteMovies.some((m) => m.id === movie.id),
+        }));
     }
 }
