@@ -7,9 +7,8 @@ import { MovieStore } from '../../services/movie-store';
 import { MoviePaginationComponent } from '../movie-pagination/movie-pagination.component';
 
 @Component({
-  selector: 'movie-list-shell',
-  standalone: true,
-  template: `
+    selector: 'movie-list-shell',
+    template: `
     <movie-search></movie-search>
     @if (movies()) {
       <movie-list [movies]="movies()" />
@@ -18,10 +17,10 @@ import { MoviePaginationComponent } from '../movie-pagination/movie-pagination.c
     <div>Oops, no movies were found!</div>
     }
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [MovieListComponent, MovieSearchComponent, MoviePaginationComponent],
-  providers: [MovieStore],
-  styles: [`
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [MovieListComponent, MovieSearchComponent, MoviePaginationComponent],
+    providers: [MovieStore],
+    styles: [`
     .prev-next-buttons {
       @apply bg-gray-100 h-full rounded-lg overflow-hidden shadow-md;
       display: flex;

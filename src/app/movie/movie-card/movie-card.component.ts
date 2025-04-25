@@ -5,9 +5,8 @@ import { DatePipe, NgClass, UpperCasePipe } from '@angular/common';
 import { MovieStarRatingComponent } from "../movie-star-rating/movie-star-rating.component";
 
 @Component({
-  selector: 'movie-card',
-  standalone: true,
-  template: `
+    selector: 'movie-card',
+    template: `
   @if (movie(); as movie) {
     <div class="card">
 
@@ -27,9 +26,9 @@ import { MovieStarRatingComponent } from "../movie-star-rating/movie-star-rating
     </div>
   }
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [MovieImagePipe, DatePipe, UpperCasePipe, MovieStarRatingComponent, NgClass],
-  styles: [`
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [MovieImagePipe, DatePipe, UpperCasePipe, MovieStarRatingComponent, NgClass],
+    styles: [`
     .card {
       @apply bg-gray-100 h-full rounded-lg overflow-hidden shadow-md flex flex-col;
 
