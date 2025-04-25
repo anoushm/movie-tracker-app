@@ -4,10 +4,9 @@ import { MovieCardComponent } from '../movie-card/movie-card.component';
 import { MovieStore } from '../../services/movie-store';
 
 @Component({
-  selector: 'movie-list',
-  standalone: true,
-  imports: [MovieCardComponent],
-  template: `
+    selector: 'movie-list',
+    imports: [MovieCardComponent],
+    template: `
   @if(movies() && movies().length === 0) {
     <div class="no-movies">
       <p>No movies found</p>
@@ -20,7 +19,7 @@ import { MovieStore } from '../../services/movie-store';
     </div>
   }
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MovieListComponent {
   private store = inject(MovieStore);

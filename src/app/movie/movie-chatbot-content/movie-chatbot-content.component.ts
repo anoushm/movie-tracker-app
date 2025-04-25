@@ -4,7 +4,6 @@ import { CommonModule } from '@angular/common';
 
 @Component({
     selector: 'movie-chatbot-content',
-    standalone: true,
     imports: [CommonModule],
     template: `
     <div class="chatbot-container">

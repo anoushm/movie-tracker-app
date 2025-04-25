@@ -5,17 +5,16 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MovieStore } from '../../services/movie-store';
 
 @Component({
-  selector: 'movie-search',
-  standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `
+    selector: 'movie-search',
+    imports: [CommonModule, ReactiveFormsModule],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    template: `
     <div class="search-bar">
       <input class="search-input" [formControl]="searchInput" placeholder="Search movies..." />
       <i class="search-icon fas fa-search"></i>
     </div>
   `,
-  styles: [`
+    styles: [`
     .search-bar {
       position: relative;
       width: 100%;

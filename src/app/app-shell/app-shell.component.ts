@@ -5,13 +5,12 @@ import { MovieStore } from '../services/movie-store';
 import { filter } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-shell',
-  standalone: true,
-  imports: [AsyncPipe, RouterLink, RouterLinkActive],
-  templateUrl: './app-shell.component.html',
-  styleUrls: ['./app-shell.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [MovieStore]
+    selector: 'app-shell',
+    imports: [AsyncPipe, RouterLink, RouterLinkActive],
+    templateUrl: './app-shell.component.html',
+    styleUrls: ['./app-shell.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    providers: [MovieStore]
 })
 export class AppShellComponent implements OnInit {
   private store = inject(MovieStore);

@@ -13,8 +13,8 @@ const numStars = 5;
 const starsArray: number[] = new Array(numStars).fill(1);
 
 @Component({
-  selector: 'movie-star-rating',
-  template: `
+    selector: 'movie-star-rating',
+    template: `
     <span class="tooltip">
       {{ tooltipText }}
     </span>
@@ -34,13 +34,12 @@ const starsArray: number[] = new Array(numStars).fill(1);
       <div class="rating-value">{{ rating() }}</div>
     }
   `,
-  styleUrls: [
-    './movie-star-rating.component.scss'
-  ],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation: ViewEncapsulation.Emulated,
-  standalone: true,
-  imports: [NgClass],
+    styleUrls: [
+        './movie-star-rating.component.scss'
+    ],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    encapsulation: ViewEncapsulation.Emulated,
+    imports: [NgClass]
 })
 export class MovieStarRatingComponent {
   private range = range;

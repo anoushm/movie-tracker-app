@@ -8,7 +8,6 @@ import { MovieChatbotContentComponent } from '../movie-chatbot-content/movie-cha
 
 @Component({
     selector: 'movie-chatbot-shell',
-    standalone: true,
     template: `
     <div id="chatbotwrapper"
         class="toggled">
@@ -35,7 +34,7 @@ import { MovieChatbotContentComponent } from '../movie-chatbot-content/movie-cha
   `,
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [MovieListComponent, MoviePaginationComponent, MovieChatbotContentComponent],
-    styleUrls: ['./movie-chatbot-shell.component.scss'],
+    styleUrls: ['./movie-chatbot-shell.component.scss']
 })
 export class MovieChatbotShellComponent implements OnInit {
     private store = inject(MovieStore);
