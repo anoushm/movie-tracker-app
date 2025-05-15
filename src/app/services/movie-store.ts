@@ -21,7 +21,8 @@ const initialMovieState = {
     chatResponse: null as ChatResponseModel[] | null,
     filter: {
         search: '' as string,
-    }
+    },
+    funnyFact: null as string | null,
 }
 
 export const MovieStore = signalStore(
@@ -110,10 +111,10 @@ export const MovieStore = signalStore(
                 const chatId = store.chatId;
     
                 await chatService.sendChatMessage(chatId() ?? '', chatMessage).subscribe({
-                    next: (response: { messages: ChatResponseModel[] }) => {
+                    next: (response: { funnyFact?: string, messages: ChatResponseModel[] }) => {
                         const movies = response.messages.slice().reverse().find((m) => m.role === 'assistant')?.movieList ?? [];
 
-                        patchState(store, { chatResponse: response.messages, movies, loading: false });
+                        patchState(store, { funnyFact: response.funnyFact, chatResponse: response.messages, movies, loading: false });
                     },
                     error: (error) => {
                         patchState(store, { error, loading: false });
