@@ -17,14 +17,15 @@ export class ChatService {
     }
 
     public sendChatMessage(chatId: string, message: string): Observable<{ messages: ChatResponseModel[] }> {
-        return this.http.post<{ messages: ChatResponseModel[] }>(`${environment.chatBaseUrl}/${chatId}/ask`, { chatId, input: message })
+        return this.http.post<{ funnyFact: string, messages: ChatResponseModel[] }>(`${environment.chatBaseUrl}/${chatId}/ask`, { chatId, input: message })
             .pipe(
                 map(response => this.mapResponse(response)),
             );
     }
 
-    private mapResponse(response: any): { messages: ChatResponseModel[] } {
+    private mapResponse(response: any): { funnyFact: string, messages: ChatResponseModel[] } {
         return {
+            funnyFact: response.funnyFact,
             messages: response.messages.map((chatResponse: any) => ({
                 role: chatResponse.role,
                 text: chatResponse.text,

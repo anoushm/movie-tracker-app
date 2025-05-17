@@ -43,6 +43,10 @@ import { CommonModule } from '@angular/common';
                 </div>
             }
         </div>
+        
+        <div class="funny-fact" *ngIf="funnyFact()">
+            <p><strong>Funny Fact:</strong> {{ funnyFact() }}</p>
+        </div>
 
         <div class="chatbot-input-area" style="padding:10px 10px 100px;position:relative; background: rgb(244, 244, 244); border: 1px solid #ccc; border-radius: 0.25rem;">
             <textarea #chatbotInput class="input-field" placeholder="Type your chat message here..." style="width: calc(100% - 20px); margin-bottom: 10px; height: 50px;" (keyup.enter)="sendChatMessage(chatbotInput.value)" (keydown.enter)="$event.preventDefault()"></textarea>
@@ -88,6 +92,7 @@ export class MovieChatbotContentComponent {
 
     protected messages = computed(() => this.store.chatResponse() || []);
     protected loading = computed(() => this.store.loading());
+    protected funnyFact = computed(() => this.store.funnyFact() || '');
 
     public async sendChatMessage(message: string): Promise<void> {
         if (!message.trim() || this.loading()) return;
