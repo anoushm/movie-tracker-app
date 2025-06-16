@@ -1,4 +1,3 @@
-
 .chatbot-container {
     height: 100%;
     display: grid;
@@ -48,6 +47,14 @@
     border: none;
     padding: 0.5rem;
     background: none;
+    height: 40px; // Default height
+}
+
+@media screen and (max-width: 600px) {
+  .input-field {
+    height: 32px; // Shorter height for mobile
+    font-size: 1rem;
+  }
 }
 
 .send-button {
