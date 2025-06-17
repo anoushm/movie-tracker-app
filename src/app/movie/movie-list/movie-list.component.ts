@@ -12,7 +12,7 @@ import { MovieStore } from '../../services/movie-store';
       <p>No movies found</p>
     </div>
   } @else {
-    <div class="card-grid">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
       @for (movie of movies(); track movie.id) {
         <movie-card [movie]="movie" (toggleFavorite)="updateFavporitList(movie)"/>
       }
