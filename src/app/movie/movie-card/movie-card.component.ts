@@ -17,8 +17,17 @@ import { MovieStarRatingComponent } from "../movie-star-rating/movie-star-rating
           <div class="flex items-center">
             <movie-star-rating></movie-star-rating>
             <div class="flex-grow text-right">
-              <input type="checkbox" id="fav-checkbox-{{movie?.id}}" class="hidden peer" [checked]="movie?.favorite || false" (change)="onFavoriteClick(movie)">
-              <label for="fav-checkbox-{{movie?.id}}" class="ml-2 peer-checked:text-red-500"></label>
+              <input
+                type="checkbox"
+                id="fav-checkbox-{{movie?.id}}"
+                class="sr-only peer"
+                [checked]="movie?.favorite || false"
+                (change)="onFavoriteClick(movie)"
+              />
+              <label for="fav-checkbox-{{movie?.id}}" class="cursor-pointer ml-2 text-xl select-none">
+                <span class="peer-checked:hidden">&#x2661;</span>
+                <span class="hidden peer-checked:inline text-red-500">&#x2764;&#xFE0F;</span>
+              </label>
             </div>
         </div>
         </div>
