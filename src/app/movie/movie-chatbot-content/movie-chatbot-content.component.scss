@@ -17,6 +17,7 @@
 .message.user {
     background-color: #6d6860;
     margin-left: auto;
+    color: white;
 }
 
 .message.assistant {
@@ -47,12 +48,13 @@
     border: none;
     padding: 0.5rem;
     background: none;
-    height: 40px; // Default height
+    min-height: 40px;
+    overflow-y: auto;
 }
 
 @media screen and (max-width: 600px) {
   .input-field {
-    height: 32px; // Shorter height for mobile
+    min-height: 32px;
     font-size: 1rem;
   }
 }

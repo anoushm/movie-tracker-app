@@ -8,7 +8,7 @@ import { MovieStarRatingComponent } from "../movie-star-rating/movie-star-rating
     selector: 'movie-card',
     template: `
   @if (movie(); as movie) {
-    <div class="w-full max-w-sm m-1 shadow-lg hover:shadow-xl transition-shadow rounded-lg bg-[#1A1A1A] text-white flex flex-col border-b-2 border-transparent hover:border-b-[#efa21b]">
+    <div class="w-full m-1 shadow-lg hover:shadow-xl transition-shadow rounded-lg bg-[#1A1A1A] text-white flex flex-col border-b-2 border-transparent hover:border-b-[#efa21b]">
         <img class="w-full h-64 md:h-80 object-cover rounded-t-lg" [src]="movie?.poster_path | movieImage" [alt]="movie?.title" />
         <div class="flex flex-col p-4">
           <h3 class="text-lg font-semibold truncate mb-2">{{ movie?.title | uppercase }}</h3>
