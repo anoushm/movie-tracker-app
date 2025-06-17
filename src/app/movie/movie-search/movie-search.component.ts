@@ -9,40 +9,12 @@ import { MovieStore } from '../../services/movie-store';
     imports: [CommonModule, ReactiveFormsModule],
     changeDetection: ChangeDetectionStrategy.OnPush,
     template: `
-    <div class="search-bar">
-      <input class="search-input" [formControl]="searchInput" placeholder="Search movies..." />
-      <i class="search-icon fas fa-search"></i>
+    <div class="relative w-full mb-5">
+      <input class="w-full border-2 border-[#efa21b] rounded-md py-2 pl-3 pr-8 text-black placeholder-gray-500 focus:outline-none focus:border-[#efa21b] focus:ring-2 focus:ring-[#efa21b] shadow-inner" [formControl]="searchInput" placeholder="Search movies..." />
+      <i class="fas fa-search absolute right-3 top-1/2 -translate-y-1/2 text-gray-500"></i>
     </div>
   `,
-    styles: [`
-    .search-bar {
-      position: relative;
-      width: 100%;
-      margin-bottom: 20px;
-    }
-    .search-input {
-      width: 100%;
-      padding: 10px;
-      box-sizing: border-box;
-      border: 3px solid #efa21b;
-      background-color: #fff;
-      color: #000;
-      font-size: 16px;
-      transition: all 0.3s ease;
-      border-radius: 5px;
-      -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.7);
-    }
-    .search-input:focus {
-      border-color: #FFD700;
-      box-shadow: 0 0 10px #FFD700;
-    }
-    .search-icon {
-      position: absolute;
-      right: 10px;
-      top: 50%;
-      transform: translateY(-50%);
-    }
-  `]
+    styles: []
 })
 export class MovieSearchComponent implements OnInit {
   private store = inject(MovieStore);
