@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, ViewChild, ElementRef, inject, computed } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ViewChild, ElementRef, inject, computed, AfterViewInit, effect } from '@angular/core';
 import { MovieStore } from '../../services/movie-store';
 import { CommonModule } from '@angular/common';
 
@@ -12,7 +12,7 @@ import { CommonModule } from '@angular/common';
             <p>Ask me anything about movies!</p>
         </div>
 
-        <div class="chatbot-messages" style="overflow-y: auto; padding: 15px;">
+        <div #messagesContainer class="chatbot-messages" style="overflow-y: auto; padding: 15px;">
             @for (message of messages(); track message.text) {
                 <div class="message" [class.user]="message.role === 'user'" [class.assistant]="message.role === 'assistant'">
                     <div *ngIf="message.role === 'user'" class="chat-icon">
@@ -85,14 +85,29 @@ import { CommonModule } from '@angular/common';
 })
 
 
-export class MovieChatbotContentComponent {
+export class MovieChatbotContentComponent implements AfterViewInit {
     @ViewChild('chatbotInput') chatbotInput!: ElementRef<HTMLTextAreaElement>;
+    @ViewChild('messagesContainer') messagesContainer!: ElementRef<HTMLDivElement>;
 
     private store = inject(MovieStore);
 
     protected messages = computed(() => this.store.chatResponse() || []);
     protected loading = computed(() => this.store.loading());
     protected funnyFact = computed(() => this.store.funnyFact() || '');
+
+    ngAfterViewInit(): void {
+        effect(() => {
+            this.messages();
+            queueMicrotask(() => this.scrollToBottom());
+        });
+    }
+
+    private scrollToBottom(): void {
+        const container = this.messagesContainer?.nativeElement;
+        if (container) {
+            container.scrollTop = container.scrollHeight;
+        }
+    }
 
     public async sendChatMessage(message: string): Promise<void> {
         if (!message.trim() || this.loading()) return;

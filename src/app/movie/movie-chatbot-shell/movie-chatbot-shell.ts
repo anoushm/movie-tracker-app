@@ -19,7 +19,9 @@ import { MovieChatbotContentComponent } from '../movie-chatbot-content/movie-cha
                 @if (chatingHasStarted) {
                   @if (movies() && movies().length > 0) {
                         <movie-list [movies]="movies()" />
-                        <movie-pagination [currentPage]="currentPage" (changePage)="onPageChange($event)"/>
+                        @if(movies().length > 10) {
+                          <movie-pagination [currentPage]="currentPage" (changePage)="onPageChange($event)"/>
+                        }
                     } @else {
                         <div>Hm... no movies were able to be found!</div>
                     }
