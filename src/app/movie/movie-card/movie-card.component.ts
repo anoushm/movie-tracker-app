@@ -8,8 +8,8 @@ import { MovieStarRatingComponent } from "../movie-star-rating/movie-star-rating
     selector: 'movie-card',
     template: `
   @if (movie(); as movie) {
-    <div class="w-full max-w-sm m-4 shadow-lg hover:shadow-xl transition-shadow rounded-lg bg-[#1A1A1A] hover:bg-gray-700 text-white flex flex-col">
-        <img class="w-full h-64 md:h-80 object-cover rounded-lg mt-5" [src]="movie?.poster_path | movieImage" [alt]="movie?.title" />
+    <div class="w-full max-w-sm m-4 shadow-lg hover:shadow-xl transition-shadow rounded-lg bg-[#1A1A1A] hover:bg-gray-700 text-white flex flex-col border-2 border-transparent hover:border-yellow-400">
+        <img class="w-full h-64 md:h-80 object-cover rounded-t-lg" [src]="movie?.poster_path | movieImage" [alt]="movie?.title" />
         <div class="flex flex-col p-4">
           <h3 class="text-lg font-semibold truncate mb-2">{{ movie?.title | uppercase }}</h3>
           <p class="text-sm">Released: {{ movie?.release_date | date:'yyyy-MM-dd' }}</p>
