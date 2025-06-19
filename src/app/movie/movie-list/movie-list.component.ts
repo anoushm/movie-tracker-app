@@ -12,9 +12,9 @@ import { MovieStore } from '../../services/movie-store';
       <p>No movies found</p>
     </div>
   } @else {
-    <div class="card-grid">
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4">
       @for (movie of movies(); track movie.id) {
-        <movie-card [movie]="movie" (toggleFavorite)="updateFavporitList(movie)"/>
+        <movie-card [movie]="movie" (toggleFavorite)="updateFavoriteList(movie)"/>
       }
     </div>
   }
@@ -25,7 +25,7 @@ export class MovieListComponent {
   private store = inject(MovieStore);
   public movies = input<TmdbMovieModel[]>([]);
 
-  public updateFavporitList(movie: TmdbMovieModel): void {
+  public updateFavoriteList(movie: TmdbMovieModel): void {
     console.log('Movie added to favorite list:', movie);
     this.store.updateFavoriteMovies(movie);
   }

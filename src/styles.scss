@@ -24,74 +24,11 @@ html, body{
     @apply bg-gray-800 p-2 pl-10 text-white h-menu-vt;
   }
 
-  .card-grid {
-    @apply grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10;
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: repeat(4, 1fr);
-    grid-column-gap: 20px;
-    grid-row-gap: 20px;
-
-  }
-
-  @media screen and (min-width: 768px) {
-    .card-grid {
-      grid-template-columns: repeat(3, 1fr);
-    }
-  }
-
-  @media screen and (min-width: 996px) {
-    .card-grid {
-      grid-template-columns: repeat(4, 1fr);
-    }
-  }
-
-  @media screen and (min-width: 1200px) {
-    .card-grid {
-      grid-template-columns: repeat(5, 1fr);
-    }
-  }
 
   .content {
     @apply p-10;
   }
 
-  .card {
-    @apply bg-gray-100 h-full rounded-lg overflow-hidden shadow-md flex flex-col;
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    background: #1A1A1A;
-    border-radius: 5px;
-    border-bottom: 1px solid transparent;
-  }
-
-  .card img{
-    display: block;
-    width: 100%;
-    height: auto;
-    border-radius: 5px 5px 0 0;
-  }
-
-  .card-title {
-    @apply text-xl font-semibold pl-4 pt-4;
-  }
-
-  .card-subtitle {
-    @apply text-lg italic pl-4 pt-4;
-  }
-
-  .card-text {
-    @apply mt-2 text-gray-600;
-  }
-
-  .card-body {
-    @apply p-4;
-  }
-
-  .card-footer {
-    @apply p-4 mt-auto;
-  }
 
   .btn {
     @apply px-4 py-2 bg-gray-500 hover:bg-gray-400 text-white rounded;
@@ -99,6 +36,14 @@ html, body{
 
   .btn-primary {
     @apply bg-sky-900 hover:bg-sky-600;
+  }
+
+  .search-input {
+    @apply w-full border-2 border-[#efa21b] rounded-md py-2 pl-3 pr-8 text-black placeholder-gray-500 focus:outline-none focus:border-[#efa21b] focus:ring-2 focus:ring-[#efa21b] shadow-inner;
+  }
+
+  .search-icon {
+    @apply absolute right-3 top-1/2 -translate-y-1/2 text-gray-500;
   }
 }
 
@@ -129,7 +74,7 @@ html, body{
   }
 
   input {
-    @apply w-full max-w-96 size-10 focus:outline-none;
+    @apply w-full max-w-md focus:outline-none;
     border-bottom: solid black 1px;
   }
 }
@@ -166,68 +111,3 @@ html, body{
 }
 
 
-.fav-container{
-  flex-grow: 1;
-  text-align: right;
-}
-
-
-.fav-checkbox {
-    display: none;
-}
-
-
-.fav-checkbox + label {
-    position: relative;
-    display: inline-block;
-    font-size: 25px;
-}
-
-.fav-checkbox + label:before {
-    content: "\1F90D";
-    top: -27px;
-    left: -35px;
-    border: 1px solid transparent;
-    padding: 5px;
-    border-radius: 3px;
-    display: block;
-    position: absolute;
-	  transition:  .5s ease;
-}
-
-.favorite-movies-route .fav-checkbox + label:before,
-.fav-checkbox:checked + label:before {
-    border: 1px solid transparent;
-    background-color: transparent;
-}
-
-.favorite-movies-route .fav-checkbox + label:after,
-.fav-checkbox:checked + label:after {
-    content: '\1F497';
-    font-size: 25px;
-    position: absolute;
-    top: -20px;
-    left: -29px;
-	  color: red;
-	  transition:  .5s ease;
-}
-
-@media screen and (max-width: 767px) {
-  .card button {
-    font-size: 1rem;
-  }
-  .favorite-movies-route .fav-checkbox + label:after,
-  .fav-checkbox:checked + label:after,
-  .fav-checkbox + label {
-    font-size: 20px;
-  }
-  .fav-checkbox + label:before{
-    top: -27px;
-    left: -30px;
-  }
-  .favorite-movies-route .fav-checkbox + label:after,
-  .fav-checkbox:checked + label:after{
-    top: -20px;
-    left: -24px;
-  }
-}
