@@ -2,6 +2,13 @@ import { ChangeDetectionStrategy, Component, ViewChild, ElementRef, inject, comp
 import { MovieStore } from '../../services/movie-store';
 import { CommonModule } from '@angular/common';
 
+const THINKING_HEAD_PATH =
+  'M50 30 C30 30, 20 40, 20 60 C20 80, 30 90, 50 90 C70 90, 80 80, 80 60 C80 40, 70 30, 50 30Z';
+const THINKING_TOP_PATH = 'M30 20 Q40 10, 50 20 Q60 30, 70 20';
+const THINKING_SMILE_PATH = 'M35 70 Q50 80, 65 70';
+const SEND_PLANE_PATH =
+  'M2 31.96l60-28a2 2 0 0 1 2.8 2.23l-10.5 48a2 2 0 0 1-3.18 1.12L32 46 18.48 55.82a2 2 0 0 1-3-2.16l3.6-15.94L2.5 35a2 2 0 0 1-.5-3.04zM6.8 33.6l10.1-1.82 6.4 6.5L6.8 33.6zm19.58-4.6L54.8 11.7 29.78 39l-3.4-10.04zM32.8 42.6L51 51.56l8.8-40.36L32.8 42.6z';
+
 @Component({
     selector: 'movie-chatbot-content',
     imports: [CommonModule],
@@ -54,8 +61,8 @@ import { CommonModule } from '@angular/common';
                 <ng-container *ngIf="loading(); else defaultText">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
                         <g transform="translate(0, 0) scale(1)">
-                            <path d="M50 30 C30 30, 20 40, 20 60 C20 80, 30 90, 50 90 C70 90, 80 80, 80 60 C80 40, 70 30, 50 30Z" fill="#efa21b" stroke="#000" stroke-width="4" />
-                            <path d="M30 20 Q40 10, 50 20 Q60 30, 70 20" fill="none" stroke="#000" stroke-width="3" />
+                            <path [attr.d]="thinkingHeadPath" fill="#efa21b" stroke="#000" stroke-width="4" />
+                            <path [attr.d]="thinkingTopPath" fill="none" stroke="#000" stroke-width="3" />
                             <g id="thinkingDots">
                                 <circle cx="40" cy="55" r="5" fill="#000">
                                     <animate attributeName="opacity" values="0;1;0" dur="1.5s" repeatCount="indefinite" begin="0s" />
@@ -67,13 +74,13 @@ import { CommonModule } from '@angular/common';
                                     <animate attributeName="opacity" values="0;1;0" dur="1.5s" repeatCount="indefinite" begin="1s" />
                                 </circle>
                             </g>
-                            <path d="M35 70 Q50 80, 65 70" fill="none" stroke="#000" stroke-width="3" stroke-linecap="round" />
+                            <path [attr.d]="thinkingSmilePath" fill="none" stroke="#000" stroke-width="3" stroke-linecap="round" />
                         </g>
                     </svg>
                 </ng-container>
                 <ng-template #defaultText>
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="50" height="50" fill="#000">
-                        <path d="M2 31.96l60-28a2 2 0 0 1 2.8 2.23l-10.5 48a2 2 0 0 1-3.18 1.12L32 46 18.48 55.82a2 2 0 0 1-3-2.16l3.6-15.94L2.5 35a2 2 0 0 1-.5-3.04zM6.8 33.6l10.1-1.82 6.4 6.5L6.8 33.6zm19.58-4.6L54.8 11.7 29.78 39l-3.4-10.04zM32.8 42.6L51 51.56l8.8-40.36L32.8 42.6z"/>
+                        <path [attr.d]="sendPlanePath" />
                     </svg>
                 </ng-template>
             </button>
@@ -95,7 +102,12 @@ export class MovieChatbotContentComponent implements AfterViewInit {
     protected loading = computed(() => this.store.loading());
     protected funnyFact = computed(() => this.store.funnyFact() || '');
 
-    ngAfterViewInit(): void {
+    public thinkingHeadPath = THINKING_HEAD_PATH;
+    public thinkingTopPath = THINKING_TOP_PATH;
+    public thinkingSmilePath = THINKING_SMILE_PATH;
+    public sendPlanePath = SEND_PLANE_PATH;
+
+    public ngAfterViewInit(): void {
         effect(() => {
             this.messages();
             queueMicrotask(() => this.scrollToBottom());

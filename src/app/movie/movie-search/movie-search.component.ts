@@ -10,11 +10,10 @@ import { MovieStore } from '../../services/movie-store';
     changeDetection: ChangeDetectionStrategy.OnPush,
     template: `
     <div class="relative w-full mb-5">
-      <input class="w-full border-2 border-[#efa21b] rounded-md py-2 pl-3 pr-8 text-black placeholder-gray-500 focus:outline-none focus:border-[#efa21b] focus:ring-2 focus:ring-[#efa21b] shadow-inner" [formControl]="searchInput" placeholder="Search movies..." />
-      <i class="fas fa-search absolute right-3 top-1/2 -translate-y-1/2 text-gray-500"></i>
+      <input class="search-input" [formControl]="searchInput" placeholder="Search movies..." />
+      <i class="fas fa-search search-icon"></i>
     </div>
   `,
-    styles: []
 })
 export class MovieSearchComponent implements OnInit {
   private store = inject(MovieStore);

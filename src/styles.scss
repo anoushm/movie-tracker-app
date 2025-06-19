@@ -37,6 +37,14 @@ html, body{
   .btn-primary {
     @apply bg-sky-900 hover:bg-sky-600;
   }
+
+  .search-input {
+    @apply w-full border-2 border-[#efa21b] rounded-md py-2 pl-3 pr-8 text-black placeholder-gray-500 focus:outline-none focus:border-[#efa21b] focus:ring-2 focus:ring-[#efa21b] shadow-inner;
+  }
+
+  .search-icon {
+    @apply absolute right-3 top-1/2 -translate-y-1/2 text-gray-500;
+  }
 }
 
 @layer base {
