@@ -74,7 +74,7 @@ html, body{
   }
 
   input {
-    @apply w-full focus:outline-none;
+    @apply w-full max-w-md focus:outline-none;
     border-bottom: solid black 1px;
   }
 }
