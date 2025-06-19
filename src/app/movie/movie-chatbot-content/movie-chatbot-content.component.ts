@@ -51,8 +51,8 @@ const SEND_PLANE_PATH =
             }
         </div>
         
-        <div class="funny-fact" *ngIf="funnyFact()">
-            <p><strong>Funny Fact:</strong> {{ funnyFact() }}</p>
+        <div class="funny-fact p-0 m-0 text-sm" *ngIf="funnyFact()">
+            <p class="m-0 p-0"><strong>Funny Fact:</strong> {{ funnyFact() }}</p>
         </div>
 
         <div class="chatbot-input-area" style="padding:10px 10px 100px;position:relative; background: rgb(244, 244, 244); border: 1px solid #ccc; border-radius: 0.25rem;">
