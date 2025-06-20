@@ -144,6 +144,7 @@ background-color: #efa21b;
 
 .funny-fact-wrapper {
   position: relative;
+  height: 0;
 }
 
 .funny-fact-indicator {
@@ -162,6 +163,7 @@ background-color: #efa21b;
   animation: pulse 1.5s infinite;
   border: none;
   box-shadow: 0 0 6px rgba(0, 0, 0, 0.3);
+  z-index: 20;
 }
 
 @keyframes pulse {
