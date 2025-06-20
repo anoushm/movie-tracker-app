@@ -1,12 +1,11 @@
 import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
-import { AsyncPipe } from '@angular/common';
 import { Router, NavigationEnd, RouterLink, RouterLinkActive } from '@angular/router';
 import { MovieStore } from '../services/movie-store';
 import { filter } from 'rxjs/operators';
 
 @Component({
     selector: 'app-shell',
-    imports: [AsyncPipe, RouterLink, RouterLinkActive],
+    imports: [RouterLink, RouterLinkActive],
     templateUrl: './app-shell.component.html',
     styleUrls: ['./app-shell.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
