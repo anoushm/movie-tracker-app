@@ -14,7 +14,7 @@ const HEART_FILLED_PATH =
     template: `
   @if (movie(); as movie) {
     <div class="w-full m-1 shadow-lg hover:shadow-xl transition-shadow rounded-lg bg-[#1A1A1A] text-white flex flex-col border-b-2 border-transparent hover:border-b-[#efa21b]">
-        <img class="w-full h-64 md:h-80 object-cover rounded-t-lg" [src]="movie?.poster_path | movieImage" [alt]="movie?.title" />
+        <img class="w-full h-auto rounded-t-lg" [src]="movie?.poster_path | movieImage" [alt]="movie?.title" />
         <div class="flex flex-col p-4">
           <h3 class="text-lg font-semibold truncate mb-2">{{ movie?.title | uppercase }}</h3>
           <p class="text-sm">Released: {{ movie?.release_date | date:'yyyy-MM-dd' }}</p>
