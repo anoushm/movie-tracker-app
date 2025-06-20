@@ -141,3 +141,31 @@ background-color: #efa21b;
     z-index: -1;
   }
 }
+
+.funny-fact-indicator {
+  position: absolute;
+  right: 100px;
+  bottom: 10px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #efa21b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  animation: pulse 1.5s infinite;
+  border: none;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+.funny-fact {
+  margin-top: 0.5rem;
+  padding: 0.5rem;
+  background-color: #fff3e0;
+}
