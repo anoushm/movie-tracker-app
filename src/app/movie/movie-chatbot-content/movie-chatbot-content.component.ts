@@ -52,7 +52,7 @@ const SEND_PLANE_PATH =
         </div>
         
         <div class="funny-fact-wrapper">
-            <div class="funny-fact p-0 m-0 text-sm border border-[#efa21b]" *ngIf="showFunnyFact()">
+            <div class="funny-fact p-0 m-0 text-sm" *ngIf="showFunnyFact()">
                 <p class="m-0 p-0"><strong>Funny Fact:</strong> {{ funnyFact() }}</p>
             </div>
             <button class="funny-fact-indicator" *ngIf="indicatorVisible()" (click)="toggleFunnyFact()" aria-label="Show funny fact">
