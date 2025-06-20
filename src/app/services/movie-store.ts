@@ -107,7 +107,7 @@ export const MovieStore = signalStore(
                 });
             },
             async sendChatMessage(chatMessage: string) {
-                patchState(store, { loading: true });
+                patchState(store, { loading: true, funnyFact: null });
                 const chatId = store.chatId;
     
                 await chatService.sendChatMessage(chatId() ?? '', chatMessage).subscribe({

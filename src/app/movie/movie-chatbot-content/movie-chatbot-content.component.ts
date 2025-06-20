@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, ViewChild, ElementRef, inject, computed, AfterViewInit, effect } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ViewChild, ElementRef, inject, computed, AfterViewInit, effect, signal } from '@angular/core';
 import { MovieStore } from '../../services/movie-store';
 import { CommonModule } from '@angular/common';
 
@@ -51,8 +51,13 @@ const SEND_PLANE_PATH =
             }
         </div>
         
-        <div class="funny-fact p-0 m-0 text-sm border border-[#efa21b]" *ngIf="funnyFact()">
-            <p class="m-0 p-0"><strong>Funny Fact:</strong> {{ funnyFact() }}</p>
+        <div class="funny-fact-wrapper">
+            <div class="funny-fact p-0 m-0 text-sm border border-[#efa21b]" *ngIf="showFunnyFact()">
+                <p class="m-0 p-0"><strong>Funny Fact:</strong> {{ funnyFact() }}</p>
+            </div>
+            <button class="funny-fact-indicator" *ngIf="indicatorVisible()" (click)="toggleFunnyFact()" aria-label="Show funny fact">
+                🎉
+            </button>
         </div>
 
         <div class="chatbot-input-area" style="padding:10px 10px 100px;position:relative; background: rgb(244, 244, 244); border: 1px solid #ccc; border-radius: 0.25rem;">
@@ -101,6 +106,8 @@ export class MovieChatbotContentComponent implements AfterViewInit {
     protected messages = computed(() => this.store.chatResponse() || []);
     protected loading = computed(() => this.store.loading());
     protected funnyFact = computed(() => this.store.funnyFact() || '');
+    protected showFunnyFact = signal(false);
+    protected indicatorVisible = computed(() => !this.showFunnyFact() && !!this.funnyFact());
 
     public thinkingHeadPath = THINKING_HEAD_PATH;
     public thinkingTopPath = THINKING_TOP_PATH;
@@ -112,6 +119,13 @@ export class MovieChatbotContentComponent implements AfterViewInit {
             this.messages();
             queueMicrotask(() => this.scrollToBottom());
         });
+
+        effect(() => {
+            const fact = this.funnyFact();
+            if (fact) {
+                this.showFunnyFact.set(false);
+            }
+        });
     }
 
     private scrollToBottom(): void {
@@ -121,10 +135,15 @@ export class MovieChatbotContentComponent implements AfterViewInit {
         }
     }
 
+    public toggleFunnyFact(): void {
+        this.showFunnyFact.set(!this.showFunnyFact());
+    }
+
     public async sendChatMessage(message: string): Promise<void> {
         if (!message.trim() || this.loading()) return;
 
         try {
+            this.showFunnyFact.set(false);
             await this.store.sendChatMessage(message);
 
             this.chatbotInput.nativeElement.value = '';
