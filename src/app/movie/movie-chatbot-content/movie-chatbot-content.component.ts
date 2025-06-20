@@ -51,7 +51,7 @@ const SEND_PLANE_PATH =
             }
         </div>
         
-        <div class="funny-fact p-0 m-0 text-sm border border-[#efa21b]" *ngIf="funnyFact()">
+        <div class="funny-fact p-0 m-0 text-sm" *ngIf="funnyFact()">
             <p class="m-0 p-0"><strong>Funny Fact:</strong> {{ funnyFact() }}</p>
         </div>
 
