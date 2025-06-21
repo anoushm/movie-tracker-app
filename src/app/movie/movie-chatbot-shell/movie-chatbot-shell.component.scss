@@ -114,3 +114,27 @@
     height: 35px;
     z-index: 99;
 }
+
+#chatbotwrapper.list-open #page-content-chatbotwrapper {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.5s, margin 0.5s;
+}
+
+#chatbotwrapper.list-open #chatbar-chatbotwrapper {
+    width: 280px;
+    transition: width 0.5s;
+}
+
+#chatbotwrapper:not(.list-open) #page-content-chatbotwrapper {
+    margin-right: -300px;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.5s, margin 0.5s;
+}
+
+#chatbotwrapper:not(.list-open) #chatbar-chatbotwrapper {
+    width: 100%;
+    position: relative;
+    transition: width 0.5s;
+}
