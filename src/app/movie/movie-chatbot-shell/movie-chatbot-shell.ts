@@ -37,16 +37,15 @@ const CHAT_ICON_PATH =
             </div>
         </div>
         <button id="movie-list-toggle" class="movie-list-toggle md:hidden" (click)="toggleMovieList()">
-            <ng-container *ngIf="!showMovieList; else showChat">
+            @if (!showMovieList) {
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path [attr.d]="listIconPath" fill="black"></path>
                 </svg>
-            </ng-container>
-            <ng-template #showChat>
+            } @else {
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path [attr.d]="chatIconPath" fill="black"></path>
                 </svg>
-            </ng-template>
+            }
         </button>
     </div>
   `,
