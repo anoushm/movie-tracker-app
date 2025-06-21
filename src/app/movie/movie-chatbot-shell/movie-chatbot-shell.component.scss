@@ -100,3 +100,17 @@
 #chatbotwrapper .close-btn {
     opacity: 1;
 }
+
+#movie-list-toggle {
+    background: #efa21b;
+    position: fixed;
+    right: 0;
+    top: 75px;
+    border-radius: 5px 0 0 5px;
+    width: 25px;
+    text-align: center;
+    padding: 5px 0 5px 8px;
+    box-sizing: border-box;
+    height: 35px;
+    z-index: 99;
+}
