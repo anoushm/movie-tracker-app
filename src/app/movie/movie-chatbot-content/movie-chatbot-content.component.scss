@@ -149,13 +149,14 @@ background-color: #efa21b;
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background-color: #efa21b;
+  background-color: transparent;
+  border: none;
+  color: #efa21b;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   animation: pulse 1.5s infinite;
-  border: none;
 }
 
 @keyframes pulse {
@@ -165,8 +166,8 @@ background-color: #efa21b;
 }
 
 .funny-fact {
-  margin-top: 0.5rem;
-  padding: 0.5rem;
+  margin-top: 0;
+  padding: 0.25rem 0.5rem;
   background-color: #1A1A1A;
   color: whitesmoke;
   border: none;

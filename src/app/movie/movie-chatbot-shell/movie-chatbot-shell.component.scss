@@ -45,7 +45,14 @@
 
 @media screen and (max-width: 768px) {
     #chatbotwrapper.toggled #page-content-chatbotwrapper {
-        margin-right: -300px;
+        margin-left: 0;
+        margin-right: 0;
+        padding: 10px;
+    }
+    #chatbotwrapper #page-content-chatbotwrapper {
+        margin-left: 0;
+        margin-right: 0;
+        padding: 10px;
     }
 }
 
