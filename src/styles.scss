@@ -39,7 +39,7 @@ html, body{
   }
 
   .search-input {
-    @apply w-full border-2 border-[#efa21b] rounded-md py-2 pl-3 pr-8 text-black placeholder-gray-500 focus:outline-none focus:border-[#efa21b] focus:ring-2 focus:ring-[#efa21b] shadow-inner;
+    @apply w-full max-w-full border-2 border-[#efa21b] rounded-md py-2 pl-3 pr-8 text-black placeholder-gray-500 focus:outline-none focus:border-[#efa21b] focus:ring-2 focus:ring-[#efa21b] shadow-inner;
   }
 
   .search-icon {
@@ -74,7 +74,7 @@ html, body{
   }
 
   input {
-    @apply w-full max-w-md focus:outline-none;
+    @apply w-full focus:outline-none;
     border-bottom: solid black 1px;
   }
 }
