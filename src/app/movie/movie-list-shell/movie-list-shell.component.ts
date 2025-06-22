@@ -12,7 +12,9 @@ import { MoviePaginationComponent } from '../movie-pagination/movie-pagination.c
     <movie-search></movie-search>
     @if (movies()) {
       <movie-list [movies]="movies()" />
-      <movie-pagination [currentPage]="currentPage" (changePage)="onPageChange($event)"/>
+      @if(movies().length > 10) {
+        <movie-pagination [currentPage]="currentPage" (changePage)="onPageChange($event)"/>
+      }
     } @else {
     <div>Oops, no movies were found!</div>
     }
