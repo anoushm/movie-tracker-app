@@ -8,6 +8,10 @@ html, body{
   background: #000;
 }
 
+#wrapper{
+  position: relative;
+}
+
 @layer components {
   .pagination {
     display: flex;
@@ -110,4 +114,41 @@ html, body{
   }
 }
 
+@media screen and (max-width: 920px) {
+#wrapper #chatbar-chatbotwrapper{
+  display: none;
+}
+#wrapper.chatbot #chatbar-chatbotwrapper{
+  display: block;
+}
 
+#wrapper #sidebar-wrapper{
+  display: none;
+  transition: 0.3s ease;
+}
+
+#wrapper.Sidebar #sidebar-wrapper{
+  display: block !important;
+  z-index: 99;
+}
+  .sidebar-nav li:first-child a:nth-child(2),
+  .sidebar-nav li:first-child a:first-child{
+    display: none !important;
+  }
+  .desktop-chatbox-button{
+    display: none;
+  }
+}
+
+.desktop-chatbox-button{
+    position: fixed;
+    right: 5%;
+    bottom: 5%;
+}
+
+.desktop-chatbox-button button{
+  background: #efa21b;
+  width:100px;
+  height: 50px;
+  border-radius: 20px;
+}

@@ -43,12 +43,6 @@
     }
 }
 
-@media screen and (max-width: 768px) {
-    #chatbotwrapper.toggled #page-content-chatbotwrapper {
-        margin-right: -300px;
-    }
-}
-
 #chatbotwrapper #page-content-chatbotwrapper {
     flex: 1;
     padding: 20px 50px;
@@ -99,4 +93,20 @@
 
 #chatbotwrapper .close-btn {
     opacity: 1;
+}
+
+@media screen and (max-width: 920px) {
+  #chatbotwrapper.toggled #page-content-chatbotwrapper{
+    margin: 0 !important;
+  }
+  #chatbotwrapper #chatbar-chatbotwrapper{
+    position: fixed !important;
+    left: 2%;
+    z-index: 99;
+    right: 2%;
+    width: 95% !important;
+    background-color: #1a1a1af7 !important;
+    height: 50vh !important;
+    bottom: 0;
+  }
 }

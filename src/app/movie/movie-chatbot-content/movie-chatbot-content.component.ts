@@ -52,12 +52,12 @@ const FUNNY_BULB_BASE_PATH = 'M9.013 19.9a.75.75 0 0 1 .877-.597 11.319 11.319 0
                 </div>
             }
         </div>
-        
+
         <div class="funny-fact p-0 m-0 text-sm" *ngIf="showFunnyFact()">
             <p class="m-0 p-0"><strong>Funny Fact:</strong> {{ funnyFact() }}</p>
         </div>
 
-        <div class="chatbot-input-area" style="padding:10px 10px 100px;position:relative; background: rgb(244, 244, 244); border: 1px solid #ccc; border-radius: 0.25rem;">
+        <div class="chatbot-input-area">
             <textarea #chatbotInput rows="3" class="input-field text-black w-full mb-2" placeholder="Type your chat message here..." (keyup.enter)="sendChatMessage(chatbotInput.value)" (keydown.enter)="$event.preventDefault()"></textarea>
             <button class="funny-fact-indicator" *ngIf="indicatorVisible()" (click)="toggleFunnyFact()" aria-label="Show funny fact">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.5">
@@ -68,7 +68,7 @@ const FUNNY_BULB_BASE_PATH = 'M9.013 19.9a.75.75 0 0 1 .877-.597 11.319 11.319 0
                     <path d="M9 12c1 1 3 2 6 0" stroke="#000" stroke-width="1.2" stroke-linecap="round" fill="none"/>
                 </svg>
             </button>
-            <button class="send-button" style="position: absolute; width: 80px; display: flex; align-items: center; justify-content: center; gap: 10px; padding: 12px;height: 80px; right: 10px;bottom: 10px;" [disabled]="loading()" (click)="sendChatMessage(chatbotInput.value)">
+            <button class="send-button" [disabled]="loading()" (click)="sendChatMessage(chatbotInput.value)">
                 <ng-container *ngIf="loading(); else defaultText">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
                         <g transform="translate(0, 0) scale(1)">

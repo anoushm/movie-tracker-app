@@ -54,9 +54,38 @@ export class AppShellComponent implements OnInit {
     }
   }
 
+  public toggleSideMenu(event: MouseEvent): void {
+    event.preventDefault();
+    const wrapper = document.getElementById('wrapper');
+
+    if (wrapper) {
+      wrapper.classList.toggle('Sidebar');
+    }
+  }
+
+  public toggleContent(event: MouseEvent): void {
+    event.preventDefault();
+    const wrapper = document.getElementById('wrapper');
+
+    if (wrapper) {
+      wrapper.classList.toggle('content-toggled');
+    }
+  }
+
+
   public onChatbotSearchClick(event: MouseEvent): void {
   if (window.innerWidth <= 768) {
-    this.toggleMenu(event); 
+    this.toggleMenu(event);
   }
   }
+
+  public mobileChatbotSearchClick(event: MouseEvent): void {
+    event.preventDefault();
+    const wrapper = document.getElementById('wrapper');
+
+    if (wrapper) {
+      wrapper.classList.toggle('chatbot');
+    }
+  }
+
 }
