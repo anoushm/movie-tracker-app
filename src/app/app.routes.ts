@@ -27,6 +27,13 @@ export const routes: Routes = [
                 m => m.MovieListShellComponent
             ),
     },
+    {
+        path: 'trailer-demo',
+        loadComponent: () =>
+            import('./trailer-demo/trailer-demo.component').then(
+                m => m.TrailerDemoComponent
+            ),
+    },
     { path: '', redirectTo: 'movies/popular', pathMatch: 'full' },
     { path: '**', redirectTo: 'movies/popular', pathMatch: 'full' }
   

@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, ViewChild, ElementRef, inject, computed, AfterViewInit, effect, signal } from '@angular/core';
 import { MovieStore } from '../../services/movie-store';
 import { CommonModule } from '@angular/common';
+import { InlineTrailerComponent } from '../inline-trailer/inline-trailer.component';
 
 const THINKING_HEAD_PATH =
   'M50 30 C30 30, 20 40, 20 60 C20 80, 30 90, 50 90 C70 90, 80 80, 80 60 C80 40, 70 30, 50 30Z';
@@ -13,7 +14,7 @@ const FUNNY_BULB_BASE_PATH = 'M9.013 19.9a.75.75 0 0 1 .877-.597 11.319 11.319 0
 
 @Component({
     selector: 'movie-chatbot-content',
-    imports: [CommonModule],
+    imports: [CommonModule, InlineTrailerComponent],
     template: `
     <div class="chatbot-container">
         <div class="chatbot-header">
@@ -48,7 +49,23 @@ const FUNNY_BULB_BASE_PATH = 'M9.013 19.9a.75.75 0 0 1 .877-.597 11.319 11.319 0
                             <line x1="44" y1="18" x2="50" y2="10" stroke="black" stroke-width="2" />
                         </svg>
                     </div>
-                    <div class="message-content">{{ message.text }}</div>
+                    <div class="message-content">
+                        {{ message.text }}
+                        
+                        <!-- Display trailers for movies with trailer data -->
+                        @if (message.movieList && message.movieList.length > 0) {
+                            @for (movie of message.movieList; track movie.id) {
+                                @if (movie.trailer) {
+                                    <div class="trailer-section">
+                                        <p class="trailer-intro">
+                                            🎬 Here's the trailer for <strong>{{ movie.title }}</strong>:
+                                        </p>
+                                        <app-inline-trailer [trailer]="movie.trailer"></app-inline-trailer>
+                                    </div>
+                                }
+                            }
+                        }
+                    </div>
                 </div>
             }
         </div>
