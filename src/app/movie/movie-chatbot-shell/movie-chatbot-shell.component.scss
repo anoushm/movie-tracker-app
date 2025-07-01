@@ -101,12 +101,13 @@
   }
   #chatbotwrapper #chatbar-chatbotwrapper{
     position: fixed !important;
-    left: 2%;
-    z-index: 99;
-    right: 2%;
-    width: 95% !important;
-    background-color: #1a1a1af7 !important;
-    height: 50vh !important;
-    bottom: 0;
+    left: 0;
+    z-index: 9;
+    right: 0;
+    background-color: rgba(26, 26, 26, 0.968627451) !important;
+    height: calc(100vh - 125px) !important;
+    width: 100% !important;
+    top: 55px;
+    border-radius: 0 !important;
   }
 }

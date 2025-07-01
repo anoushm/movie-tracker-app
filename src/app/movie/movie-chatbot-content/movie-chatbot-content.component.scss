@@ -97,8 +97,9 @@ textarea:focus {
 .chatbot-header{
   position: relative;
 }
+.chatbot-header p,
 .chatbot-header h1{
-  margin: 0 0 15px;
+  margin: 5px !important;
 }
 .chatbot-messages::-webkit-scrollbar-track,
 .input-field::-webkit-scrollbar-track{
@@ -144,7 +145,7 @@ background-color: #efa21b;
 
 .funny-fact-indicator {
   position: absolute;
-  right: 100px;
+  right: 30px;
   bottom: 10px;
   width: 40px;
   height: 40px;
@@ -195,6 +196,12 @@ background-color: #efa21b;
 }
 
 @media screen and (max-width: 920px) {
+  .chatbot-container{
+    padding:0;
+  }
+  .chatbot-header{
+    padding: 5px 15px;
+  }
   .chatbot-header h1,
   .chatbot-header p{
     margin: 0 !important;
@@ -202,11 +209,17 @@ background-color: #efa21b;
   .send-button{
     width: 40px;
     height: 40px;
+    bottom:auto;
+    top:20px;
   }
   .chatbot-input-area{
-    padding:10px 10px 40px;
+    padding:10px 60px 10px 10px;
+    background: #2C2C2C;
+    border: none;
+    color: #fff;
   }
   .input-field{
     height: 40px !important;
+    color: #fff !important;
   }
 }

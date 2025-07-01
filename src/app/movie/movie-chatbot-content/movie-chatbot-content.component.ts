@@ -16,12 +16,30 @@ const FUNNY_BULB_BASE_PATH = 'M9.013 19.9a.75.75 0 0 1 .877-.597 11.319 11.319 0
     imports: [CommonModule],
     template: `
     <div class="chatbot-container">
-        <div class="chatbot-header">
-            <h1>Chatbot</h1>
-            <p>Ask me anything about movies!</p>
+      <div class="chatbot-header flex w-full">
+        <div class="header-block text-white w-2/3">
+          <h1 class="text-lg font-bold">Chatbot</h1>
+          <p class="text-sm text-gray-400">Ask me anything about movies!</p>
         </div>
 
-        <div #messagesContainer class="chatbot-messages" style="overflow-y: auto; padding: 15px;">
+        <div class="header-block w-1/3 text-right">
+          <button
+            class="funny-fact-indicator rounded-full bg-yellow-400 p-2 shadow-lg hover:bg-yellow-300 transition"
+            aria-label="Show funny fact"
+            (click)="toggleFunnyFact()"
+            *ngIf="indicatorVisible()"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path [attr.d]="funnyBulbBodyPath" fill="#FFD966" stroke="#000"/>
+              <path fill-rule="evenodd" clip-rule="evenodd" [attr.d]="funnyBulbBasePath" fill="#FFD966" stroke="#000"/>
+              <circle cx="9" cy="9" r="1" fill="#000" />
+              <circle cx="15" cy="9" r="1" fill="#000" />
+              <path d="M9 12c1 1 3 2 6 0" stroke="#000" stroke-width="1.2" stroke-linecap="round" fill="none"/>
+            </svg>
+          </button>
+      </div>
+    </div>
+    <div #messagesContainer class="chatbot-messages" style="overflow-y: auto; padding: 15px;">
             @for (message of messages(); track message.text) {
                 <div class="message" [class.user]="message.role === 'user'" [class.assistant]="message.role === 'assistant'">
                     <div *ngIf="message.role === 'user'" class="chat-icon">
@@ -59,15 +77,6 @@ const FUNNY_BULB_BASE_PATH = 'M9.013 19.9a.75.75 0 0 1 .877-.597 11.319 11.319 0
 
         <div class="chatbot-input-area">
             <textarea #chatbotInput rows="3" class="input-field text-black w-full mb-2" placeholder="Type your chat message here..." (keyup.enter)="sendChatMessage(chatbotInput.value)" (keydown.enter)="$event.preventDefault()"></textarea>
-            <button class="funny-fact-indicator" *ngIf="indicatorVisible()" (click)="toggleFunnyFact()" aria-label="Show funny fact">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.5">
-                    <path [attr.d]="funnyBulbBodyPath" fill="#FFD966" stroke="#000"/>
-                    <path fill-rule="evenodd" clip-rule="evenodd" [attr.d]="funnyBulbBasePath" fill="#FFD966" stroke="#000"/>
-                    <circle cx="9" cy="9" r="1" fill="#000" />
-                    <circle cx="15" cy="9" r="1" fill="#000" />
-                    <path d="M9 12c1 1 3 2 6 0" stroke="#000" stroke-width="1.2" stroke-linecap="round" fill="none"/>
-                </svg>
-            </button>
             <button class="send-button" [disabled]="loading()" (click)="sendChatMessage(chatbotInput.value)">
                 <ng-container *ngIf="loading(); else defaultText">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">

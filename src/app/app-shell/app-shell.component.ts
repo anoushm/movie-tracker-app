@@ -79,13 +79,4 @@ export class AppShellComponent implements OnInit {
   }
   }
 
-  public mobileChatbotSearchClick(event: MouseEvent): void {
-    event.preventDefault();
-    const wrapper = document.getElementById('wrapper');
-
-    if (wrapper) {
-      wrapper.classList.toggle('chatbot');
-    }
-  }
-
 }
