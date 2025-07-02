@@ -84,6 +84,10 @@
     height: 35px;
 }
 
+#chatbot-container{
+    position: relative !important;
+}
+
 #chatbotwrapper.toggled .expand-btn {
     opacity: 0;
     visibility: hidden;
@@ -96,6 +100,9 @@
 }
 
 @media screen and (max-width: 920px) {
+  #chatbotwrapper #page-content-chatbotwrapper{
+    padding: 0 !important;
+  }
   #chatbotwrapper.toggled #page-content-chatbotwrapper{
     margin: 0 !important;
   }
@@ -105,9 +112,9 @@
     z-index: 9;
     right: 0;
     background-color: rgba(26, 26, 26, 0.968627451) !important;
-    height: calc(100vh - 125px) !important;
+    height: calc(100vh - 137px) !important;
     width: 100% !important;
-    top: 55px;
+    top: 50px;
     border-radius: 0 !important;
   }
 }

@@ -13,12 +13,12 @@ const HEART_FILLED_PATH =
     selector: 'movie-card',
     template: `
   @if (movie(); as movie) {
-    <div class="w-full m-1 shadow-lg hover:shadow-xl transition-shadow rounded-lg bg-[#1A1A1A] text-white flex flex-col border-b-2 border-transparent hover:border-b-[#efa21b]">
+    <div class="card-container w-full m-1 shadow-lg hover:shadow-xl transition-shadow rounded-lg bg-[#1A1A1A] text-white flex flex-col border-b-2 border-transparent hover:border-b-[#efa21b]">
         <img class="w-full h-auto rounded-t-lg" [src]="movie?.poster_path | movieImage" [alt]="movie?.title" />
-        <div class="flex flex-col p-4">
-          <h3 class="text-lg font-semibold truncate mb-2">{{ movie?.title | uppercase }}</h3>
-          <p class="text-sm">Released: {{ movie?.release_date | date:'yyyy-MM-dd' }}</p>
-          <div class="mt-1 mb-5 text-sm">Vote Count: {{ movie?.vote_count }}</div>
+        <div class="flex flex-col p-4 card-content">
+          <h3 class="text-lg font-semibold truncate mb-2">{{ movie?.title }}</h3>
+          <p class="mb-1 mt-0 text-sm">Released: {{ movie?.release_date | date:'yyyy' }}</p>
+          <div class="mb-1 text-sm">Vote Count: {{ movie?.vote_count }}</div>
           <div class="flex items-center">
             <movie-star-rating></movie-star-rating>
             <div class="flex-grow text-right">

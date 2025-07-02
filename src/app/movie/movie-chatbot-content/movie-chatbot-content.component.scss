@@ -8,8 +8,8 @@
 }
 
 .message {
-    margin-bottom: 1rem;
-    padding: 0.5rem;
+    margin-bottom: 1.3rem;
+    padding: 0.8rem !important;
     border-radius: 0.5rem;
     max-width: 80%;
 }
@@ -96,6 +96,8 @@ textarea:focus {
 
 .chatbot-header{
   position: relative;
+  background: #2C2C2C;
+  border-bottom: 1px solid #4b4b4b;
 }
 .chatbot-header p,
 .chatbot-header h1{
@@ -169,9 +171,21 @@ background-color: #efa21b;
 .funny-fact {
   margin-top: 0;
   padding: 0.25rem 0.5rem;
-  background-color: #1A1A1A;
-  color: whitesmoke;
+  background-color: #efa21b;
+  color: #000;
   border: none;
+  position: relative;
+}
+.funny-fact:after{
+  position: absolute;
+  top: -13px;
+  right:15px;
+  width:70px;
+  background: #FFE940;
+  border-radius: 5px;
+  content: 'fun fact';
+  text-align: center;
+  padding: 2px 10px;
 }
 
 .send-button{
@@ -207,13 +221,14 @@ background-color: #efa21b;
     margin: 0 !important;
   }
   .send-button{
-    width: 40px;
-    height: 40px;
+    width: 50px;
+    height: 50px;
     bottom:auto;
-    top:20px;
+    top:13px;
+    right:15px !important;
   }
   .chatbot-input-area{
-    padding:10px 60px 10px 10px;
+    padding:15px 70px 15px 15px;
     background: #2C2C2C;
     border: none;
     color: #fff;
@@ -221,5 +236,7 @@ background-color: #efa21b;
   .input-field{
     height: 40px !important;
     color: #fff !important;
+    padding: 11px 0 0 !important;
+    margin: 0 !important;
   }
 }

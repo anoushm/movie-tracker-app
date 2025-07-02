@@ -39,6 +39,9 @@ const FUNNY_BULB_BASE_PATH = 'M9.013 19.9a.75.75 0 0 1 .877-.597 11.319 11.319 0
           </button>
       </div>
     </div>
+    <div *ngIf="loading()" class="chatbot-loading-indicator">
+      <img src="./assets/icon-think.png" style="width:50px;">
+    </div>
     <div #messagesContainer class="chatbot-messages" style="overflow-y: auto; padding: 15px;">
             @for (message of messages(); track message.text) {
                 <div class="message" [class.user]="message.role === 'user'" [class.assistant]="message.role === 'assistant'">
@@ -69,11 +72,12 @@ const FUNNY_BULB_BASE_PATH = 'M9.013 19.9a.75.75 0 0 1 .877-.597 11.319 11.319 0
                     <div class="message-content">{{ message.text }}</div>
                 </div>
             }
+            <div class="message funny-fact p-0 m-0 text-sm" *ngIf="showFunnyFact()">
+                <p class="m-0 p-0"><strong>Funny Fact:</strong> {{ funnyFact() }}</p>
+            </div>
         </div>
 
-        <div class="funny-fact p-0 m-0 text-sm" *ngIf="showFunnyFact()">
-            <p class="m-0 p-0"><strong>Funny Fact:</strong> {{ funnyFact() }}</p>
-        </div>
+
 
         <div class="chatbot-input-area">
             <textarea #chatbotInput rows="3" class="input-field text-black w-full mb-2" placeholder="Type your chat message here..." (keyup.enter)="sendChatMessage(chatbotInput.value)" (keydown.enter)="$event.preventDefault()"></textarea>
@@ -99,9 +103,7 @@ const FUNNY_BULB_BASE_PATH = 'M9.013 19.9a.75.75 0 0 1 .877-.597 11.319 11.319 0
                     </svg>
                 </ng-container>
                 <ng-template #defaultText>
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="50" height="50" fill="#000">
-                        <path [attr.d]="sendPlanePath" />
-                    </svg>
+                    <img src="./assets/right-arrow.png" style="width:50px;filter: invert(1);">
                 </ng-template>
             </button>
         </div>

@@ -189,10 +189,19 @@ html, body{
   color: rgb(239 162 27);
 }
 
+.tab-button img{
+  padding: 5px;
+}
+
+.tab-button.active .tab-icon{
+  background: rgb(239 162 27);
+  border-radius: 5px;
+}
+
 .tab-button.active::after {
   content: '';
   position: absolute;
-  bottom: 0;
+  top: 0;
   left: 0;
   right: 0;
   height: 3px;
@@ -230,4 +239,64 @@ html, body{
 
 .funny-fact-indicator{
   background: #efa21b !important;
+}
+
+@media screen and (max-width: 920px) {
+  movie-card .card-container{
+    padding: 10px !important;
+  }
+
+  movie-card .card-container .card-content{
+    padding: 1rem 0 0;
+  }
+
+  movie-card .card-container .card-content h3{
+    font-size: 1.0rem;
+    line-height: 1.125rem;
+    text-transform: capitalize;
+    font-weight: 400 !important;
+    color: rgb(239, 162, 27);
+  }
+}
+
+.chatbot-loading-indicator{
+  position: absolute;
+  left:0;
+  right:0;
+  height: calc(100vh - 142px) !important;
+  width: 100% !important;
+  top: 0;
+  background-color: rgba(44, 44, 44, 0.5);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 9;
+}
+
+.chatbot-loading-indicator img{
+  animation: zoomInOut 2s infinite ease-in-out;
+}
+
+@keyframes zoomInOut {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.5);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@media screen and (min-width: 921px) {
+.send-button img{
+  width:40px !important;
+}
+.chatbot-loading-indicator{
+  height: 100vh !important;
+}
 }
