@@ -111,10 +111,11 @@
     left: 0;
     z-index: 9;
     right: 0;
-    background-color: rgba(26, 26, 26, 0.968627451) !important;
-    height: calc(100vh - 137px) !important;
+    background-color: rgba(26, 26, 26, 1) !important;
+    height: inherit !important;
     width: 100% !important;
     top: 50px;
     border-radius: 0 !important;
+    bottom: 87px;
   }
 }

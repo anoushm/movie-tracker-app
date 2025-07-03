@@ -40,34 +40,59 @@ const FUNNY_BULB_BASE_PATH = 'M9.013 19.9a.75.75 0 0 1 .877-.597 11.319 11.319 0
       </div>
     </div>
     <div *ngIf="loading()" class="chatbot-loading-indicator">
-      <img src="./assets/icon-think.png" style="width:50px;">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+          <g transform="translate(0, 0) scale(1)">
+              <path [attr.d]="thinkingHeadPath" fill="#efa21b" stroke="#000" stroke-width="4" />
+              <path [attr.d]="thinkingTopPath" fill="none" stroke="#000" stroke-width="3" />
+              <g id="thinkingDots">
+                  <circle cx="40" cy="55" r="5" fill="#000">
+                      <animate attributeName="opacity" values="0;1;0" dur="1.5s" repeatCount="indefinite" begin="0s" />
+                  </circle>
+                  <circle cx="50" cy="55" r="5" fill="#000">
+                      <animate attributeName="opacity" values="0;1;0" dur="1.5s" repeatCount="indefinite" begin="0.5s" />
+                  </circle>
+                  <circle cx="60" cy="55" r="5" fill="#000">
+                      <animate attributeName="opacity" values="0;1;0" dur="1.5s" repeatCount="indefinite" begin="1s" />
+                  </circle>
+              </g>
+              <path [attr.d]="thinkingSmilePath" fill="none" stroke="#000" stroke-width="3" stroke-linecap="round" />
+          </g>
+      </svg>
     </div>
     <div #messagesContainer class="chatbot-messages" style="overflow-y: auto; padding: 15px;">
             @for (message of messages(); track message.text) {
                 <div class="message" [class.user]="message.role === 'user'" [class.assistant]="message.role === 'assistant'">
                     <div *ngIf="message.role === 'user'" class="chat-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="50" height="50">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+                      <g transform="translate(0, 0) scale(1)">
+                        <!-- User head -->
+                        <circle cx="50" cy="35" r="20" fill="#fff" stroke="#000" stroke-width="4"/>
 
-                      <circle cx="32" cy="32" r="30" fill="transparent" stroke-width="4" />
-                      <circle cx="32" cy="24" r="12" fill="#fff" stroke="#efa21b" stroke-width="2" />
-                      <circle cx="32" cy="24" r="8" fill="#efa21b" />
-                      <path
-                      d="M16 38 C 16 45, 48 45, 48 38"
-                      fill="#fff"
-                      stroke="#efa21b"
-                      stroke-width="2"
-                      />
+                        <!-- Shoulders / torso -->
+                        <path d="M20 80 Q50 60 80 80" fill="#fff" stroke="#000" stroke-width="4"/>
+
+                        <!-- Decorative collar line -->
+                        <path d="M35 70 Q50 65 65 70" fill="none" stroke="#000" stroke-width="3" stroke-linecap="round"/>
+                      </g>
                     </svg>
+
                     </div>
                     <div *ngIf="message.role === 'assistant'" class="chat-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
-                            <circle cx="32" cy="32" r="32" fill="#efa21b" />
-                            <rect x="12" y="18" width="40" height="28" rx="4" ry="4" fill="white" />
-                            <rect x="16" y="22" width="32" height="20" fill="black" />
-                            <rect x="20" y="28" width="24" height="8" fill="#efa21b" />
-                            <line x1="20" y1="18" x2="14" y2="10" stroke="black" stroke-width="2" />
-                            <line x1="44" y1="18" x2="50" y2="10" stroke="black" stroke-width="2" />
-                        </svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+                        <g transform="translate(0, 0) scale(1)">
+                            <path [attr.d]="thinkingHeadPath" fill="#efa21b" stroke="#000" stroke-width="4" />
+                            <path [attr.d]="thinkingTopPath" fill="none" stroke="#000" stroke-width="3" />
+                            <g id="thinkingDots">
+                                <circle cx="40" cy="55" r="5" fill="#000">
+                                </circle>
+                                <circle cx="50" cy="55" r="5" fill="#000">
+                                </circle>
+                                <circle cx="60" cy="55" r="5" fill="#000">
+                                </circle>
+                            </g>
+                            <path [attr.d]="thinkingSmilePath" fill="none" stroke="#000" stroke-width="3" stroke-linecap="round" />
+                        </g>
+                    </svg>
                     </div>
                     <div class="message-content">{{ message.text }}</div>
                 </div>

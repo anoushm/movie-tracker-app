@@ -142,16 +142,49 @@ html, body{
 
 .desktop-chatbox-button{
     position: fixed;
-    right: 5%;
-    bottom: 5%;
+    right: 3%;
+    bottom: 3%;
 }
 
-.desktop-chatbox-button button{
+.desktop-chatbox-button button {
   background: #efa21b;
-  width:100px;
-  height: 50px;
-  border-radius: 20px;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  z-index: 1;
+  box-shadow: 0 0 20px #efa21b;
+  transition: box-shadow 0.3s ease;
+  animation: glowPulse 2s infinite ease-in-out;
+  border:2px solid #000;
 }
+
+
+.desktop-chatbox-button button svg{
+  width: 65px;
+  height: 65px;
+}
+
+@keyframes glowPulse {
+  0% {
+    box-shadow: 0 0 10px #fff;
+  }
+  50% {
+    box-shadow: 0 0 30px #fff;
+  }
+  100% {
+    box-shadow: 0 0 10px #fff;
+  }
+}
+
+/* Optional: Glow on hover to make it more interactive */
+.desktop-chatbox-button button:hover {
+  box-shadow: 0 0 40px #efa21b;
+  background: #efa21b !important;
+}
+
 
 .chatbot-tab-container{
     position: fixed;
@@ -232,8 +265,9 @@ html, body{
 }
 
 @media screen and (min-width: 921px) {
+  .chatbot-loading-indicator,
   .chatbot-tab-container{
-    display: none;
+    display: none !important;
   }
 }
 
@@ -263,7 +297,7 @@ html, body{
   position: absolute;
   left:0;
   right:0;
-  height: calc(100vh - 142px) !important;
+  height: 100% !important;
   width: 100% !important;
   top: 0;
   background-color: rgba(44, 44, 44, 0.5);
