@@ -291,6 +291,10 @@ html, body{
     font-weight: 400 !important;
     color: rgb(239, 162, 27);
   }
+
+  #chatbotwrapper.toggled{
+    padding-bottom: 75px !important;
+  }
 }
 
 .chatbot-loading-indicator{
