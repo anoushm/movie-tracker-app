@@ -18,7 +18,8 @@ const FUNNY_BULB_BASE_PATH = 'M9.013 19.9a.75.75 0 0 1 .877-.597 11.319 11.319 0
     <div class="chatbot-container">
       <div class="chatbot-header flex w-full">
         <div class="header-block text-white w-2/3">
-          <h1 class="font-bold" style="font-size:16px;">Chatbot <span style="font-size:10px;">- Ask me anything about movies!</span></h1>
+          <h1 class="text-lg font-bold">Chatbot</h1>
+          <p >Ask me anything about movies!</p>
         </div>
 
         <div class="header-block w-1/3 text-right">
