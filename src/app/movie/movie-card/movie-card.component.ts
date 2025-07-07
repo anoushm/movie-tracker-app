@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
 import { TmdbMovieModel } from '../../shared/models/tmdb-movie.model';
 import { MovieImagePipe } from "../../shared/pipes/movie-image.pipe";
-import { DatePipe, NgClass, UpperCasePipe } from '@angular/common';
+import { DatePipe, NgClass } from '@angular/common';
 import { MovieStarRatingComponent } from "../movie-star-rating/movie-star-rating.component";
 
 const HEART_OUTLINE_PATH =
@@ -60,7 +60,7 @@ const HEART_FILLED_PATH =
   }
   `,
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [MovieImagePipe, DatePipe, UpperCasePipe, MovieStarRatingComponent, NgClass],
+    imports: [MovieImagePipe, DatePipe, MovieStarRatingComponent, NgClass],
     styles: []
 })
 export class MovieCardComponent {
