@@ -20,9 +20,6 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
           allowfullscreen
         ></iframe>
       }
-      <div class="fallback-link">
-        <a [href]="url" target="_blank" rel="noopener">Open in YouTube</a>
-      </div>
     </div>
   `,
   styleUrls: ['./movie-trailer.component.scss'],
