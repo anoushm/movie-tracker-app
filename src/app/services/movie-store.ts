@@ -12,6 +12,7 @@ import { TmdbMovieModel } from '../shared/models/tmdb-movie.model';
 import { ChatService } from './chat.service';
 import { ChatResponseModel } from '../shared/models/chat-response.model';
 
+
 const initialMovieState = {
     movies: [] as TmdbMovieModel[],
     genres: [] as TmdbMovieGenreModel[],
@@ -32,7 +33,7 @@ export const MovieStore = signalStore(
         (store, movieService = inject(MovieService), chatService = inject(ChatService)) => ({
             async loadMovies(category: string,
                 page: number = 1,
-                sortBy = 'popularity.desc') {
+                sortBy = 'popularity.desc'): Promise<void> {
                 patchState(store, { loading: true });
 
                 await movieService.getMovieList(category, page, sortBy);
@@ -47,7 +48,7 @@ export const MovieStore = signalStore(
 
                 });
             },
-            async loadGenres() {
+            async loadGenres(): Promise<void> {
                 patchState(store, { loading: true });
 
                 await movieService.getGenres().subscribe({
@@ -62,7 +63,7 @@ export const MovieStore = signalStore(
             async loadMoviesByGenre(genre: TmdbMovieGenreModel['id'],
                 page = 1,
                 sortBy = 'popularity.desc'
-            ) {
+            ): Promise<void> {
                 patchState(store, { loading: true });
 
                 await movieService.getMoviesByGenre(genre, page, sortBy);
@@ -77,7 +78,7 @@ export const MovieStore = signalStore(
 
                 });
             },
-            async searchMovies(search: string) {
+            async searchMovies(search: string): Promise<void> {
                 patchState(store, { filter: { search } });
 
                 await movieService.searchMovies(search);
@@ -91,10 +92,10 @@ export const MovieStore = signalStore(
                     }
                 });
             },
-            async updateFavoriteMovies(movie: TmdbMovieModel) {
+            async updateFavoriteMovies(movie: TmdbMovieModel): Promise<void> {
                 await movieService.updateFavoriteMovies(movie);
             },
-            async loadChatId() {
+            async loadChatId(): Promise<void> {
                 patchState(store, { loading: true });
 
                 await chatService.getChatId().subscribe({
@@ -106,20 +107,34 @@ export const MovieStore = signalStore(
                     }
                 });
             },
-            async sendChatMessage(chatMessage: string) {
+            async sendChatMessage(chatMessage: string): Promise<void> {
                 patchState(store, { loading: true, funnyFact: null });
                 const chatId = store.chatId;
-    
-                await chatService.sendChatMessage(chatId() ?? '', chatMessage).subscribe({
-                    next: (response: { funnyFact?: string, messages: ChatResponseModel[] }) => {
-                        const movies = response.messages.slice().reverse().find((m) => m.role === 'assistant')?.movieList ?? [];
 
-                        patchState(store, { funnyFact: response.funnyFact, chatResponse: response.messages, movies, loading: false });
-                    },
-                    error: (error) => {
-                        patchState(store, { error, loading: false });
-                    }
-                });
+                await chatService
+                    .sendChatMessage(chatId() ?? '', chatMessage)
+                    .subscribe({
+                        next: (response: {
+                            funnyFact?: string;
+                            messages: ChatResponseModel[];
+                        }) => {
+                            const movies =
+                                response.messages
+                                    .slice()
+                                    .reverse()
+                                    .find((m) => m.role === 'assistant')?.movieList ?? [];
+
+                            patchState(store, {
+                                funnyFact: response.funnyFact,
+                                chatResponse: response.messages,
+                                movies,
+                                loading: false,
+                            });
+                        },
+                        error: (error) => {
+                            patchState(store, { error, loading: false });
+                        },
+                    });
             }
         }),
     ),
