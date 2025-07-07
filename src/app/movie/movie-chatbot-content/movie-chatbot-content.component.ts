@@ -1,6 +1,9 @@
 import { ChangeDetectionStrategy, Component, ViewChild, ElementRef, inject, computed, AfterViewInit, effect, signal } from '@angular/core';
 import { MovieStore } from '../../services/movie-store';
 import { CommonModule } from '@angular/common';
+import { MovieTrailerComponent } from '../movie-trailer/movie-trailer.component';
+import { TrailerMessage } from '../../shared/models/trailer-message.model';
+import { TrailerParser } from '../../services/trailer-parser';
 
 const THINKING_HEAD_PATH =
   'M50 30 C30 30, 20 40, 20 60 C20 80, 30 90, 50 90 C70 90, 80 80, 80 60 C80 40, 70 30, 50 30Z';
@@ -13,7 +16,7 @@ const FUNNY_BULB_BASE_PATH = 'M9.013 19.9a.75.75 0 0 1 .877-.597 11.319 11.319 0
 
 @Component({
     selector: 'movie-chatbot-content',
-    imports: [CommonModule],
+    imports: [CommonModule, MovieTrailerComponent],
     template: `
     <div class="chatbot-container">
       <div class="chatbot-header flex w-full">
@@ -23,23 +26,25 @@ const FUNNY_BULB_BASE_PATH = 'M9.013 19.9a.75.75 0 0 1 .877-.597 11.319 11.319 0
         </div>
 
         <div class="header-block w-1/3 text-right">
-          <button
-            class="funny-fact-indicator rounded-full bg-yellow-400 p-2 shadow-lg hover:bg-yellow-300 transition"
-            aria-label="Show funny fact"
-            (click)="toggleFunnyFact()"
-            *ngIf="indicatorVisible()"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <path [attr.d]="funnyBulbBodyPath" fill="#FFD966" stroke="#000"/>
-              <path fill-rule="evenodd" clip-rule="evenodd" [attr.d]="funnyBulbBasePath" fill="#FFD966" stroke="#000"/>
-              <circle cx="9" cy="9" r="1" fill="#000" />
-              <circle cx="15" cy="9" r="1" fill="#000" />
-              <path d="M9 12c1 1 3 2 6 0" stroke="#000" stroke-width="1.2" stroke-linecap="round" fill="none"/>
-            </svg>
-          </button>
+          @if(indicatorVisible()) {
+            <button
+              class="funny-fact-indicator rounded-full bg-yellow-400 p-2 shadow-lg hover:bg-yellow-300 transition"
+              aria-label="Show funny fact"
+              (click)="toggleFunnyFact()"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path [attr.d]="funnyBulbBodyPath" fill="#FFD966" stroke="#000"/>
+                <path fill-rule="evenodd" clip-rule="evenodd" [attr.d]="funnyBulbBasePath" fill="#FFD966" stroke="#000"/>
+                <circle cx="9" cy="9" r="1" fill="#000" />
+                <circle cx="15" cy="9" r="1" fill="#000" />
+                <path d="M9 12c1 1 3 2 6 0" stroke="#000" stroke-width="1.2" stroke-linecap="round" fill="none"/>
+              </svg>
+            </button>
+          }
       </div>
     </div>
-    <div *ngIf="loading()" class="chatbot-loading-indicator">
+    @if(loading()) {
+    <div class="chatbot-loading-indicator">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
           <g transform="translate(0, 0) scale(1)">
               <path [attr.d]="thinkingHeadPath" fill="#efa21b" stroke="#000" stroke-width="4" />
@@ -59,10 +64,12 @@ const FUNNY_BULB_BASE_PATH = 'M9.013 19.9a.75.75 0 0 1 .877-.597 11.319 11.319 0
           </g>
       </svg>
     </div>
+    }
     <div #messagesContainer class="chatbot-messages" style="overflow-y: auto; padding: 15px;">
             @for (message of messages(); track message.text) {
                 <div class="message" [class.user]="message.role === 'user'" [class.assistant]="message.role === 'assistant'">
-                    <div *ngIf="message.role === 'user'" class="chat-icon">
+                    @if(message.role === 'user') {
+                    <div class="chat-icon">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
                       <g transform="translate(0, 0) scale(1)">
                         <!-- User head -->
@@ -77,7 +84,8 @@ const FUNNY_BULB_BASE_PATH = 'M9.013 19.9a.75.75 0 0 1 .877-.597 11.319 11.319 0
                     </svg>
 
                     </div>
-                    <div *ngIf="message.role === 'assistant'" class="chat-icon">
+                    } @else {
+                    <div class="chat-icon">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
                         <g transform="translate(0, 0) scale(1)">
                             <path [attr.d]="thinkingHeadPath" fill="#efa21b" stroke="#000" stroke-width="4" />
@@ -94,12 +102,25 @@ const FUNNY_BULB_BASE_PATH = 'M9.013 19.9a.75.75 0 0 1 .877-.597 11.319 11.319 0
                         </g>
                     </svg>
                     </div>
-                    <div class="message-content">{{ message.text }}</div>
+                    }
+                    <div class="message-content">
+                      @for (segment of message.segments; track segment) {
+                        <ng-container [ngSwitch]="segment.type">
+                          @if(segment.type === 'text') {
+                            <span [innerHTML]="segment.html"></span>
+                          } @else {
+                            <movie-trailer [url]="segment.url!" [title]="segment.title"></movie-trailer>
+                          }
+                        </ng-container>
+                      }
+                    </div>
                 </div>
             }
-            <div class="message funny-fact p-0 m-0 text-sm" *ngIf="showFunnyFact()">
+            @if(showFunnyFact()) {
+            <div class="message funny-fact p-0 m-0 text-sm">
                 <p class="m-0 p-0"><strong>Funny Fact:</strong> {{ funnyFact() }}</p>
             </div>
+            }
         </div>
 
 
@@ -107,7 +128,7 @@ const FUNNY_BULB_BASE_PATH = 'M9.013 19.9a.75.75 0 0 1 .877-.597 11.319 11.319 0
         <div class="chatbot-input-area">
             <textarea #chatbotInput rows="3" class="input-field text-black w-full mb-2" placeholder="Type your chat message here..." (keyup.enter)="sendChatMessage(chatbotInput.value)" (keydown.enter)="$event.preventDefault()"></textarea>
             <button class="send-button" [disabled]="loading()" (click)="sendChatMessage(chatbotInput.value)">
-                <ng-container *ngIf="loading(); else defaultText">
+                @if(loading()) {
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
                         <g transform="translate(0, 0) scale(1)">
                             <path [attr.d]="thinkingHeadPath" fill="#efa21b" stroke="#000" stroke-width="4" />
@@ -126,10 +147,9 @@ const FUNNY_BULB_BASE_PATH = 'M9.013 19.9a.75.75 0 0 1 .877-.597 11.319 11.319 0
                             <path [attr.d]="thinkingSmilePath" fill="none" stroke="#000" stroke-width="3" stroke-linecap="round" />
                         </g>
                     </svg>
-                </ng-container>
-                <ng-template #defaultText>
+                } @else {
                     <img src="./assets/right-arrow.png" style="width:50px;filter: invert(1);">
-                </ng-template>
+                }
             </button>
         </div>
     </div>
@@ -140,16 +160,20 @@ const FUNNY_BULB_BASE_PATH = 'M9.013 19.9a.75.75 0 0 1 .877-.597 11.319 11.319 0
 
 
 export class MovieChatbotContentComponent implements AfterViewInit {
-    @ViewChild('chatbotInput') chatbotInput!: ElementRef<HTMLTextAreaElement>;
-    @ViewChild('messagesContainer') messagesContainer!: ElementRef<HTMLDivElement>;
+    @ViewChild('chatbotInput') public chatbotInput!: ElementRef<HTMLTextAreaElement>;
+    @ViewChild('messagesContainer') public messagesContainer!: ElementRef<HTMLDivElement>;
 
     private store = inject(MovieStore);
+    private trailerParser = new TrailerParser();
 
-    protected messages = computed(() => this.store.chatResponse() || []);
-    protected loading = computed(() => this.store.loading());
-    protected funnyFact = computed(() => this.store.funnyFact() || '');
-    protected showFunnyFact = signal(false);
-    protected indicatorVisible = computed(() => !this.showFunnyFact() && !!this.funnyFact());
+    protected messages = computed<TrailerMessage[]>(() => {
+        const raw = this.store.chatResponse() || [];
+        return raw.map((msg) => ({ ...msg, segments: this.trailerParser.parse(msg.text) }));
+    });
+    protected loading = computed<boolean>(() => this.store.loading());
+    protected funnyFact = computed<string>(() => this.store.funnyFact() || '');
+    protected showFunnyFact = signal<boolean>(false);
+    protected indicatorVisible = computed<boolean>(() => !this.showFunnyFact() && !!this.funnyFact());
 
     public thinkingHeadPath = THINKING_HEAD_PATH;
     public thinkingTopPath = THINKING_TOP_PATH;
@@ -157,6 +181,7 @@ export class MovieChatbotContentComponent implements AfterViewInit {
     public sendPlanePath = SEND_PLANE_PATH;
     public funnyBulbBodyPath = FUNNY_BULB_BODY_PATH;
     public funnyBulbBasePath = FUNNY_BULB_BASE_PATH;
+
 
     public ngAfterViewInit(): void {
         effect(() => {
