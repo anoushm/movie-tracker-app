@@ -1,5 +1,9 @@
+import { Injectable } from '@angular/core';
 import { TrailerSegment } from '../shared/models/trailer-segment.model';
 
+@Injectable({
+    providedIn: 'root'
+})
 export class TrailerParser {
     public parse(text: string): TrailerSegment[] {
         const segments: TrailerSegment[] = [];
@@ -38,6 +42,7 @@ export class TrailerParser {
         const urlMatch: RegExpExecArray | null = /(https?:\/\/\S+)/.exec(content);
         const url: string = urlMatch ? urlMatch[1] : '';
         const title: string = content.replace(url, '').trim();
+        
         return { url, title: title || undefined };
     }
 

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, ViewChild, ElementRef, inject, computed, AfterViewInit, effect, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ViewChild, ElementRef, inject, computed, effect, signal } from '@angular/core';
 import { MovieStore } from '../../services/movie-store';
 import { CommonModule } from '@angular/common';
 import { MovieTrailerComponent } from '../movie-trailer/movie-trailer.component';
@@ -104,7 +104,7 @@ const FUNNY_BULB_BASE_PATH = 'M9.013 19.9a.75.75 0 0 1 .877-.597 11.319 11.319 0
                     </div>
                     }
                     <div class="message-content">
-                      @for (segment of message.segments; track segment) {
+                      @for (segment of message.segments; track $index) {
                         <ng-container [ngSwitch]="segment.type">
                           @if(segment.type === 'text') {
                             <span [innerHTML]="segment.html"></span>
@@ -122,8 +122,6 @@ const FUNNY_BULB_BASE_PATH = 'M9.013 19.9a.75.75 0 0 1 .877-.597 11.319 11.319 0
             </div>
             }
         </div>
-
-
 
         <div class="chatbot-input-area">
             <textarea #chatbotInput rows="3" class="input-field text-black w-full mb-2" placeholder="Type your chat message here..." (keyup.enter)="sendChatMessage(chatbotInput.value)" (keydown.enter)="$event.preventDefault()"></textarea>
@@ -159,12 +157,12 @@ const FUNNY_BULB_BASE_PATH = 'M9.013 19.9a.75.75 0 0 1 .877-.597 11.319 11.319 0
 })
 
 
-export class MovieChatbotContentComponent implements AfterViewInit {
+export class MovieChatbotContentComponent {
     @ViewChild('chatbotInput') public chatbotInput!: ElementRef<HTMLTextAreaElement>;
     @ViewChild('messagesContainer') public messagesContainer!: ElementRef<HTMLDivElement>;
 
     private store = inject(MovieStore);
-    private trailerParser = new TrailerParser();
+    private trailerParser = inject(TrailerParser);
 
     protected messages = computed<TrailerMessage[]>(() => {
         const raw = this.store.chatResponse() || [];
@@ -182,20 +180,17 @@ export class MovieChatbotContentComponent implements AfterViewInit {
     public funnyBulbBodyPath = FUNNY_BULB_BODY_PATH;
     public funnyBulbBasePath = FUNNY_BULB_BASE_PATH;
 
+    private scrollEffect = effect(() => {
+        this.messages();
+        queueMicrotask(() => this.scrollToBottom());
+    });
 
-    public ngAfterViewInit(): void {
-        effect(() => {
-            this.messages();
-            queueMicrotask(() => this.scrollToBottom());
-        });
-
-        effect(() => {
-            const fact = this.funnyFact();
-            if (fact) {
-                this.showFunnyFact.set(false);
-            }
-        });
-    }
+    private funnyFactEffect = effect(() => {
+        const fact = this.funnyFact();
+        if (fact) {
+            this.showFunnyFact.set(false);
+        }
+    });
 
     private scrollToBottom(): void {
         const container = this.messagesContainer?.nativeElement;
