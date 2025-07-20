@@ -5,7 +5,21 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
-    "watch": "ng build --watch --configuration development"
+    "watch": "ng build --watch --configuration development",
+    "e2e": "playwright test",
+    "e2e:local": "cross-env PLAYWRIGHT_BASE_URL=http://localhost:4200 playwright test",
+    "e2e:headed": "cross-env PLAYWRIGHT_BASE_URL=http://localhost:4200 playwright test --headed",
+    "e2e:my-favorite": "cross-env PLAYWRIGHT_BASE_URL=http://localhost:4200 playwright test e2e/my-favorite/my-favorite.spec.ts --headed",
+    "e2e:integration": "cross-env PLAYWRIGHT_BASE_URL=http://localhost:4200 playwright test e2e/integration/full-app.spec.ts --headed",
+    "e2e:local:win": "set PLAYWRIGHT_BASE_URL=http://localhost:4200&& playwright test",
+    "e2e:headed:win": "set PLAYWRIGHT_BASE_URL=http://localhost:4200&& playwright test --headed",
+    "e2e:no-server": "playwright test --config=playwright.config.ci.ts",
+    "e2e:ci": "playwright test --config=playwright.config.ci.ts",
+    "e2e:chrome": "playwright test --config=playwright.config.ci.ts --project=chromium",
+    "e2e:firefox": "playwright test --config=playwright.config.ci.ts --project=firefox",
+    "e2e:safari": "playwright test --config=playwright.config.ci.ts --project=webkit",
+    "e2e:install": "playwright install",
+    "e2e:report": "playwright show-report"
   },
   "private": true,
   "dependencies": {
@@ -26,7 +40,10 @@
     "@angular/build": "^19.2.8",
     "@angular/cli": "^19.2.8",
     "@angular/compiler-cli": "^19.2.7",
+    "@playwright/test": "^1.40.0",
+    "@types/node": "^20.0.0",
     "autoprefixer": "^10.4.21",
+    "cross-env": "^7.0.3",
     "postcss": "^8.4.24",
     "tailwindcss": "^3.4.17",
     "typescript": "~5.8.3"
