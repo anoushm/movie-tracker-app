@@ -14,21 +14,17 @@ export default defineConfig({
   retries: 2,
   /* Keep reasonable worker count */
   workers: 1,
-  /* Reporter to use. */
-  reporter: [['html'], ['github']],
+  /* Reporter to use - avoid file output in CI */
+  reporter: [['list'], ['github']],
   /* Shared settings for all the projects below. */
   use: {
     /* Base URL from environment variable - set by CI/CD pipeline */
     baseURL: process.env['PLAYWRIGHT_BASE_URL'] || process.env['AZURE_STATIC_WEB_APP_URL'] || 'http://localhost:4200',
 
-    /* Collect trace when retrying the failed test. */
-    trace: 'on-first-retry',
-    
-    /* Take screenshot on failure */
-    screenshot: 'only-on-failure',
-    
-    /* Record video on retry */
-    video: 'retain-on-failure',
+    /* Disable file outputs in CI to avoid permission issues */
+    trace: 'off',
+    screenshot: 'off',
+    video: 'off',
   },
 
   /* Configure projects for major browsers */
