@@ -12,8 +12,8 @@ export default defineConfig({
   forbidOnly: true,
   /* Retry on CI */
   retries: 2,
-  /* Opt out of parallel tests on CI for stability */
-  workers: 10,
+  /* Keep reasonable worker count */
+  workers: 1,
   /* Reporter to use. */
   reporter: [['html'], ['github']],
   /* Shared settings for all the projects below. */

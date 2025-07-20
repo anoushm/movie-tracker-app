@@ -3,7 +3,10 @@
 
         <header class="flex items-center justify-between px-4 py-3 bg-white shadow mobile-header">
           <div class="flex-shrink-0">
-            <button (click)="toggleSideMenu($event)" id="burgerButton" class="flex flex-col justify-center items-center w-8 h-8 space-y-1 focus:outline-none">
+            <button (click)="toggleSideMenu($event)" 
+                    id="burgerButton" 
+                    data-testid="burger-menu-button"
+                    class="flex flex-col justify-center items-center w-8 h-8 space-y-1 focus:outline-none">
               <span class="block w-6 h-0.5 bg-gray-300"></span>
               <span class="block w-6 h-0.5 bg-gray-300"></span>
               <span class="block w-6 h-0.5 bg-gray-300"></span>
@@ -11,13 +14,14 @@
           </div>
 
           <div class="flex-grow text-center">
-            <a [routerLink]="['/movies', 'popular']">
+            <a [routerLink]="['/movies', 'popular']" data-testid="logo-link">
                 <picture style="text-align:center;" srcset="/assets/logo.svg"
                          media="(min-width: 80em)">
                     <img class="logo-img"
                          src="/assets/logo.svg"
                          title="Movies Tracker"
                          alt="MoviesTracker"
+                         data-testid="logo-image"
                          width="70"
                          style="display:inline-block"
                          height="100" />
@@ -27,8 +31,10 @@
 
           <div class="flex-shrink-0">
               <!-- Chat Icon -->
-              <button class="text-white rounded-lg" [routerLink]="['/movies', 'chatbot']">
-  <span class="w-10 h-10 inline-block">
+              <button class="text-white rounded-lg" 
+                      [routerLink]="['/movies', 'chatbot']"
+                      data-testid="chatbot-button">
+  <span class="w-10 h-10 inline-block" data-testid="chat-icon">
     <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" class="w-full h-full">
       <g>
         <!-- Chat bubble body -->
@@ -57,6 +63,7 @@
 
      <button class="btn btn-secondary navigation--link"
              id="menu-toggle"
+             data-testid="menu-toggle-button"
              (click)="toggleMenu($event)">
      <svg class="expand-btn" width="24" height="24" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
          <path fill-rule="evenodd" clip-rule="evenodd" d="M115.583 37.911C121.155 31.0529 131.232 30.0104 138.09 35.5827L394.09 243.583C397.829 246.621 400.001 251.182 400.001 256.001C400.001 260.819 397.829 265.38 394.09 268.418L138.09 476.418C131.232 481.991 121.155 480.948 115.583 474.09C110.01 467.232 111.053 457.155 117.911 451.583L358.628 256.001L117.911 60.4183C111.053 54.8461 110.01 44.7692 115.583 37.911Z" fill="black"></path>
@@ -69,16 +76,17 @@
 
 
 
-    <div id="sidebar-wrapper">
+    <div id="sidebar-wrapper" data-testid="sidebar-navigation">
         <ul class="sidebar-nav">
             <li>
-                <a [routerLink]="['/movies', 'popular']">
+                <a [routerLink]="['/movies', 'popular']" data-testid="sidebar-logo-link">
                     <picture style="text-align:center;" srcset="/assets/logo.svg"
                              media="(min-width: 80em)">
                         <img class="logo-img"
                              src="/assets/logo.svg"
                              title="Movies Tracker"
                              alt="MoviesTracker"
+                             data-testid="sidebar-logo-image"
                              width="100"
                              style="display:inline-block"
                              height="100" />
@@ -87,28 +95,33 @@
 
                 <a style="color: #efa21b; font-weight: 600;" class="navigation--link"
                     [routerLink]="['/movies', 'chatbot']"
-                    routerLinkActive="active">Chatbot Search</a>
+                    routerLinkActive="active"
+                    data-testid="nav-chatbot-search">Chatbot Search</a>
 
-                <h3 class="navigation--headline lift-side-nave-separator-text">Categories</h3>
+                <h3 class="navigation--headline lift-side-nave-separator-text" data-testid="categories-heading">Categories</h3>
 
                 <a class="navigation--link"
                    [routerLink]="['/movies', 'favorite']"
-                   routerLinkActive="active">My Favorite</a>
+                   routerLinkActive="active"
+                   data-testid="nav-my-favorite">My Favorite</a>
 
                 <a class="navigation--link"
                    [routerLink]="['/movies', 'popular']"
-                   routerLinkActive="active">Popular</a>
+                   routerLinkActive="active"
+                   data-testid="nav-popular">Popular</a>
 
                 <a class="navigation--link"
                    [routerLink]="['/movies', 'top_rated']"
-                   routerLinkActive="active">Top Rated</a>
+                   routerLinkActive="active"
+                   data-testid="nav-top-rated">Top Rated</a>
 
                 <a class="navigation--link"
                    [routerLink]="['/movies', 'upcoming']"
-                   routerLinkActive="active">Upcoming</a>
+                   routerLinkActive="active"
+                   data-testid="nav-upcoming">Upcoming</a>
 
             </li>
-            <h3 class="navigation--headline lift-side-nave-separator-text">Genres</h3>
+            <h3 class="navigation--headline lift-side-nave-separator-text" data-testid="genres-heading">Genres</h3>
 
             @if(genres(); as genres) {
                 @for(genre of genres; track genre.id) {
