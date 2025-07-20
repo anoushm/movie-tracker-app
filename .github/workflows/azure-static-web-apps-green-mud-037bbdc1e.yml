@@ -54,7 +54,7 @@ jobs:
           action: 'upload'
           app_location: '/' # Root of the repository
           api_location: ''
-          output_location: 'dist/movie-tracker-app' # Where Angular builds to
+          output_location: 'dist/movie-tracker-app/browser' # Angular 17+ creates browser subfolder
           deployment_environment: 'staging'
 
       - name: Wait for staging deployment
@@ -99,7 +99,7 @@ jobs:
           action: 'upload'
           app_location: '/' # Root of the repository
           api_location: ''
-          output_location: 'dist/movie-tracker-app' # Where Angular builds to
+          output_location: 'dist/movie-tracker-app/browser' # Angular 17+ creates browser subfolder
 
       - name: Production Deployment Success
         if: steps.e2e_tests.outcome == 'success'
