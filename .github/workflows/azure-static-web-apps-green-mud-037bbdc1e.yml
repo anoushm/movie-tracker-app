@@ -47,7 +47,7 @@ jobs:
       # Deploy to staging slot for testing
       - name: Deploy to Staging Slot
         id: staging_deploy
-        uses: Azure/static-web-apps-deploy@v1
+        uses: Azure/static-web-apps-deploy@v1.0.0
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_GREEN_MUD_037BBDC1E }}
           repo_token: ${{ secrets.GITHUB_TOKEN }}
@@ -55,7 +55,7 @@ jobs:
           app_location: '/' # Root of the repository
           api_location: ''
           output_location: 'dist/movie-tracker-app/browser' # Angular 17+ creates browser subfolder
-          deployment_environment: 'staging'
+          config_file_location: '/'
 
       - name: Wait for staging deployment
         run: sleep 60
@@ -77,11 +77,10 @@ jobs:
 
       - name: Delete Staging Slot
         if: always()
-        uses: Azure/static-web-apps-deploy@v1
+        uses: Azure/static-web-apps-deploy@v1.0.0
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_GREEN_MUD_037BBDC1E }}
           action: 'close'
-          deployment_environment: 'staging'
 
       - name: Check Test Results
         if: steps.e2e_tests.outcome == 'failure'
@@ -92,7 +91,7 @@ jobs:
       - name: Deploy to Production
         id: production_deploy
         if: steps.e2e_tests.outcome == 'success'
-        uses: Azure/static-web-apps-deploy@v1
+        uses: Azure/static-web-apps-deploy@v1.0.0
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_GREEN_MUD_037BBDC1E }}
           repo_token: ${{ secrets.GITHUB_TOKEN }}
@@ -100,6 +99,7 @@ jobs:
           app_location: '/' # Root of the repository
           api_location: ''
           output_location: 'dist/movie-tracker-app/browser' # Angular 17+ creates browser subfolder
+          config_file_location: '/'
 
       - name: Production Deployment Success
         if: steps.e2e_tests.outcome == 'success'
@@ -114,7 +114,7 @@ jobs:
     steps:
       - name: Close Pull Request
         id: closepullrequest
-        uses: Azure/static-web-apps-deploy@v1
+        uses: Azure/static-web-apps-deploy@v1.0.0
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_GREEN_MUD_037BBDC1E }}
           action: "close"
