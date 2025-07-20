@@ -47,7 +47,7 @@ jobs:
       # Deploy to staging slot for testing
       - name: Deploy to Staging Slot
         id: staging_deploy
-        uses: Azure/static-web-apps-deploy@v1.0.0
+        uses: Azure/static-web-apps-deploy@v1
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_GREEN_MUD_037BBDC1E }}
           repo_token: ${{ secrets.GITHUB_TOKEN }}
@@ -77,7 +77,7 @@ jobs:
 
       - name: Delete Staging Slot
         if: always()
-        uses: Azure/static-web-apps-deploy@v1.0.0
+        uses: Azure/static-web-apps-deploy@v1
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_GREEN_MUD_037BBDC1E }}
           action: 'close'
