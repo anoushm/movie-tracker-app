@@ -68,14 +68,6 @@ jobs:
       - name: Additional wait for app initialization
         run: sleep 30
 
-      - name: Prepare test directories
-        run: |
-          # Clean up any existing test output directories
-          sudo rm -rf test-results playwright-report || true
-          # Create fresh directories with proper permissions
-          mkdir -p test-results playwright-report
-          chmod 755 test-results playwright-report
-
       - name: Run E2E Tests on Staging
         id: e2e_tests
         env:

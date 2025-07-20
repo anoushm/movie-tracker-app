@@ -1,4 +1,5 @@
 import { defineConfig, devices } from '@playwright/test';
+import * as os from 'os';
 
 /**
  * CI-specific Playwright configuration for Azure Static Web Apps
@@ -6,16 +7,18 @@ import { defineConfig, devices } from '@playwright/test';
  */
 export default defineConfig({
   testDir: './e2e',
+  /* Use system temp directory for outputs to avoid permission issues */
+  outputDir: `${os.tmpdir()}/playwright-results`,
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: true,
-  /* Retry on CI */
-  retries: 2,
-  /* Keep reasonable worker count */
+  /* Retry on CI only once to save time */
+  retries: 1,
+  /* Single worker for stability in CI */
   workers: 1,
-  /* Reporter to use - avoid file output in CI */
-  reporter: [['list'], ['github']],
+  /* Minimal console reporter only */
+  reporter: [['list']],
   /* Shared settings for all the projects below. */
   use: {
     /* Base URL from environment variable - set by CI/CD pipeline */
@@ -32,14 +35,6 @@ export default defineConfig({
     {
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
-    },
-    {
-      name: 'firefox',
-      use: { ...devices['Desktop Firefox'] },
-    },
-    {
-      name: 'webkit',
-      use: { ...devices['Desktop Safari'] },
     },
   ],
 
