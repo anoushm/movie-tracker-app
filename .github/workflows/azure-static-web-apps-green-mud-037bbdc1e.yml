@@ -26,23 +26,87 @@ jobs:
       - name: Install dependencies
         run: |
           npm install
-          npm install -g @angular/cli
+          npx playwright install --with-deps
         
-      - name: Compile TypeScript and Build
-        run: ng build
-
-      # - name: List build artifacts
-      #   run: ls -R dist/movie-tracker-app
-
-      - name: Deploy to Azure Static Web Apps
+      # Deploy to staging slot for testing
+      - name: Deploy to Staging Slot
+        id: staging_deploy
         uses: Azure/static-web-apps-deploy@v1
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_GREEN_MUD_037BBDC1E }}
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           action: 'upload'
-          app_location: 'dist/movie-tracker-app/browser'
+          app_location: '/' # Root of the repository
           api_location: ''
-          output_location: ''
+          output_location: 'dist/movie-tracker-app/browser' # Angular 17+ creates browser subfolder
+          deployment_environment: 'staging'
+
+      - name: Wait for staging deployment
+        run: sleep 60
+
+      - name: Verify staging URL is available
+        run: |
+          echo "Staging URL: ${{ steps.staging_deploy.outputs.static_web_app_url }}"
+          curl -I "${{ steps.staging_deploy.outputs.static_web_app_url }}" || echo "URL not ready yet"
+          
+      - name: Additional wait for app initialization
+        run: sleep 30
+
+      - name: Run E2E Tests on Staging
+        id: e2e_tests
+        env:
+          PLAYWRIGHT_BASE_URL: ${{ steps.staging_deploy.outputs.static_web_app_url }}
+        run: npm run e2e:ci
+        continue-on-error: true
+
+      - name: Check Test Results
+        if: steps.e2e_tests.outcome == 'failure'
+        run: |
+          echo "E2E tests failed. Deployment to production cancelled."
+          exit 1
+
+      - name: Tests Passed - Ready for Production
+        id: ready_for_production
+        if: steps.e2e_tests.outcome == 'success'
+        run: |
+          echo "✅ E2E tests passed on staging environment"
+          echo "Tested staging URL: ${{ steps.staging_deploy.outputs.static_web_app_url }}"
+          echo "Deploying the same tested build to production..."
+
+      - name: Deploy to Production
+        id: production_deploy
+        if: steps.e2e_tests.outcome == 'success'
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_GREEN_MUD_037BBDC1E }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          action: 'upload'
+          app_location: '/'
+          api_location: ''
+          output_location: 'dist/movie-tracker-app/browser'
+
+      - name: Clean up staging slot
+        if: steps.e2e_tests.outcome == 'success' && steps.production_deploy.outcome == 'success'
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_GREEN_MUD_037BBDC1E }}
+          action: 'close'
+          deployment_environment: 'staging'
+
+      - name: Clean up staging on failure
+        if: steps.e2e_tests.outcome == 'failure'
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_GREEN_MUD_037BBDC1E }}
+          action: 'close'
+          deployment_environment: 'staging'
+
+      - name: Production Deployment Success
+        if: steps.e2e_tests.outcome == 'success' && steps.production_deploy.outcome == 'success'
+        run: |
+          echo "✅ Production deployment completed successfully!"
+          echo "✅ Tested build is now live in production"
+          echo "Production URL: ${{ steps.production_deploy.outputs.static_web_app_url }}"
           
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'

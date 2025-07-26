@@ -25,6 +25,7 @@ const HEART_FILLED_PATH =
               <input
                 type="checkbox"
                 id="fav-checkbox-{{movie?.id}}"
+                [attr.data-testid]="'favorite-checkbox-' + movie?.id"
                 class="sr-only peer"
                 [checked]="movie?.favorite"
                 (change)="onFavoriteClick(movie)"
