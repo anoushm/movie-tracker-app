@@ -36,9 +36,9 @@ jobs:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_GREEN_MUD_037BBDC1E }}
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           action: 'upload'
-          app_location: '/' # Root of the repository
+          app_location: '/'
           api_location: ''
-          output_location: 'dist/movie-tracker-app/browser' # Angular 17+ creates browser subfolder
+          output_location: 'dist/movie-tracker-app/browser'
           deployment_environment: 'staging'
 
       - name: Wait for staging deployment
@@ -62,7 +62,9 @@ jobs:
       - name: Check Test Results
         if: steps.e2e_tests.outcome == 'failure'
         run: |
-          echo "E2E tests failed. Deployment to production cancelled."
+          echo "❌ E2E tests failed on staging environment"
+          echo "Staging URL: ${{ steps.staging_deploy.outputs.static_web_app_url }}"
+          echo "Production deployment cancelled - fix the issues and try again"
           exit 1
 
       - name: Tests Passed - Ready for Production
@@ -85,28 +87,13 @@ jobs:
           api_location: ''
           output_location: 'dist/movie-tracker-app/browser'
 
-      - name: Clean up staging slot
-        if: steps.e2e_tests.outcome == 'success' && steps.production_deploy.outcome == 'success'
-        uses: Azure/static-web-apps-deploy@v1
-        with:
-          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_GREEN_MUD_037BBDC1E }}
-          action: 'close'
-          deployment_environment: 'staging'
-
-      - name: Clean up staging on failure
-        if: steps.e2e_tests.outcome == 'failure'
-        uses: Azure/static-web-apps-deploy@v1
-        with:
-          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_GREEN_MUD_037BBDC1E }}
-          action: 'close'
-          deployment_environment: 'staging'
-
       - name: Production Deployment Success
         if: steps.e2e_tests.outcome == 'success' && steps.production_deploy.outcome == 'success'
         run: |
           echo "✅ Production deployment completed successfully!"
           echo "✅ Tested build is now live in production"
           echo "Production URL: ${{ steps.production_deploy.outputs.static_web_app_url }}"
+          echo "Staging environment left available for reference: ${{ steps.staging_deploy.outputs.static_web_app_url }}"
           
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
