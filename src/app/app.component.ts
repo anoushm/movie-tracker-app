@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { AppShellComponent } from './app-shell/app-shell.component';
 
@@ -10,7 +10,8 @@ import { AppShellComponent } from './app-shell/app-shell.component';
       <router-outlet />
     </app-shell>
   `,
-    styles: ``
+    styles: ``,
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AppComponent {
   title = 'movie-tracker-app';

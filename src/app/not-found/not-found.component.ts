@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
   selector: 'app-not-found',
@@ -9,7 +9,8 @@ import { Component } from '@angular/core';
       <h1 class="title">Oops! Looks like page could not be found</h1>
     </div>
   `,
-  styles: ``
+  styles: ``,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NotFoundComponent {
 
