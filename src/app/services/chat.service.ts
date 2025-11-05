@@ -16,7 +16,7 @@ export class ChatService {
         return this.http.get<{ chatId: string }>(`${environment.chatBaseUrl}/start`);
     }
 
-    public sendChatMessage(chatId: string, message: string): Observable<{ messages: ChatResponseModel[] }> {
+    public sendChatMessage(chatId: string, message: string): Observable<{ funnyFact: string, messages: ChatResponseModel[] }> {
         return this.http.post<{ funnyFact: string, messages: ChatResponseModel[] }>(`${environment.chatBaseUrl}/${chatId}/ask`, { chatId, input: message })
             .pipe(
                 map(response => this.mapResponse(response)),
