@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map, Observable, tap } from 'rxjs';
 import { environment } from '../../enviroments/enviroments';
@@ -19,14 +19,19 @@ interface ChatApiResponse {
     providedIn: 'root'
 })
 export class ChatService {
-    constructor(private http: HttpClient) { }
+    private http = inject(HttpClient);
 
     public getChatId(): Observable<{ chatId: string }> {
         return this.http.get<{ chatId: string }>(`${environment.chatBaseUrl}/start`);
     }
 
     public sendChatMessage(chatId: string, message: string): Observable<{ funnyFact?: string; messages: ChatResponseModel[] }> {
-        return this.http.post<ChatApiResponse>(`${environment.chatBaseUrl}/${chatId}/ask`, { chatId, input: message })
+        const trimmedChatId = chatId.trim();
+        const trimmedMessage = message.trim();
+        if (!trimmedChatId || !trimmedMessage) {
+            throw new Error('chatId and message are required');
+        }
+        return this.http.post<ChatApiResponse>(`${environment.chatBaseUrl}/${trimmedChatId}/ask`, { chatId: trimmedChatId, input: trimmedMessage })
             .pipe(
                 map(response => this.mapResponse(response)),
             );
