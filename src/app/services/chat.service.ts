@@ -6,6 +6,15 @@ import { ChatResponseModel } from '../shared/models/chat-response.model';
 import { ChatbotMovieModel } from '../shared/models/chatbot-movie.model';
 import { TmdbMovieModel } from '../shared/models/tmdb-movie.model';
 
+interface ChatApiResponse {
+    funnyFact?: string;
+    messages: Array<{
+        role: 'user' | 'assistant';
+        text: string;
+        movieList?: ChatbotMovieModel[] | null;
+    }>;
+}
+
 @Injectable({
     providedIn: 'root'
 })
@@ -16,17 +25,17 @@ export class ChatService {
         return this.http.get<{ chatId: string }>(`${environment.chatBaseUrl}/start`);
     }
 
-    public sendChatMessage(chatId: string, message: string): Observable<{ messages: ChatResponseModel[] }> {
-        return this.http.post<{ funnyFact: string, messages: ChatResponseModel[] }>(`${environment.chatBaseUrl}/${chatId}/ask`, { chatId, input: message })
+    public sendChatMessage(chatId: string, message: string): Observable<{ funnyFact?: string; messages: ChatResponseModel[] }> {
+        return this.http.post<ChatApiResponse>(`${environment.chatBaseUrl}/${chatId}/ask`, { chatId, input: message })
             .pipe(
                 map(response => this.mapResponse(response)),
             );
     }
 
-    private mapResponse(response: any): { funnyFact: string, messages: ChatResponseModel[] } {
+    private mapResponse(response: ChatApiResponse): { funnyFact?: string; messages: ChatResponseModel[] } {
         return {
             funnyFact: response.funnyFact,
-            messages: response.messages.map((chatResponse: any) => ({
+            messages: response.messages.map((chatResponse) => ({
                 role: chatResponse.role,
                 text: chatResponse.text,
                 movieList: chatResponse.movieList?.map(this.mapMovie) ?? null

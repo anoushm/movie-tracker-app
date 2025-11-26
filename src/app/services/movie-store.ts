@@ -140,7 +140,6 @@ export const MovieStore = signalStore(
     ),
     withHooks({
         onInit: ({ loadChatId }) => {
-            console.log('onInit');
             loadChatId();
         },
     }),

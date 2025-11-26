@@ -60,8 +60,7 @@ export class MovieService {
                 }
             )
             .pipe(
-                map(({ results }) => this.updateFavotie(results)),
-                tap((results) => { console.log('getMoviesByGenre', results); })
+                map(({ results }) => this.updateFavorite(results))
             ).subscribe((movies) => { this.moviesSubject$.next(movies); });
     }
 
@@ -72,19 +71,19 @@ export class MovieService {
     ): void {
         const { themoviedbBaseUrl: baseUrl } = environment;
 
-        if (category == 'favorite') {
+        if (category === 'favorite') {
             this.moviesSubject$.next(this.favoriteMovies);
         } else {
             this.httpClient
                 .get<{ results: TmdbMovieModel[] }>(`${baseUrl}/3/movie/${category}`, {
                     params: { page, sort_by: sortBy },
                 })
-                .pipe(map(({ results }) => this.updateFavotie(results)))
+                .pipe(map(({ results }) => this.updateFavorite(results)))
                 .subscribe((movies) => { this.moviesSubject$.next(movies); });
         }
     }
 
-    private updateFavotie(movies: TmdbMovieModel[]): TmdbMovieModel[] {
+    private updateFavorite(movies: TmdbMovieModel[]): TmdbMovieModel[] {
         return movies.map((movie) => ({
             ...movie,
             favorite: this.favoriteMovies.some((m) => m.id === movie.id),

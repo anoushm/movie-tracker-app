@@ -1,7 +1,7 @@
 import { TmdbMovieModel } from "./tmdb-movie.model";
 
 export interface ChatResponseModel {
-  role: string;
+  role: 'user' | 'assistant';
   text: string;
   movieList: TmdbMovieModel[] | null;
 }
