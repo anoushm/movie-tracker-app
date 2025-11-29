@@ -1,4 +1,5 @@
 import { inject } from '@angular/core';
+import { take, catchError } from 'rxjs';
 import {
     patchState,
     signalStore,
@@ -31,109 +32,97 @@ export const MovieStore = signalStore(
     withState(initialMovieState),
     withMethods(
         (store, movieService = inject(MovieService), chatService = inject(ChatService)) => ({
-            async loadMovies(category: string,
-                page: number = 1,
-                sortBy = 'popularity.desc'): Promise<void> {
+            loadMovies(category: string, page: number = 1, sortBy = 'popularity.desc'): void {
                 patchState(store, { loading: true });
-
-                await movieService.getMovieList(category, page, sortBy);
-
-                await movieService.movies$.subscribe({
-                    next: (movies) => {
+                movieService.getMovieList(category, page, sortBy)
+                    .pipe(
+                        take(1),
+                        catchError(error => {
+                            patchState(store, { error, loading: false });
+                            throw error;
+                        })
+                    )
+                    .subscribe((movies) => {
                         patchState(store, { movies, loading: false });
-                    },
-                    error: (error) => {
-                        patchState(store, { error, loading: false });
-                    }
-
-                });
+                    });
             },
-            async loadGenres(): Promise<void> {
+            loadGenres(): void {
                 patchState(store, { loading: true });
-
-                await movieService.getGenres().subscribe({
-                    next: (genres: TmdbMovieGenreModel[]) => {
+                movieService.getGenres()
+                    .pipe(
+                        take(1),
+                        catchError(error => {
+                            patchState(store, { error, loading: false });
+                            throw error;
+                        })
+                    )
+                    .subscribe((genres: TmdbMovieGenreModel[]) => {
                         patchState(store, { genres, loading: false });
-                    },
-                    error: (error) => {
-                        patchState(store, { error, loading: false });
-                    }
-                });
+                    });
             },
-            async loadMoviesByGenre(genre: TmdbMovieGenreModel['id'],
-                page = 1,
-                sortBy = 'popularity.desc'
-            ): Promise<void> {
+            loadMoviesByGenre(genre: TmdbMovieGenreModel['id'], page = 1, sortBy = 'popularity.desc'): void {
                 patchState(store, { loading: true });
-
-                await movieService.getMoviesByGenre(genre, page, sortBy);
-
-                await movieService.movies$.subscribe({
-                    next: (movies) => {
+                movieService.getMoviesByGenre(genre, page, sortBy)
+                    .pipe(
+                        take(1),
+                        catchError(error => {
+                            patchState(store, { error, loading: false });
+                            throw error;
+                        })
+                    )
+                    .subscribe((movies) => {
                         patchState(store, { movies, loading: false });
-                    },
-                    error: (error) => {
-                        patchState(store, { error, loading: false });
-                    }
-
-                });
+                    });
             },
-            async searchMovies(search: string): Promise<void> {
+            searchMovies(search: string): void {
                 patchState(store, { filter: { search } });
-
-                await movieService.searchMovies(search);
-
-                await movieService.movies$.subscribe({
-                    next: (movies) => {
-                        patchState(store, { movies, loading: false });
-                    },
-                    error: (error) => {
-                        patchState(store, { error, loading: false });
-                    }
-                });
+                movieService.searchMovies(search);
             },
-            async updateFavoriteMovies(movie: TmdbMovieModel): Promise<void> {
-                await movieService.updateFavoriteMovies(movie);
+            updateFavoriteMovies(movie: TmdbMovieModel): void {
+                movieService.updateFavoriteMovies(movie);
             },
-            async loadChatId(): Promise<void> {
+            loadChatId(): void {
                 patchState(store, { loading: true });
-
-                await chatService.getChatId().subscribe({
-                    next: (response: { chatId: string }) => {
+                chatService.getChatId()
+                    .pipe(
+                        take(1),
+                        catchError(error => {
+                            patchState(store, { error, loading: false });
+                            throw error;
+                        })
+                    )
+                    .subscribe((response: { chatId: string }) => {
                         patchState(store, { chatId: response.chatId, loading: false });
-                    },
-                    error: (error) => {
-                        patchState(store, { error, loading: false });
-                    }
-                });
+                    });
             },
-            async sendChatMessage(chatMessage: string): Promise<void> {
+            sendChatMessage(chatMessage: string): void {
                 patchState(store, { loading: true, funnyFact: null });
                 const chatId = store.chatId;
-
-                await chatService
+                chatService
                     .sendChatMessage(chatId() ?? '', chatMessage)
-                    .subscribe({
-                        next: (response: {
-                            funnyFact?: string;
-                            messages: ChatResponseModel[];
-                        }) => {
-                            const movies =
-                                response.messages
-                                    .slice()
-                                    .reverse()
-                                    .find((m) => m.role === 'assistant')?.movieList ?? [];
-
-                            patchState(store, {
-                                funnyFact: response.funnyFact,
-                                chatResponse: response.messages,
-                                movies,
-                                loading: false,
-                            });
-                        },
-                        error: (error) => {
+                    .pipe(
+                        take(1),
+                        catchError(error => {
                             patchState(store, { error, loading: false });
-                        },
+                            throw error;
+                        })
+                    )
+                    .subscribe((response: {
+                        funnyFact?: string;
+                        messages: ChatResponseModel[];
+                    }) => {
+                        const movies =
+                            response.messages
+                                .slice()
+                                .reverse()
+                                .find((m) => m.role === 'assistant')?.movieList ?? [];
+
+                        patchState(store, {
+                            funnyFact: response.funnyFact,
+                            chatResponse: response.messages,
+                            movies,
+                            loading: false,
+                        });
                     });
             }
         }),

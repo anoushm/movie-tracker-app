@@ -1,26 +1,25 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, combineLatest, map, tap } from 'rxjs';
+import { BehaviorSubject, Observable, combineLatest, map, shareReplay } from 'rxjs';
 import { TmdbMovieGenreModel } from '../shared/models/tmdb-movie-genre.model';
 import { environment } from '../../enviroments/enviroments';
 import { TmdbMovieModel } from '../shared/models/tmdb-movie.model';
 
-@Injectable({
-    providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class MovieService {
-    private moviesSubject$ = new BehaviorSubject<TmdbMovieModel[]>([]);
-    private searchQuery$ = new BehaviorSubject<string>('');
+    private readonly http = inject(HttpClient);
+    private readonly moviesSubject$ = new BehaviorSubject<TmdbMovieModel[]>([]);
+    private readonly searchQuery$ = new BehaviorSubject<string>('');
     private favoriteMovies: TmdbMovieModel[] = [];
-    public movies$ = combineLatest([
-        this.moviesSubject$.asObservable(),
-        this.searchQuery$])
-        .pipe(
-            map(([movies, searchQuery]) =>
-                movies.filter(p => p.title.toLowerCase().indexOf(searchQuery.toLowerCase()) !== -1))
-        );
 
-    private httpClient = inject(HttpClient);
+    public readonly movies$: Observable<TmdbMovieModel[]> = combineLatest([
+        this.moviesSubject$.asObservable(),
+        this.searchQuery$
+    ]).pipe(
+        map(([movies, searchQuery]) =>
+            movies.filter(p => p.title.toLowerCase().includes(searchQuery.toLowerCase()))
+        )
+    );
 
     public static readonly VALID_CATEGORIES = ['popular', 'top_rated', 'upcoming', 'now_playing', 'favorite'] as const;
     public static readonly MOVIE_CATEGORIES = ['popular', 'top_rated', 'upcoming', 'now_playing', 'favorite'] as const;
@@ -28,19 +27,24 @@ export class MovieService {
     public static readonly validatePageNumber = (page: number): boolean => Number.isInteger(page) && page > 0;
     public static readonly validateGenreId = (id: number): boolean => Number.isInteger(id) && id > 0;
 
-    public getGenres(): Observable<TmdbMovieGenreModel[]> {
-        return this.httpClient
-            .get<{
-                genres: TmdbMovieGenreModel[];
-            }>(`${environment.themoviedbBaseUrl}/3/genre/movie/list`)
-            .pipe(map(({ genres }) => genres));
+    private genres$?: Observable<TmdbMovieGenreModel[]>;
+    getGenres(): Observable<TmdbMovieGenreModel[]> {
+        if (!this.genres$) {
+            this.genres$ = this.http
+                .get<{ genres: TmdbMovieGenreModel[] }>(`${environment.themoviedbBaseUrl}/3/genre/movie/list`)
+                .pipe(
+                    map(({ genres }) => genres),
+                    shareReplay({ bufferSize: 1, refCount: true })
+                );
+        }
+        return this.genres$;
     }
 
-    public searchMovies(query: string): void {
+    searchMovies(query: string): void {
         this.searchQuery$.next(query);
     }
 
-    public updateFavoriteMovies(movie: TmdbMovieModel): void {
+    updateFavoriteMovies(movie: TmdbMovieModel): void {
         const isFavorite = this.favoriteMovies.find((m) => m.id === movie.id);
         if (!isFavorite) {
             this.favoriteMovies.push(movie);
@@ -49,17 +53,10 @@ export class MovieService {
         }
     }
 
-    public getMoviesByGenre(genre: TmdbMovieGenreModel['id'],
-        page = 1,
-        sortBy = 'popularity.desc'
-    ): void {
-        if (!MovieService.validateGenreId(genre)) {
-            throw new Error('Invalid genre id');
-        }
-        if (!MovieService.validatePageNumber(page)) {
-            throw new Error('Invalid page number');
-        }
-        this.httpClient
+    getMoviesByGenre(genre: TmdbMovieGenreModel['id'], page = 1, sortBy = 'popularity.desc'): Observable<TmdbMovieModel[]> {
+        if (!MovieService.validateGenreId(genre)) throw new Error('Invalid genre id');
+        if (!MovieService.validatePageNumber(page)) throw new Error('Invalid page number');
+        return this.http
             .get<{ results: TmdbMovieModel[] }>(
                 `${environment.themoviedbBaseUrl}/3/discover/movie`,
                 {
@@ -70,32 +67,21 @@ export class MovieService {
                     },
                 }
             )
-            .pipe(
-                map(({ results }) => this.updateFavorite(results))
-            ).subscribe((movies) => { this.moviesSubject$.next(movies); });
+            .pipe(map(({ results }) => this.updateFavorite(results)));
     }
 
-    public getMovieList(
-        category: string,
-        page: number = 1,
-        sortBy = 'popularity.desc'
-    ): void {
-        if (!MovieService.validateCategory(category)) {
-            throw new Error('Invalid movie category');
-        }
-        if (!MovieService.validatePageNumber(page)) {
-            throw new Error('Invalid page number');
-        }
+    getMovieList(category: string, page: number = 1, sortBy = 'popularity.desc'): Observable<TmdbMovieModel[]> {
+        if (!MovieService.validateCategory(category)) throw new Error('Invalid movie category');
+        if (!MovieService.validatePageNumber(page)) throw new Error('Invalid page number');
         const { themoviedbBaseUrl: baseUrl } = environment;
         if (category === 'favorite') {
-            this.moviesSubject$.next(this.favoriteMovies);
+            return new BehaviorSubject<TmdbMovieModel[]>(this.favoriteMovies).asObservable();
         } else {
-            this.httpClient
+            return this.http
                 .get<{ results: TmdbMovieModel[] }>(`${baseUrl}/3/movie/${category}`, {
                     params: { page, sort_by: sortBy },
                 })
-                .pipe(map(({ results }) => this.updateFavorite(results)))
-                .subscribe((movies) => { this.moviesSubject$.next(movies); });
+                .pipe(map(({ results }) => this.updateFavorite(results)));
         }
     }
 
