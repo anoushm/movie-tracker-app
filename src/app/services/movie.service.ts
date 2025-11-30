@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, combineLatest, map, shareReplay } from 'rxjs';
+import { BehaviorSubject, Observable, combineLatest, map, shareReplay, of } from 'rxjs';
 import { TmdbMovieGenreModel } from '../shared/models/tmdb-movie-genre.model';
 import { environment } from '../../enviroments/enviroments';
 import { TmdbMovieModel } from '../shared/models/tmdb-movie.model';
@@ -75,7 +75,7 @@ export class MovieService {
         if (!MovieService.validatePageNumber(page)) throw new Error('Invalid page number');
         const { themoviedbBaseUrl: baseUrl } = environment;
         if (category === 'favorite') {
-            return new BehaviorSubject<TmdbMovieModel[]>(this.favoriteMovies).asObservable();
+            return of(this.favoriteMovies);
         } else {
             return this.http
                 .get<{ results: TmdbMovieModel[] }>(`${baseUrl}/3/movie/${category}`, {

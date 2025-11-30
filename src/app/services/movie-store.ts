@@ -1,5 +1,5 @@
 import { inject } from '@angular/core';
-import { take, catchError } from 'rxjs';
+import { take, catchError, Observable } from 'rxjs';
 import {
     patchState,
     signalStore,
@@ -32,47 +32,35 @@ export const MovieStore = signalStore(
     withState(initialMovieState),
     withMethods(
         (store, movieService = inject(MovieService), chatService = inject(ChatService)) => ({
-            loadMovies(category: string, page: number = 1, sortBy = 'popularity.desc'): void {
+            loadMovies(category: string, page: number = 1, sortBy = 'popularity.desc'): Observable<TmdbMovieModel[]> {
                 patchState(store, { loading: true });
-                movieService.getMovieList(category, page, sortBy)
-                    .pipe(
-                        take(1),
-                        catchError(error => {
-                            patchState(store, { error, loading: false });
-                            throw error;
-                        })
-                    )
-                    .subscribe((movies) => {
-                        patchState(store, { movies, loading: false });
-                    });
+                return movieService.getMovieList(category, page, sortBy).pipe(
+                    take(1),
+                    catchError(error => {
+                        patchState(store, { error, loading: false });
+                        throw error;
+                    })
+                );
             },
-            loadGenres(): void {
+            loadGenres(): Observable<TmdbMovieGenreModel[]> {
                 patchState(store, { loading: true });
-                movieService.getGenres()
-                    .pipe(
-                        take(1),
-                        catchError(error => {
-                            patchState(store, { error, loading: false });
-                            throw error;
-                        })
-                    )
-                    .subscribe((genres: TmdbMovieGenreModel[]) => {
-                        patchState(store, { genres, loading: false });
-                    });
+                return movieService.getGenres().pipe(
+                    take(1),
+                    catchError(error => {
+                        patchState(store, { error, loading: false });
+                        throw error;
+                    })
+                );
             },
-            loadMoviesByGenre(genre: TmdbMovieGenreModel['id'], page = 1, sortBy = 'popularity.desc'): void {
+            loadMoviesByGenre(genre: TmdbMovieGenreModel['id'], page = 1, sortBy = 'popularity.desc'): Observable<TmdbMovieModel[]> {
                 patchState(store, { loading: true });
-                movieService.getMoviesByGenre(genre, page, sortBy)
-                    .pipe(
-                        take(1),
-                        catchError(error => {
-                            patchState(store, { error, loading: false });
-                            throw error;
-                        })
-                    )
-                    .subscribe((movies) => {
-                        patchState(store, { movies, loading: false });
-                    });
+                return movieService.getMoviesByGenre(genre, page, sortBy).pipe(
+                    take(1),
+                    catchError(error => {
+                        patchState(store, { error, loading: false });
+                        throw error;
+                    })
+                );
             },
             searchMovies(search: string): void {
                 patchState(store, { filter: { search } });
@@ -81,49 +69,26 @@ export const MovieStore = signalStore(
             updateFavoriteMovies(movie: TmdbMovieModel): void {
                 movieService.updateFavoriteMovies(movie);
             },
-            loadChatId(): void {
+            loadChatId(): Observable<{ chatId: string }> {
                 patchState(store, { loading: true });
-                chatService.getChatId()
-                    .pipe(
-                        take(1),
-                        catchError(error => {
-                            patchState(store, { error, loading: false });
-                            throw error;
-                        })
-                    )
-                    .subscribe((response: { chatId: string }) => {
-                        patchState(store, { chatId: response.chatId, loading: false });
-                    });
+                return chatService.getChatId().pipe(
+                    take(1),
+                    catchError(error => {
+                        patchState(store, { error, loading: false });
+                        throw error;
+                    })
+                );
             },
-            sendChatMessage(chatMessage: string): void {
+            sendChatMessage(chatMessage: string): Observable<{ funnyFact?: string; messages: ChatResponseModel[] }> {
                 patchState(store, { loading: true, funnyFact: null });
                 const chatId = store.chatId;
-                chatService
-                    .sendChatMessage(chatId() ?? '', chatMessage)
-                    .pipe(
-                        take(1),
-                        catchError(error => {
-                            patchState(store, { error, loading: false });
-                            throw error;
-                        })
-                    )
-                    .subscribe((response: {
-                        funnyFact?: string;
-                        messages: ChatResponseModel[];
-                    }) => {
-                        const movies =
-                            response.messages
-                                .slice()
-                                .reverse()
-                                .find((m) => m.role === 'assistant')?.movieList ?? [];
-
-                        patchState(store, {
-                            funnyFact: response.funnyFact,
-                            chatResponse: response.messages,
-                            movies,
-                            loading: false,
-                        });
-                    });
+                return chatService.sendChatMessage(chatId() ?? '', chatMessage).pipe(
+                    take(1),
+                    catchError(error => {
+                        patchState(store, { error, loading: false });
+                        throw error;
+                    })
+                );
             }
         }),
     ),
