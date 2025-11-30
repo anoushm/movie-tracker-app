@@ -1,5 +1,5 @@
-import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, combineLatest, map, tap } from 'rxjs';
 import { TmdbMovieGenreModel } from '../shared/models/tmdb-movie-genre.model';
 import { environment } from '../../enviroments/enviroments';
@@ -20,13 +20,7 @@ export class MovieService {
                 movies.filter(p => p.title.toLowerCase().indexOf(searchQuery.toLowerCase()) !== -1))
         );
 
-    private httpClient = inject(HttpClient);
-
-    public static readonly VALID_CATEGORIES = ['popular', 'top_rated', 'upcoming', 'now_playing', 'favorite'] as const;
-    public static readonly MOVIE_CATEGORIES = ['popular', 'top_rated', 'upcoming', 'now_playing', 'favorite'] as const;
-    public static readonly validateCategory = (category: string): boolean => MovieService.VALID_CATEGORIES.includes(category as any);
-    public static readonly validatePageNumber = (page: number): boolean => Number.isInteger(page) && page > 0;
-    public static readonly validateGenreId = (id: number): boolean => Number.isInteger(id) && id > 0;
+    constructor(private httpClient: HttpClient) { }
 
     public getGenres(): Observable<TmdbMovieGenreModel[]> {
         return this.httpClient
@@ -42,6 +36,7 @@ export class MovieService {
 
     public updateFavoriteMovies(movie: TmdbMovieModel): void {
         const isFavorite = this.favoriteMovies.find((m) => m.id === movie.id);
+
         if (!isFavorite) {
             this.favoriteMovies.push(movie);
         } else {
@@ -53,12 +48,6 @@ export class MovieService {
         page = 1,
         sortBy = 'popularity.desc'
     ): void {
-        if (!MovieService.validateGenreId(genre)) {
-            throw new Error('Invalid genre id');
-        }
-        if (!MovieService.validatePageNumber(page)) {
-            throw new Error('Invalid page number');
-        }
         this.httpClient
             .get<{ results: TmdbMovieModel[] }>(
                 `${environment.themoviedbBaseUrl}/3/discover/movie`,
@@ -80,13 +69,8 @@ export class MovieService {
         page: number = 1,
         sortBy = 'popularity.desc'
     ): void {
-        if (!MovieService.validateCategory(category)) {
-            throw new Error('Invalid movie category');
-        }
-        if (!MovieService.validatePageNumber(page)) {
-            throw new Error('Invalid page number');
-        }
         const { themoviedbBaseUrl: baseUrl } = environment;
+
         if (category === 'favorite') {
             this.moviesSubject$.next(this.favoriteMovies);
         } else {
