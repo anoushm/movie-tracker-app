@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "constitution": "speckit/speckit.service-tests-enhancment.12.01.2025.constitution.md",
+  "constitution": "speckit/speckit.constitution.service-tests-enhancment.12.01.2025.md",
   "testFramework": "playwright",
   "projectType": "angular",
   "sourceRoot": "src",
