@@ -14,7 +14,7 @@
 - [x] If a test cannot be made stable, consider removing or replacing it
 - [x] All E2E and application code must remain comment-free
 
-This tracker breaks down the implementation plan in `.speckit.plan.md` into actionable, verifiable tasks. Each task should be checked off as completed. Strictly follow the plan, constitution, and all user policies.
+This tracker breaks down the implementation plan in `speckit.service-tests-enhancment.12.01.2025.plan.md` into actionable, verifiable tasks. Each task should be checked off as completed. Strictly follow the plan, constitution, and all user policies.
 
 ---
 
