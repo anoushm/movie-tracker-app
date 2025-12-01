@@ -12,9 +12,9 @@ import { MoviePaginationComponent } from '../movie-pagination/movie-pagination.c
     <movie-search></movie-search>
     @if(error()) {
       <div class="error-message">{{ error() }}</div>
-    } else if(loading()) {
+    } @else if(loading()) {
       <div class="spinner"></div>
-    } else if (movies()) {
+    } @else if (movies()) {
       <movie-list [movies]="movies()" />
       @if(movies().length > 10) {
         <movie-pagination [currentPage]="currentPage" (changePage)="onPageChange($event)"/>

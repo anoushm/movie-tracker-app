@@ -15,9 +15,9 @@ export class AppShellComponent implements OnInit {
   private store = inject(MovieStore);
   private router = inject(Router);
 
-  public error = this.store.error;
+  public error = this.store.errorGenres;
   public genres = this.store.genres;
-  public loading = this.store.loading;
+  public loading = this.store.loadingGenres;
 
   public async ngOnInit(): Promise<void> {
     try {
@@ -71,7 +71,6 @@ export class AppShellComponent implements OnInit {
       wrapper.classList.toggle('content-toggled');
     }
   }
-
 
   public onChatbotSearchClick(event: MouseEvent): void {
   if (window.innerWidth <= 768) {

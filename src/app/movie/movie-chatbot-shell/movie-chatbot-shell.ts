@@ -29,7 +29,7 @@ import { MovieChatbotContentComponent } from '../movie-chatbot-content/movie-cha
 
                 @if(error()) {
                   <div class="error-message">{{ error() }}</div>
-                } else if(loading()) {
+                } @else if(loading()) {
                   <div class="spinner"></div>
                 }
             </div>
