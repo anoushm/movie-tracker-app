@@ -17,8 +17,12 @@ import { ChatResponseModel } from '../shared/models/chat-response.model';
 const initialMovieState = {
     movies: [] as TmdbMovieModel[],
     genres: [] as TmdbMovieGenreModel[],
-    loading: false,
-    error: null,
+    loadingMovies: false,
+    loadingGenres: false,
+    loadingChat: false,
+    errorMovies: null as any,
+    errorGenres: null as any,
+    errorChat: null as any,
     chatId: null as string | null,
     chatResponse: null as ChatResponseModel[] | null,
     filter: {
@@ -33,31 +37,31 @@ export const MovieStore = signalStore(
     withMethods(
         (store, movieService = inject(MovieService), chatService = inject(ChatService)) => ({
             loadMovies(category: string, page: number = 1, sortBy = 'popularity.desc'): Observable<TmdbMovieModel[]> {
-                patchState(store, { loading: true });
+                patchState(store, { loadingMovies: true, errorMovies: null });
                 return movieService.getMovieList(category, page, sortBy).pipe(
                     take(1),
                     catchError(error => {
-                        patchState(store, { error, loading: false });
+                        patchState(store, { errorMovies: error, loadingMovies: false });
                         throw error;
                     })
                 );
             },
             loadGenres(): Observable<TmdbMovieGenreModel[]> {
-                patchState(store, { loading: true });
+                patchState(store, { loadingGenres: true, errorGenres: null });
                 return movieService.getGenres().pipe(
                     take(1),
                     catchError(error => {
-                        patchState(store, { error, loading: false });
+                        patchState(store, { errorGenres: error, loadingGenres: false });
                         throw error;
                     })
                 );
             },
             loadMoviesByGenre(genre: TmdbMovieGenreModel['id'], page = 1, sortBy = 'popularity.desc'): Observable<TmdbMovieModel[]> {
-                patchState(store, { loading: true });
+                patchState(store, { loadingMovies: true, errorMovies: null });
                 return movieService.getMoviesByGenre(genre, page, sortBy).pipe(
                     take(1),
                     catchError(error => {
-                        patchState(store, { error, loading: false });
+                        patchState(store, { errorMovies: error, loadingMovies: false });
                         throw error;
                     })
                 );
@@ -70,22 +74,22 @@ export const MovieStore = signalStore(
                 movieService.updateFavoriteMovies(movie);
             },
             loadChatId(): Observable<{ chatId: string }> {
-                patchState(store, { loading: true });
+                patchState(store, { loadingChat: true, errorChat: null });
                 return chatService.getChatId().pipe(
                     take(1),
                     catchError(error => {
-                        patchState(store, { error, loading: false });
+                        patchState(store, { errorChat: error, loadingChat: false });
                         throw error;
                     })
                 );
             },
             sendChatMessage(chatMessage: string): Observable<{ funnyFact?: string; messages: ChatResponseModel[] }> {
-                patchState(store, { loading: true, funnyFact: null });
+                patchState(store, { loadingChat: true, errorChat: null, funnyFact: null });
                 const chatId = store.chatId;
                 return chatService.sendChatMessage(chatId() ?? '', chatMessage).pipe(
                     take(1),
                     catchError(error => {
-                        patchState(store, { error, loading: false });
+                        patchState(store, { errorChat: error, loadingChat: false });
                         throw error;
                     })
                 );

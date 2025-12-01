@@ -44,27 +44,29 @@ const FUNNY_BULB_BASE_PATH = 'M9.013 19.9a.75.75 0 0 1 .877-.597 11.319 11.319 0
           }
       </div>
     </div>
-    @if(loading()) {
-    <div class="chatbot-loading-indicator">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
-          <g transform="translate(0, 0) scale(1)">
-              <path [attr.d]="thinkingHeadPath" fill="#efa21b" stroke="#000" stroke-width="4" />
-              <path [attr.d]="thinkingTopPath" fill="none" stroke="#000" stroke-width="3" />
-              <g id="thinkingDots">
-                  <circle cx="40" cy="55" r="5" fill="#000">
-                      <animate attributeName="opacity" values="0;1;0" dur="1.5s" repeatCount="indefinite" begin="0s" />
-                  </circle>
-                  <circle cx="50" cy="55" r="5" fill="#000">
-                      <animate attributeName="opacity" values="0;1;0" dur="1.5s" repeatCount="indefinite" begin="0.5s" />
-                  </circle>
-                  <circle cx="60" cy="55" r="5" fill="#000">
-                      <animate attributeName="opacity" values="0;1;0" dur="1.5s" repeatCount="indefinite" begin="1s" />
-                  </circle>
-              </g>
-              <path [attr.d]="thinkingSmilePath" fill="none" stroke="#000" stroke-width="3" stroke-linecap="round" />
-          </g>
-      </svg>
-    </div>
+    @if(error()) {
+      <div class="chatbot-loading-indicator error-message">{{ error() }}</div>
+    } @else if(loading()) {
+      <div class="chatbot-loading-indicator">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+            <g transform="translate(0, 0) scale(1)">
+                <path [attr.d]="thinkingHeadPath" fill="#efa21b" stroke="#000" stroke-width="4" />
+                <path [attr.d]="thinkingTopPath" fill="none" stroke="#000" stroke-width="3" />
+                <g id="thinkingDots">
+                    <circle cx="40" cy="55" r="5" fill="#000">
+                        <animate attributeName="opacity" values="0;1;0" dur="1.5s" repeatCount="indefinite" begin="0s" />
+                    </circle>
+                    <circle cx="50" cy="55" r="5" fill="#000">
+                        <animate attributeName="opacity" values="0;1;0" dur="1.5s" repeatCount="indefinite" begin="0.5s" />
+                    </circle>
+                    <circle cx="60" cy="55" r="5" fill="#000">
+                        <animate attributeName="opacity" values="0;1;0" dur="1.5s" repeatCount="indefinite" begin="1s" />
+                    </circle>
+                </g>
+                <path [attr.d]="thinkingSmilePath" fill="none" stroke="#000" stroke-width="3" stroke-linecap="round" />
+            </g>
+        </svg>
+      </div>
     }
     <div #messagesContainer class="chatbot-messages" style="overflow-y: auto; padding: 15px;">
             @for (message of messages(); track message.text) {
@@ -169,7 +171,8 @@ export class MovieChatbotContentComponent {
         const raw = this.store.chatResponse() || [];
         return raw.map((msg) => ({ ...msg, segments: this.trailerParser.parse(msg.text) }));
     });
-    protected loading = computed<boolean>(() => this.store.loading());
+    protected loading = computed<boolean>(() => this.store.loadingChat());
+    protected error = computed<any>(() => this.store.errorChat());
     protected funnyFact = computed<string>(() => this.store.funnyFact() || '');
     protected showFunnyFact = signal<boolean>(false);
     protected indicatorVisible = computed<boolean>(() => !this.showFunnyFact() && !!this.funnyFact());
