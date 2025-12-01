@@ -20,9 +20,9 @@ const initialMovieState = {
     loadingMovies: false,
     loadingGenres: false,
     loadingChat: false,
-    errorMovies: null as any,
-    errorGenres: null as any,
-    errorChat: null as any,
+    errorMovies: null as unknown | null,
+    errorGenres: null as unknown | null,
+    errorChat: null as unknown | null,
     chatId: null as string | null,
     chatResponse: null as ChatResponseModel[] | null,
     filter: {
