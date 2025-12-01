@@ -1209,15 +1209,10 @@ Find all components that use `store.loading()` and update to use specific loadin
    - [ ] Loading indicators work correctly
 
 3. **Favorites**
-<<<<<<< HEAD
     - [ ] Can add to favorites
     - [ ] Can remove from favorites
-=======
-   - [ ] Can add to favorites
-   - [ ] Can remove from favorites
-   - [ ] Favorites persist after refresh
-   - [ ] localStorage shows correct data
->>>>>>> 5d27042 (fix: critical bugs in service layer - typos, console.logs, strict equality)
+    - [ ] Favorites persist after refresh
+    - [ ] localStorage shows correct data
 
 4. **Chat**
    - [ ] Can send messages
@@ -1264,7 +1259,4 @@ If issues occur:
 - Phase 3 MUST be atomic (single commit)
 - Test thoroughly after Phase 3
 - Use Chrome DevTools for memory leak detection
-<<<<<<< HEAD
-=======
 - Verify localStorage persistence
->>>>>>> 5d27042 (fix: critical bugs in service layer - typos, console.logs, strict equality)
