@@ -22,7 +22,6 @@ export class MovieService {
     );
 
     public static readonly VALID_CATEGORIES = ['popular', 'top_rated', 'upcoming', 'now_playing', 'favorite'] as const;
-    public static readonly MOVIE_CATEGORIES = ['popular', 'top_rated', 'upcoming', 'now_playing', 'favorite'] as const;
     public static readonly validateCategory = (category: string): boolean => MovieService.VALID_CATEGORIES.includes(category as any);
     public static readonly validatePageNumber = (page: number): boolean => Number.isInteger(page) && page > 0;
     public static readonly validateGenreId = (id: number): boolean => Number.isInteger(id) && id > 0;
