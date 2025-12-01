@@ -1,5 +1,5 @@
 # Service Layer Refactoring - Implementation Plan
-<<<<<<< HEAD
+
 ## Branching and Testing Policy
 
 **MANDATORY:**
@@ -7,6 +7,7 @@
 - After completing each phase, commit your changes to this branch.
 - After each phase, run all tests. All tests not directly affected by the current phase must pass before proceeding.
 - After all phases and tasks are complete, all tests must pass with no failures.
+
 ## Service Injection Policy for SignalStore
 
 **MANDATORY:** Do NOT inject services via parameters to store methods or hooks. Instead, always inject services in the class or via Custom Store Properties using the `withProps` pattern in `signalStore`. This allows services to be used throughout the store, including in methods and hooks, and ensures a single instance is available everywhere in the store.
@@ -50,8 +51,6 @@ export const BooksStore = signalStore(
 ## Code Comment Policy
 
 **MANDATORY:** There must NOT be any comments in the code at any point. All code, including services, components, and tests, must be completely free of comments (single-line, multi-line, or JSDoc). This applies to all phases and all files.
-=======
->>>>>>> 5d27042 (fix: critical bugs in service layer - typos, console.logs, strict equality)
 
 ## Overview
 This plan provides step-by-step implementation instructions for refactoring three core services. Follow each phase sequentially and commit after each phase.
