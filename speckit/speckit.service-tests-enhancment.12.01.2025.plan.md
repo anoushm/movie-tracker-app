@@ -469,7 +469,7 @@ export interface ChatResponseModel {
        this.saveFavoritesToStorage();
    }
    ```
->>>>>>> 5d27042 (fix: critical bugs in service layer - typos, console.logs, strict equality)
+
 
 ### Step 3.2: Add shareReplay to getGenres
 
@@ -1193,25 +1193,7 @@ Find all components that use `store.loading()` and update to use specific loadin
 
 ## Final Verification
 
-<<<<<<< HEAD
-## Enhance the E2E Tests
 
-This task ensures E2E tests are robust, stable, and constitution-compliant.
-
-### Steps
-1. Run all E2E tests and verify all pass.
-2. Update any test that relies on dynamic or unstable data (e.g., searching for specific movie titles in popular movies) to avoid false failures.
-3. Ensure all E2E tests only verify UI behavior, not specific movie content that may change.
-4. Remove or update any test assertions that assume static data in the movie API.
-5. Ensure there are no comments in any E2E test or related code.
-6. Commit all changes after all E2E tests pass.
-
-### Further Considerations
-1. If a test cannot be made stable, consider removing or replacing it.
-2. All E2E and application code must remain comment-free.
-
-=======
->>>>>>> 5d27042 (fix: critical bugs in service layer - typos, console.logs, strict equality)
 ### Run Through All Manual Tests
 
 1. **Compilation & Console**
