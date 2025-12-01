@@ -26,12 +26,12 @@ export class ChatService {
     }
 
     public sendChatMessage(chatId: string, message: string): Observable<{ funnyFact?: string; messages: ChatResponseModel[] }> {
-    const trimmedChatId = chatId.trim();
-    const trimmedMessage = message.trim();
-    if (!trimmedChatId || !trimmedMessage) {
-        throw new Error('chatId and message are required');
-    }
-    return this.http.post<ChatApiResponse>(`${environment.chatBaseUrl}/${trimmedChatId}/ask`, { chatId: trimmedChatId, input: trimmedMessage })
+        const trimmedChatId = chatId.trim();
+        const trimmedMessage = message.trim();
+        if (!trimmedChatId || !trimmedMessage) {
+            throw new Error('chatId and message are required');
+        }
+        return this.http.post<ChatApiResponse>(`${environment.chatBaseUrl}/${trimmedChatId}/ask`, { chatId: trimmedChatId, input: trimmedMessage })
             .pipe(
                 map(response => this.mapResponse(response)),
             );
