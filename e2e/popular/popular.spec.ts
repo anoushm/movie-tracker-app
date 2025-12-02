@@ -61,10 +61,9 @@ test.describe('Popular Movies Page', () => {
     if (cardCount === 0) {
       const noMovies = await page.locator('text=No movies found').isVisible();
       expect(noMovies).toBeTruthy();
-      // Optionally: skip the rest if no results
-      return;
+    } else {
+      expect(cardCount).toBeGreaterThan(0);
     }
-    expect(cardCount).toBeGreaterThan(0);
   });
 
   test('should have working pagination', async ({ page }) => {
