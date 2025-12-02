@@ -80,7 +80,10 @@ export class MovieService {
                 .get<{ results: TmdbMovieModel[] }>(`${baseUrl}/3/movie/${category}`, {
                     params: { page, sort_by: sortBy },
                 })
-                .pipe(map(({ results }) => this.updateFavorite(results)));
+                .pipe(
+                    map(({ results }) => this.updateFavorite(results)),
+                    tap((movies) => this.moviesSubject$.next(movies))
+                );
         }
     }
 
