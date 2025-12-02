@@ -89,6 +89,13 @@ export const MovieStore = signalStore(
                 const chatId = store.chatId;
                 return chatService.sendChatMessage(chatId() ?? '', chatMessage).pipe(
                     take(1),
+                    tap(response => {
+                        patchState(store, {
+                            chatResponse: response.messages,
+                            funnyFact: response.funnyFact ?? null,
+                            loadingChat: false
+                        });
+                    }),
                     catchError(error => {
                         patchState(store, { errorChat: error, loadingChat: false });
                         throw error;
