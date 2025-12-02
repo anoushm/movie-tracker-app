@@ -1,5 +1,5 @@
 import { inject } from '@angular/core';
-import { take, catchError, Observable } from 'rxjs';
+import { take, catchError, Observable, tap } from 'rxjs';
 import {
     patchState,
     signalStore,
@@ -77,6 +77,7 @@ export const MovieStore = signalStore(
                 patchState(store, { loadingChat: true, errorChat: null });
                 return chatService.getChatId().pipe(
                     take(1),
+                    tap(response => patchState(store, { chatId: response.chatId, loadingChat: false })),
                     catchError(error => {
                         patchState(store, { errorChat: error, loadingChat: false });
                         throw error;
