@@ -66,7 +66,10 @@ export class MovieService {
                     },
                 }
             )
-            .pipe(map(({ results }) => this.updateFavorite(results)));
+            .pipe(
+                map(({ results }) => this.updateFavorite(results)),
+                tap((movies) => this.moviesSubject$.next(movies))
+            );
     }
 
     public getMovieList(category: string, page: number = 1, sortBy = 'popularity.desc'): Observable<TmdbMovieModel[]> {

@@ -46,7 +46,7 @@ const HEART_FILLED_PATH =
                   />
                 </svg>
                 <svg
-                  class="w-6 h-6 text-[#efa21b]"
+                  class="w-6 h-6 text-red-600"
                   viewBox="0 0 24 24"
                   fill="currentColor"
                   [ngClass]="{ hidden: !movie?.favorite }"
