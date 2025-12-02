@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, combineLatest, map, shareReplay, of } from 'rxjs';
+import { BehaviorSubject, Observable, combineLatest, map, shareReplay, of, tap } from 'rxjs';
 import { TmdbMovieGenreModel } from '../shared/models/tmdb-movie-genre.model';
 import { environment } from '../../enviroments/enviroments';
 import { TmdbMovieModel } from '../shared/models/tmdb-movie.model';
