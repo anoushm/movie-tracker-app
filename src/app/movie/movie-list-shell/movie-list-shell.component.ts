@@ -78,9 +78,9 @@ export class MovieListShellComponent implements OnInit {
   private loadMovies(page: number): void {
     this.activatedRoute.params.subscribe(params => {
       if (params['category']) {
-        this.store.loadMovies(params['category'], page);
+        this.store.loadMovies(params['category'], page).subscribe();
       } else {
-        this.store.loadMoviesByGenre(params['id'], page);
+        this.store.loadMoviesByGenre(params['id'], page).subscribe();
       }
     });
   }

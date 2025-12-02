@@ -98,9 +98,9 @@ export class MovieChatbotShellComponent implements OnInit {
     private loadMovies(page: number): void {
         this.activatedRoute.params.subscribe(params => {
             if (params['category']) {
-                this.store.loadMovies('genre', page);
+                this.store.loadMovies('genre', page).subscribe();
             } else {
-                this.store.loadMoviesByGenre(28, page);
+                this.store.loadMoviesByGenre(28, page).subscribe();
             }
 
             this.chatingHasStarted = true;

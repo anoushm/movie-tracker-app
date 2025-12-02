@@ -27,7 +27,7 @@ export class MovieService {
     public static readonly validateGenreId = (id: number): boolean => Number.isInteger(id) && id > 0;
 
     private genres$?: Observable<TmdbMovieGenreModel[]>;
-    getGenres(): Observable<TmdbMovieGenreModel[]> {
+    public getGenres(): Observable<TmdbMovieGenreModel[]> {
         if (!this.genres$) {
             this.genres$ = this.http
                 .get<{ genres: TmdbMovieGenreModel[] }>(`${environment.themoviedbBaseUrl}/3/genre/movie/list`)
@@ -39,11 +39,11 @@ export class MovieService {
         return this.genres$;
     }
 
-    searchMovies(query: string): void {
+    public searchMovies(query: string): void {
         this.searchQuery$.next(query);
     }
 
-    updateFavoriteMovies(movie: TmdbMovieModel): void {
+    public updateFavoriteMovies(movie: TmdbMovieModel): void {
         const isFavorite = this.favoriteMovies.find((m) => m.id === movie.id);
         if (!isFavorite) {
             this.favoriteMovies.push(movie);
@@ -52,7 +52,7 @@ export class MovieService {
         }
     }
 
-    getMoviesByGenre(genre: TmdbMovieGenreModel['id'], page = 1, sortBy = 'popularity.desc'): Observable<TmdbMovieModel[]> {
+    public getMoviesByGenre(genre: TmdbMovieGenreModel['id'], page = 1, sortBy = 'popularity.desc'): Observable<TmdbMovieModel[]> {
         if (!MovieService.validateGenreId(genre)) throw new Error('Invalid genre id');
         if (!MovieService.validatePageNumber(page)) throw new Error('Invalid page number');
         return this.http
@@ -69,7 +69,7 @@ export class MovieService {
             .pipe(map(({ results }) => this.updateFavorite(results)));
     }
 
-    getMovieList(category: string, page: number = 1, sortBy = 'popularity.desc'): Observable<TmdbMovieModel[]> {
+    public getMovieList(category: string, page: number = 1, sortBy = 'popularity.desc'): Observable<TmdbMovieModel[]> {
         if (!MovieService.validateCategory(category)) throw new Error('Invalid movie category');
         if (!MovieService.validatePageNumber(page)) throw new Error('Invalid page number');
         const { themoviedbBaseUrl: baseUrl } = environment;

@@ -222,16 +222,17 @@ export class MovieChatbotContentComponent {
         this.showFunnyFact.set(!this.showFunnyFact());
     }
 
-    public async sendChatMessage(message: string): Promise<void> {
+    public sendChatMessage(message: string): void {
         if (!message.trim() || this.loading()) return;
 
-        try {
-            this.showFunnyFact.set(false);
-            await this.store.sendChatMessage(message);
-
-            this.chatbotInput.nativeElement.value = '';
-        } catch (error) {
-            console.error('Error sending message:', error);
-        }
+        this.showFunnyFact.set(false);
+        this.store.sendChatMessage(message).subscribe({
+            next: () => {
+                this.chatbotInput.nativeElement.value = '';
+            },
+            error: (error) => {
+                console.error('Error sending message:', error);
+            }
+        });
     }
 }

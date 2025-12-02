@@ -19,12 +19,12 @@ export class AppShellComponent implements OnInit {
   public genres = this.store.genres;
   public loading = this.store.loadingGenres;
 
-  public async ngOnInit(): Promise<void> {
-    try {
-      await this.store.loadGenres();
-    } catch (err) {
-      console.error('Error loading genres:', err);
-    }
+  public ngOnInit(): void {
+    this.store.loadGenres().subscribe({
+      error: (err) => {
+        console.error('Error loading genres:', err);
+      }
+    });
 
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)

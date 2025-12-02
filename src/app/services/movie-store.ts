@@ -40,6 +40,7 @@ export const MovieStore = signalStore(
                 patchState(store, { loadingMovies: true, errorMovies: null });
                 return movieService.getMovieList(category, page, sortBy).pipe(
                     take(1),
+                    tap(movies => patchState(store, { movies, loadingMovies: false })),
                     catchError(error => {
                         patchState(store, { errorMovies: error, loadingMovies: false });
                         throw error;
@@ -50,6 +51,7 @@ export const MovieStore = signalStore(
                 patchState(store, { loadingGenres: true, errorGenres: null });
                 return movieService.getGenres().pipe(
                     take(1),
+                    tap(genres => patchState(store, { genres, loadingGenres: false })),
                     catchError(error => {
                         patchState(store, { errorGenres: error, loadingGenres: false });
                         throw error;
@@ -60,6 +62,7 @@ export const MovieStore = signalStore(
                 patchState(store, { loadingMovies: true, errorMovies: null });
                 return movieService.getMoviesByGenre(genre, page, sortBy).pipe(
                     take(1),
+                    tap(movies => patchState(store, { movies, loadingMovies: false })),
                     catchError(error => {
                         patchState(store, { errorMovies: error, loadingMovies: false });
                         throw error;
@@ -106,7 +109,7 @@ export const MovieStore = signalStore(
     ),
     withHooks({
         onInit: ({ loadChatId }) => {
-            loadChatId();
+            loadChatId().subscribe();
         },
     }),
 );
