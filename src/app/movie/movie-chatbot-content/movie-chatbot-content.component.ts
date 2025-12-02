@@ -172,7 +172,22 @@ export class MovieChatbotContentComponent {
         return raw.map((msg) => ({ ...msg, segments: this.trailerParser.parse(msg.text) }));
     });
     protected loading = computed<boolean>(() => this.store.loadingChat());
-    protected error = computed<any>(() => this.store.errorChat());
+    protected error = computed<string | null>(() => {
+        const err = this.store.errorChat();
+        if (!err) return null;
+        if (typeof err === 'string') return err;
+        if (err instanceof Error) return err.message;
+        if (typeof err === 'object') {
+            const errObj = err as Record<string, unknown>;
+            if (typeof errObj['message'] === 'string') return errObj['message'];
+            if (typeof errObj['error'] === 'string') return errObj['error'];
+            if (errObj['error'] && typeof errObj['error'] === 'object') {
+                const nestedErr = errObj['error'] as Record<string, unknown>;
+                if (typeof nestedErr['message'] === 'string') return nestedErr['message'];
+            }
+        }
+        return 'An unexpected error occurred';
+    });
     protected funnyFact = computed<string>(() => this.store.funnyFact() || '');
     protected showFunnyFact = signal<boolean>(false);
     protected indicatorVisible = computed<boolean>(() => !this.showFunnyFact() && !!this.funnyFact());
