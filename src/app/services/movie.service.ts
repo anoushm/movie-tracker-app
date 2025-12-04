@@ -45,6 +45,7 @@ export class MovieService {
 
     public updateFavoriteMovies(movie: TmdbMovieModel): void {
         const isFavorite = this.favoriteMovies.find((m) => m.id === movie.id);
+
         if (!isFavorite) {
             this.favoriteMovies.push(movie);
         } else {
