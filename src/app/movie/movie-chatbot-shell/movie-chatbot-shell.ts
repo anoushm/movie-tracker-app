@@ -28,7 +28,15 @@ import { MovieChatbotContentComponent } from '../movie-chatbot-content/movie-cha
                 }
 
                 @if(error()) {
-                  <div class="error-message">{{ error() }}</div>
+                  <div class="error-message">
+                    {{
+                      error() instanceof Error
+                        ? error().message
+                        : (typeof error() === 'string'
+                            ? error()
+                            : 'An unexpected error occurred.')
+                    }}
+                  </div>
                 } @else if(loading()) {
                   <div class="spinner"></div>
                 }
