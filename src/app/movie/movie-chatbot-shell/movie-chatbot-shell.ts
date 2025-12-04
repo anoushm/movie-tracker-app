@@ -28,15 +28,7 @@ import { MovieChatbotContentComponent } from '../movie-chatbot-content/movie-cha
                 }
 
                 @if(error()) {
-                  <div class="error-message">
-                    {{
-                      error() instanceof Error
-                        ? error().message
-                        : (typeof error() === 'string'
-                            ? error()
-                            : 'An unexpected error occurred.')
-                    }}
-                  </div>
+                  <div class="error-message">{{ getErrorMessage() }}</div>
                 } @else if(loading()) {
                   <div class="spinner"></div>
                 }
@@ -131,8 +123,16 @@ export class MovieChatbotShellComponent implements OnInit {
       }
     }
 
-    isActive(tab: string): boolean {
+    public isActive(tab: string): boolean {
       return this.activeTab === tab;
+    }
+
+    public getErrorMessage(): string {
+        const err = this.error();
+        if (!err) return '';
+        if (err instanceof Error) return err.message;
+        if (typeof err === 'string') return err;
+        return 'An unexpected error occurred.';
     }
 
 }
