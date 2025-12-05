@@ -1,4 +1,5 @@
 import { inject } from '@angular/core';
+import { take, catchError, Observable, tap } from 'rxjs';
 import {
     patchState,
     signalStore,
@@ -12,18 +13,38 @@ import { TmdbMovieModel } from '../shared/models/tmdb-movie.model';
 import { ChatService } from './chat.service';
 import { ChatResponseModel } from '../shared/models/chat-response.model';
 
-
-const initialMovieState = {
-    movies: [] as TmdbMovieModel[],
-    genres: [] as TmdbMovieGenreModel[],
-    loading: false,
-    error: null,
-    chatId: null as string | null,
-    chatResponse: null as ChatResponseModel[] | null,
+interface MovieState {
+    movies: TmdbMovieModel[];
+    genres: TmdbMovieGenreModel[];
+    loadingMovies: boolean;
+    loadingGenres: boolean;
+    loadingChat: boolean;
+    errorMovies: unknown | null;
+    errorGenres: unknown | null;
+    errorChat: unknown | null;
+    chatId: string | null;
+    chatResponse: ChatResponseModel[] | null;
     filter: {
-        search: '' as string,
+        search: string;
+    };
+    funnyFact: string | null;
+}
+
+const initialMovieState: MovieState = {
+    movies: [],
+    genres: [],
+    loadingMovies: false,
+    loadingGenres: false,
+    loadingChat: false,
+    errorMovies: null,
+    errorGenres: null,
+    errorChat: null,
+    chatId: null,
+    chatResponse: null,
+    filter: {
+        search: '',
     },
-    funnyFact: null as string | null,
+    funnyFact: null,
 }
 
 export const MovieStore = signalStore(
@@ -31,117 +52,87 @@ export const MovieStore = signalStore(
     withState(initialMovieState),
     withMethods(
         (store, movieService = inject(MovieService), chatService = inject(ChatService)) => ({
-            async loadMovies(category: string,
-                page: number = 1,
-                sortBy = 'popularity.desc'): Promise<void> {
-                patchState(store, { loading: true });
-
-                await movieService.getMovieList(category, page, sortBy);
-
-                await movieService.movies$.subscribe({
-                    next: (movies) => {
-                        patchState(store, { movies, loading: false });
-                    },
-                    error: (error) => {
-                        patchState(store, { error, loading: false });
-                    }
-
-                });
+            loadMovies(category: string, page: number = 1, sortBy = 'popularity.desc'): Observable<TmdbMovieModel[]> {
+                patchState(store, { loadingMovies: true, errorMovies: null });
+                return movieService.getMovieList(category, page, sortBy).pipe(
+                    take(1),
+                    tap(movies => patchState(store, { movies, loadingMovies: false })),
+                    catchError(error => {
+                        patchState(store, { errorMovies: error, loadingMovies: false });
+                        throw error;
+                    })
+                );
             },
-            async loadGenres(): Promise<void> {
-                patchState(store, { loading: true });
-
-                await movieService.getGenres().subscribe({
-                    next: (genres: TmdbMovieGenreModel[]) => {
-                        patchState(store, { genres, loading: false });
-                    },
-                    error: (error) => {
-                        patchState(store, { error, loading: false });
-                    }
-                });
+            loadGenres(): Observable<TmdbMovieGenreModel[]> {
+                patchState(store, { loadingGenres: true, errorGenres: null });
+                return movieService.getGenres().pipe(
+                    take(1),
+                    tap(genres => patchState(store, { genres, loadingGenres: false })),
+                    catchError(error => {
+                        patchState(store, { errorGenres: error, loadingGenres: false });
+                        throw error;
+                    })
+                );
             },
-            async loadMoviesByGenre(genre: TmdbMovieGenreModel['id'],
-                page = 1,
-                sortBy = 'popularity.desc'
-            ): Promise<void> {
-                patchState(store, { loading: true });
-
-                await movieService.getMoviesByGenre(genre, page, sortBy);
-
-                await movieService.movies$.subscribe({
-                    next: (movies) => {
-                        patchState(store, { movies, loading: false });
-                    },
-                    error: (error) => {
-                        patchState(store, { error, loading: false });
-                    }
-
-                });
+            loadMoviesByGenre(genre: TmdbMovieGenreModel['id'], page = 1, sortBy = 'popularity.desc'): Observable<TmdbMovieModel[]> {
+                patchState(store, { loadingMovies: true, errorMovies: null });
+                return movieService.getMoviesByGenre(genre, page, sortBy).pipe(
+                    take(1),
+                    tap(movies => patchState(store, { movies, loadingMovies: false })),
+                    catchError(error => {
+                        patchState(store, { errorMovies: error, loadingMovies: false });
+                        throw error;
+                    })
+                );
             },
-            async searchMovies(search: string): Promise<void> {
+            searchMovies(search: string): void {
                 patchState(store, { filter: { search } });
-
-                await movieService.searchMovies(search);
-
-                await movieService.movies$.subscribe({
-                    next: (movies) => {
-                        patchState(store, { movies, loading: false });
-                    },
-                    error: (error) => {
-                        patchState(store, { error, loading: false });
-                    }
+                movieService.searchMovies(search);
+                movieService.movies$.pipe(take(1)).subscribe(filteredMovies => {
+                    patchState(store, { movies: filteredMovies });
                 });
             },
-            async updateFavoriteMovies(movie: TmdbMovieModel): Promise<void> {
-                await movieService.updateFavoriteMovies(movie);
+            updateFavoriteMovies(movie: TmdbMovieModel): void {
+                movieService.updateFavoriteMovies(movie);
             },
-            async loadChatId(): Promise<void> {
-                patchState(store, { loading: true });
-
-                await chatService.getChatId().subscribe({
-                    next: (response: { chatId: string }) => {
-                        patchState(store, { chatId: response.chatId, loading: false });
-                    },
-                    error: (error) => {
-                        patchState(store, { error, loading: false });
-                    }
-                });
+            loadChatId(): Observable<{ chatId: string }> {
+                patchState(store, { loadingChat: true, errorChat: null });
+                return chatService.getChatId().pipe(
+                    take(1),
+                    tap(response => patchState(store, { chatId: response.chatId, loadingChat: false })),
+                    catchError(error => {
+                        patchState(store, { errorChat: error, loadingChat: false });
+                        throw error;
+                    })
+                );
             },
-            async sendChatMessage(chatMessage: string): Promise<void> {
-                patchState(store, { loading: true, funnyFact: null });
+            sendChatMessage(chatMessage: string): Observable<{ funnyFact?: string; messages: ChatResponseModel[] }> {
+                patchState(store, { loadingChat: true, errorChat: null, funnyFact: null });
                 const chatId = store.chatId;
-
-                await chatService
-                    .sendChatMessage(chatId() ?? '', chatMessage)
-                    .subscribe({
-                        next: (response: {
-                            funnyFact?: string;
-                            messages: ChatResponseModel[];
-                        }) => {
-                            const movies =
-                                response.messages
-                                    .slice()
-                                    .reverse()
-                                    .find((m) => m.role === 'assistant')?.movieList ?? [];
-
-                            patchState(store, {
-                                funnyFact: response.funnyFact,
-                                chatResponse: response.messages,
-                                movies,
-                                loading: false,
-                            });
-                        },
-                        error: (error) => {
-                            patchState(store, { error, loading: false });
-                        },
-                    });
+                return chatService.sendChatMessage(chatId() ?? '', chatMessage).pipe(
+                    take(1),
+                    tap(response => {
+                        const lastMessage = response.messages[response.messages.length - 1];
+                        const moviesFromChat: TmdbMovieModel[] = lastMessage?.movieList ?? [];
+                        
+                        patchState(store, {
+                            chatResponse: response.messages,
+                            funnyFact: response.funnyFact ?? null,
+                            movies: moviesFromChat.length > 0 ? moviesFromChat : store.movies(),
+                            loadingChat: false
+                        });
+                    }),
+                    catchError(error => {
+                        patchState(store, { errorChat: error, loadingChat: false });
+                        throw error;
+                    })
+                );
             }
         }),
     ),
     withHooks({
-        onInit: ({ loadChatId }) => {
-            console.log('onInit');
-            loadChatId();
+        onInit: ({ loadChatId }): void => {
+            loadChatId().subscribe();
         },
     }),
 );

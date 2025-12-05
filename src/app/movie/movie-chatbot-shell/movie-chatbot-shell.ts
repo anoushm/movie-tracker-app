@@ -27,8 +27,10 @@ import { MovieChatbotContentComponent } from '../movie-chatbot-content/movie-cha
                     }
                 }
 
-                @if(loading()) {
-                    <div class="spinner"></div>
+                @if(error()) {
+                  <div class="error-message">{{ getErrorMessage() }}</div>
+                } @else if(loading()) {
+                  <div class="spinner"></div>
                 }
             </div>
         </div>
@@ -64,7 +66,8 @@ export class MovieChatbotShellComponent implements OnInit {
     public currentPage: number = 1;
     public pageSize: number = 20;
     public movies: Signal<TmdbMovieModel[]> = this.store.movies;
-    public loading = this.store.loading;
+    public loading = this.store.loadingMovies;
+    public error = this.store.errorMovies;
     public chatingHasStarted = false;
 
     public ngOnInit(): void {
@@ -95,9 +98,9 @@ export class MovieChatbotShellComponent implements OnInit {
     private loadMovies(page: number): void {
         this.activatedRoute.params.subscribe(params => {
             if (params['category']) {
-                this.store.loadMovies('genre', page);
+                this.store.loadMovies('genre', page).subscribe();
             } else {
-                this.store.loadMoviesByGenre(28, page);
+                this.store.loadMoviesByGenre(28, page).subscribe();
             }
 
             this.chatingHasStarted = true;
@@ -120,8 +123,16 @@ export class MovieChatbotShellComponent implements OnInit {
       }
     }
 
-    isActive(tab: string): boolean {
+    public isActive(tab: string): boolean {
       return this.activeTab === tab;
+    }
+
+    public getErrorMessage(): string {
+        const err = this.error();
+        if (!err) return '';
+        if (err instanceof Error) return err.message;
+        if (typeof err === 'string') return err;
+        return 'An unexpected error occurred.';
     }
 
 }

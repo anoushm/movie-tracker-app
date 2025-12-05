@@ -10,13 +10,17 @@ import { MoviePaginationComponent } from '../movie-pagination/movie-pagination.c
     selector: 'movie-list-shell',
     template: `
     <movie-search></movie-search>
-    @if (movies()) {
+    @if(error()) {
+      <div class="error-message">{{ error() }}</div>
+    } @else if(loading()) {
+      <div class="spinner"></div>
+    } @else if (movies()) {
       <movie-list [movies]="movies()" />
       @if(movies().length > 10) {
         <movie-pagination [currentPage]="currentPage" (changePage)="onPageChange($event)"/>
       }
     } @else {
-    <div>Oops, no movies were found!</div>
+      <div>Oops, no movies were found!</div>
     }
   `,
     changeDetection: ChangeDetectionStrategy.OnPush,
@@ -55,27 +59,30 @@ export class MovieListShellComponent implements OnInit {
   private activatedRoute: ActivatedRoute = inject(ActivatedRoute);
   public currentPage: number = 1;
   public pageSize: number = 20;
-  public movies: Signal<TmdbMovieModel[]> = this.store.movies;
+    public movies: Signal<TmdbMovieModel[]> = this.store.movies;
+  public loading = this.store.loadingMovies;
+  public error = this.store.errorMovies;
 
   public ngOnInit(): void {
-    this.loadMovies(this.currentPage);
+    this.activatedRoute.params.subscribe(params => {
+      this.currentPage = 1;
+      this.loadMovies(params, this.currentPage);
+    });
   }
 
   public onPageChange(page: number): void {
     this.currentPage = page;
-
     this.activatedRoute.params.subscribe(params => {
-      this.loadMovies(this.currentPage);
+      this.loadMovies(params, this.currentPage);
     });
   }
 
-  private loadMovies(page: number): void {
-    this.activatedRoute.params.subscribe(params => {
-      if (params['category']) {
-        this.store.loadMovies(params['category'], page);
-      } else {
-        this.store.loadMoviesByGenre(params['id'], page);
-      }
-    });
+  private loadMovies(params: any, page: number): void {
+    if (params['category']) {
+      this.store.loadMovies(params['category'], page).subscribe();
+    } else if (params['id']) {
+      const genreId = Number(params['id']);
+      this.store.loadMoviesByGenre(genreId, page).subscribe();
+    }
   }
 }

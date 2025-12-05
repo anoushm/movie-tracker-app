@@ -15,16 +15,16 @@ export class AppShellComponent implements OnInit {
   private store = inject(MovieStore);
   private router = inject(Router);
 
-  public error = this.store.error;
+  public error = this.store.errorGenres;
   public genres = this.store.genres;
-  public loading = this.store.loading;
+  public loading = this.store.loadingGenres;
 
-  public async ngOnInit(): Promise<void> {
-    try {
-      await this.store.loadGenres();
-    } catch (err) {
-      console.error('Error loading genres:', err);
-    }
+  public ngOnInit(): void {
+    this.store.loadGenres().subscribe({
+      error: (err) => {
+        console.error('Error loading genres:', err);
+      }
+    });
 
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
@@ -71,7 +71,6 @@ export class AppShellComponent implements OnInit {
       wrapper.classList.toggle('content-toggled');
     }
   }
-
 
   public onChatbotSearchClick(event: MouseEvent): void {
   if (window.innerWidth <= 768) {
