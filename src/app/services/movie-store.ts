@@ -112,9 +112,8 @@ export const MovieStore = signalStore(
                 return chatService.sendChatMessage(chatId() ?? '', chatMessage).pipe(
                     take(1),
                     tap(response => {
-                        const moviesFromChat: TmdbMovieModel[] = response.messages
-                            .filter(msg => msg.movieList && msg.movieList.length > 0)
-                            .flatMap(msg => msg.movieList!);
+                        const lastMessage = response.messages[response.messages.length - 1];
+                        const moviesFromChat: TmdbMovieModel[] = lastMessage?.movieList ?? [];
                         
                         patchState(store, {
                             chatResponse: response.messages,
