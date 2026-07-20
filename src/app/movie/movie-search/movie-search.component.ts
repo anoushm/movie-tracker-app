@@ -1,12 +1,12 @@
 import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+
 import { ReactiveFormsModule } from '@angular/forms';
 import { MovieStore } from '../../services/movie-store';
 
 @Component({
     selector: 'movie-search',
-    imports: [CommonModule, ReactiveFormsModule],
+    imports: [ReactiveFormsModule],
     changeDetection: ChangeDetectionStrategy.OnPush,
     template: `
     <div class="relative w-full mb-5">
