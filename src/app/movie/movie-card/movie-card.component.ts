@@ -14,10 +14,10 @@ const HEART_FILLED_PATH =
     template: `
   @if (movie(); as movie) {
     <div class="card-container w-full m-1 shadow-lg hover:shadow-xl transition-shadow rounded-lg bg-[#1A1A1A] text-white flex flex-col border-b-2 border-transparent hover:border-b-[#efa21b]">
-        <img class="w-full h-auto rounded-t-lg" [src]="movie?.poster_path | movieImage" [alt]="movie?.title" />
+        <img class="w-full h-auto rounded-t-lg" [src]="$safeNavigationMigration(movie?.poster_path) | movieImage" [alt]="$safeNavigationMigration(movie?.title)" />
         <div class="flex flex-col p-4 card-content">
           <h3 class="text-lg font-semibold truncate mb-2">{{ movie?.title }}</h3>
-          <p class="mb-1 mt-0 text-sm">Released: {{ movie?.release_date | date:'yyyy' }}</p>
+          <p class="mb-1 mt-0 text-sm">Released: {{ $safeNavigationMigration(movie?.release_date) | date:'yyyy' }}</p>
           <div class="mb-1 text-sm">Vote Count: {{ movie?.vote_count }}</div>
           <div class="flex items-center">
             <movie-star-rating></movie-star-rating>
@@ -27,7 +27,7 @@ const HEART_FILLED_PATH =
                 id="fav-checkbox-{{movie?.id}}"
                 [attr.data-testid]="'favorite-checkbox-' + movie?.id"
                 class="sr-only peer"
-                [checked]="movie?.favorite"
+                [checked]="$safeNavigationMigration(movie?.favorite)"
                 (change)="onFavoriteClick(movie)"
               />
               <label for="fav-checkbox-{{movie?.id}}" class="cursor-pointer ml-2 select-none">
@@ -37,7 +37,7 @@ const HEART_FILLED_PATH =
                   viewBox="0 0 24 24"
                   stroke="currentColor"
                   stroke-width="1.5"
-                  [ngClass]="{ hidden: movie?.favorite }"
+                  [ngClass]="{ hidden: $safeNavigationMigration(movie?.favorite) }"
                 >
                   <path
                     stroke-linecap="round"
