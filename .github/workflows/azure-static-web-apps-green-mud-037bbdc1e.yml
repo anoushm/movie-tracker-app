@@ -48,18 +48,30 @@ jobs:
       - name: Wait for staging deployment
         run: sleep 60
 
+      - name: Resolve staging URL
+        id: resolve_url
+        run: |
+          RAW_URL='${{ steps.staging_deploy.outputs.static_web_app_url }}'
+          # Azure SWA action still emits the deprecated region-in-hostname form
+          # (e.g. .westus2.5.azurestaticapps.net) which no longer resolves. Strip
+          # the region segment to get the current-format hostname.
+          FIXED_URL=$(echo "$RAW_URL" | sed -E 's#\.[a-z0-9-]+\.5\.azurestaticapps\.net#.5.azurestaticapps.net#')
+          echo "Raw URL:   $RAW_URL"
+          echo "Fixed URL: $FIXED_URL"
+          echo "url=$FIXED_URL" >> "$GITHUB_OUTPUT"
+
       - name: Verify staging URL is available
         run: |
-          echo "Staging URL: ${{ steps.staging_deploy.outputs.static_web_app_url }}"
-          curl -I "${{ steps.staging_deploy.outputs.static_web_app_url }}" || echo "URL not ready yet"
-          
+          echo "Staging URL: ${{ steps.resolve_url.outputs.url }}"
+          curl -I "${{ steps.resolve_url.outputs.url }}" || echo "URL not ready yet"
+
       - name: Additional wait for app initialization
         run: sleep 30
 
       - name: Run E2E Tests on Staging
         id: e2e_tests
         env:
-          PLAYWRIGHT_BASE_URL: ${{ steps.staging_deploy.outputs.static_web_app_url }}
+          PLAYWRIGHT_BASE_URL: ${{ steps.resolve_url.outputs.url }}
         run: npm run e2e:ci
         continue-on-error: true
 
