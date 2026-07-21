@@ -126,7 +126,7 @@ const FUNNY_BULB_BASE_PATH = 'M9.013 19.9a.75.75 0 0 1 .877-.597 11.319 11.319 0
     
       <div class="chatbot-input-area">
         <textarea #chatbotInput rows="3" class="input-field text-black w-full mb-2" placeholder="Type your chat message here..." data-testid="chat-input" (keyup.enter)="sendChatMessage(chatbotInput.value)" (keydown.enter)="$event.preventDefault()"></textarea>
-        <button class="send-button" data-testid="send-chat-button" [disabled]="loading()" (click)="sendChatMessage(chatbotInput.value)">
+        <button type="button" class="send-button" data-testid="send-chat-button" aria-label="Send message" [disabled]="loading()" (click)="sendChatMessage(chatbotInput.value)">
           @if(loading()) {
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
               <g transform="translate(0, 0) scale(1)">
@@ -147,7 +147,7 @@ const FUNNY_BULB_BASE_PATH = 'M9.013 19.9a.75.75 0 0 1 .877-.597 11.319 11.319 0
               </g>
             </svg>
           } @else {
-            <img src="./assets/right-arrow.png" style="width:50px;filter: invert(1);">
+            <img src="./assets/right-arrow.png" alt="" aria-hidden="true" style="width:50px;filter: invert(1);">
           }
         </button>
       </div>
