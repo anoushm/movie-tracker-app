@@ -1,11 +1,11 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'movie-trailer',
   standalone: true,
-  imports: [CommonModule],
+  imports: [],
   template: `
     <div class="trailer">
       @if(!showPlayer) {

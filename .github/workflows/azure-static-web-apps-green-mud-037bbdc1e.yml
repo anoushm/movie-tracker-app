@@ -19,15 +19,18 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Setup Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v4
         with:
-          node-version: '18.x'
+          node-version: '24.x'
 
       - name: Install dependencies
         run: |
-          npm install
+          npm ci --legacy-peer-deps
           npx playwright install --with-deps
-        
+
+      - name: Build app
+        run: npm run build
+
       # Deploy to staging slot for testing
       - name: Deploy to Staging Slot
         id: staging_deploy
@@ -36,26 +39,39 @@ jobs:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_GREEN_MUD_037BBDC1E }}
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           action: 'upload'
-          app_location: '/'
+          app_location: 'dist/movie-tracker-app/browser'
           api_location: ''
-          output_location: 'dist/movie-tracker-app/browser'
+          output_location: ''
+          skip_app_build: true
           deployment_environment: 'staging'
 
       - name: Wait for staging deployment
         run: sleep 60
 
+      - name: Resolve staging URL
+        id: resolve_url
+        run: |
+          RAW_URL='${{ steps.staging_deploy.outputs.static_web_app_url }}'
+          # Azure SWA action still emits the deprecated region-in-hostname form
+          # (e.g. .westus2.5.azurestaticapps.net) which no longer resolves. Strip
+          # the region segment to get the current-format hostname.
+          FIXED_URL=$(echo "$RAW_URL" | sed -E 's#\.[a-z0-9-]+\.5\.azurestaticapps\.net#.5.azurestaticapps.net#')
+          echo "Raw URL:   $RAW_URL"
+          echo "Fixed URL: $FIXED_URL"
+          echo "url=$FIXED_URL" >> "$GITHUB_OUTPUT"
+
       - name: Verify staging URL is available
         run: |
-          echo "Staging URL: ${{ steps.staging_deploy.outputs.static_web_app_url }}"
-          curl -I "${{ steps.staging_deploy.outputs.static_web_app_url }}" || echo "URL not ready yet"
-          
+          echo "Staging URL: ${{ steps.resolve_url.outputs.url }}"
+          curl -I "${{ steps.resolve_url.outputs.url }}" || echo "URL not ready yet"
+
       - name: Additional wait for app initialization
         run: sleep 30
 
       - name: Run E2E Tests on Staging
         id: e2e_tests
         env:
-          PLAYWRIGHT_BASE_URL: ${{ steps.staging_deploy.outputs.static_web_app_url }}
+          PLAYWRIGHT_BASE_URL: ${{ steps.resolve_url.outputs.url }}
         run: npm run e2e:ci
         continue-on-error: true
 
@@ -83,9 +99,10 @@ jobs:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_GREEN_MUD_037BBDC1E }}
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           action: 'upload'
-          app_location: '/'
+          app_location: 'dist/movie-tracker-app/browser'
           api_location: ''
-          output_location: 'dist/movie-tracker-app/browser'
+          output_location: ''
+          skip_app_build: true
 
       - name: Production Deployment Success
         if: steps.e2e_tests.outcome == 'success' && steps.production_deploy.outcome == 'success'
