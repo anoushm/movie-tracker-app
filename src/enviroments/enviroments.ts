@@ -1,7 +1,7 @@
 export const environment = {
   production: false,
   themoviedbBaseUrl: 'https://api.themoviedb.org',
-  chatBaseUrl: 'https://yh5ax4ws5lr3k-func-movie-tracker.azurewebsites.net/api/chat',
+  chatBaseUrl: 'https://movie-tracker-api.politeocean-1c0085f8.westus3.azurecontainerapps.io/api/chat',
   apiV3: '3',
   apiV4: '4',
   orgThemoviedbApiKey: '3cfc6e1dd231bd1f2caa198e7317a6a4',
